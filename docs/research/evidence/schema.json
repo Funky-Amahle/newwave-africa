@@ -1,0 +1,71 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "array",
+  "items": {
+    "type": "object",
+    "required": [
+      "evidence_id",
+      "title",
+      "url",
+      "publisher",
+      "accessed_at",
+      "verification_status",
+      "rights_status",
+      "release_status"
+    ],
+    "properties": {
+      "evidence_id": {
+        "type": "string",
+        "pattern": "^EVD-[0-9]{4}$"
+      },
+      "title": {
+        "type": "string"
+      },
+      "url": {
+        "type": "string",
+        "format": "uri"
+      },
+      "publisher": {
+        "type": "string"
+      },
+      "accessed_at": {
+        "type": "string",
+        "format": "date"
+      },
+      "verification_status": {
+        "enum": [
+          "verified",
+          "partially-verified",
+          "disputed",
+          "unverified",
+          "outdated"
+        ]
+      },
+      "rights_status": {
+        "enum": [
+          "cleared",
+          "restricted",
+          "unknown"
+        ]
+      },
+      "release_status": {
+        "enum": [
+          "internal-only",
+          "external-approved"
+        ]
+      },
+      "license_url": {
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "notes": {
+        "type": [
+          "string",
+          "null"
+        ]
+      }
+    }
+  }
+}
