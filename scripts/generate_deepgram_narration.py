@@ -22,7 +22,7 @@ API_URL = "https://api.deepgram.com/v2/speak"
 
 def chunks(text, limit=1200):
     """Split on sentence boundaries while respecting request text limits."""
-    sentences = re.split(r"(?<=[.!?])\\s+", " ".join(text.split()))
+    sentences = re.split(r"(?<=[.!?])\s+", " ".join(text.split()))
     parts = []
     current = ""
     for sentence in sentences:
@@ -87,7 +87,7 @@ def main():
             path.write_bytes(audio)
             parts.append(path)
         manifest = Path(temp) / "concat.txt"
-        manifest.write_text("".join("file '%s'\\n" % p.name for p in parts), encoding="utf-8")
+        manifest.write_text("".join("file '%s'\n" % p.name for p in parts), encoding="utf-8")
         output = destination / ("%s-%s.mp3" % (args.video, args.voice))
         subprocess.run(
             ["ffmpeg", "-hide_banner", "-loglevel", "error", "-y", "-f", "concat", "-safe", "1",
