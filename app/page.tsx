@@ -22,6 +22,7 @@ function HomeContent(){
   const workspace=useRef<HTMLElement|null>(null);
   const [added,setAdded]=useState<Story[]>([]);
   const [saved,setSaved]=useState<string[]>([]);
+  const savedRef=useRef<string[]>([]);
   const [savedOnly,setSavedOnly]=useState(false);
   const [savedMessage,setSavedMessage]=useState('');
   const [tab,setTab]=useState<Workspace>('discover');
@@ -39,7 +40,7 @@ function HomeContent(){
   const [message,setMessage]=useState('');
 
   useEffect(()=>{
-    try {setAdded(parseStories(localStorage.getItem(STORY_KEY)));setSaved(parseSaved(localStorage.getItem(SAVED_KEY)))}
+    try {setAdded(parseStories(localStorage.getItem(STORY_KEY)));const restored=parseSaved(localStorage.getItem(SAVED_KEY));savedRef.current=restored;setSaved(restored)}
     catch {setSavedMessage('Browser storage is unavailable. Your reading list will last for this visit only.')}
   },[]);
   const stories=useMemo(()=>[...added,...samples],[added]);
@@ -57,11 +58,18 @@ function HomeContent(){
   function chooseInterest(category:string){setInterest(category);setQuery('');setSavedOnly(false);setShowAll(false);openWorkspace('discover')}
   function resetFilters(){setQuery('');setInterest('All categories');setDiversity(60);setShowAll(false);setSavedOnly(false)}
   function bookmark(story:Story){
-    const next=toggleSaved(saved,story.id);
+    // The ref is updated synchronously so repeated clicks cannot read stale state.
+    // This is a browser-local bookmark, not a server-backed like or engagement count.
+    const next=toggleSaved(savedRef.current,story.id);
+    savedRef.current=next;
     setSaved(next);
-    const action=next.includes(story.id)?'Added to':'Removed from';
-    try {localStorage.setItem(SAVED_KEY,JSON.stringify(next));setSavedMessage(action+' your reading list. Bookmarks are stored in this browser only.')}
-    catch {setSavedMessage(action+' your reading list for this visit. Browser storage is unavailable.')}
+    const added=next.includes(story.id);
+    try {
+      localStorage.setItem(SAVED_KEY,JSON.stringify(next));
+      setSavedMessage((added?'Saved to':'Removed from')+' your reading list in this browser.');
+    } catch {
+      setSavedMessage((added?'Saved to':'Removed from')+' your reading list for this visit only. Browser storage is unavailable.');
+    }
   }
   function publish(event:FormEvent){
     event.preventDefault();
@@ -111,7 +119,7 @@ function HomeContent(){
           <p className={styles.interestNote}>{interest==='All categories'?'An open mix of themes.':'Prioritising '+interest+', with room for other perspectives.'} Samples are fictional. Your saved drafts are private to this browser.</p>
           <div className={styles.storyGrid}>{feed.map((story,index)=><div key={story.id} className={styles.storyFrame}>
             <StoryCard story={story} index={index}/>
-            <div className={styles.cardActions}><button type="button" aria-label={'Read '+story.title} onClick={()=>setReader(story)}>Read story <Arrow/></button><button type="button" aria-pressed={saved.includes(story.id)} aria-label={'Save '+story.title+' to reading list'} onClick={()=>bookmark(story)}><SaveIcon saved={saved.includes(story.id)}/>{saved.includes(story.id)?'Saved':'Save'}</button></div>
+            <div className={styles.cardActions}><button type="button" aria-label={'Read '+story.title} onClick={()=>setReader(story)}>Read story <Arrow/></button><button type="button" aria-pressed={saved.includes(story.id)} aria-label={(saved.includes(story.id)?'Remove ':'Save ')+story.title+(saved.includes(story.id)?' from':' to')+' reading list'} onClick={()=>bookmark(story)}><SaveIcon saved={saved.includes(story.id)}/>{saved.includes(story.id)?'Saved':'Save'}</button></div>
           </div>)}</div>
           {feed.length===0&&<div className={styles.empty}><h3>{savedOnly?'A little space for your favourites.':'No stories here just yet.'}</h3><p>{savedOnly?'Save a story from the collection, or clear your search to see saved items.':'Try a different search or return to the complete collection.'}</p><button type="button" className={styles.solidButton} onClick={resetFilters}>Explore all stories <Arrow/></button></div>}
           {discovery.ranked.length>6&&<div className={styles.more}><button type="button" className={styles.outlineButton} onClick={()=>setShowAll(v=>!v)}>{showAll?'Show fewer stories':'Explore all '+discovery.ranked.length+' stories'} <Arrow/></button></div>}
