@@ -1,4 +1,18 @@
 'use client';
-import {motion,useReducedMotion} from 'motion/react';
-type Props={onExplore:()=>void};
-export function Hero({onExplore}:Props){const reduced=useReducedMotion();return <section className="hero" aria-labelledby="hero-heading"><div className="hero-copy"><span className="eyebrow">NEW WAVE AFRICA / AN EDITION OF VOICES</span><motion.h1 initial={reduced?false:{opacity:0,y:28}} animate={{opacity:1,y:0}} transition={{duration:.65,ease:'easeOut'}} id="hero-heading">Every story<br/>changes <em>the</em><br/><em>narrative.</em></motion.h1><p>Explore stories across Africa through the voices, ideas and experiences that shape them. Listen closely. Discover differently.</p><button type="button" onClick={onExplore} className="hero-button">Explore the stories <span aria-hidden="true">↗</span></button><span className="hero-footnote">01 / DISCOVERY&nbsp;&nbsp; 02 / VOICE&nbsp;&nbsp; 03 / CREATION</span></div><div className="hero-art" aria-hidden="true"><motion.div className="hero-art-circle" animate={reduced?undefined:{scale:[1,1.035,1]}} transition={{duration:13,repeat:Infinity,ease:'easeInOut'}}/><motion.div className="hero-art-arch" animate={reduced?undefined:{y:[0,-10,0]}} transition={{duration:10,repeat:Infinity,ease:'easeInOut'}}/><span className="hero-art-label">THE STORIES<br/>WE CARRY</span><span className="hero-art-wave">N/W</span><span className="hero-art-edition">AN OPEN PLATFORM FOR NEW PERSPECTIVES — 2026</span></div></section>}
+import type {ReactNode} from 'react';
+import {Arrow,Reveal} from './experience';
+import styles from './experience.module.css';
+
+type Props={onExplore:()=>void;onCreate?:()=>void;children?:ReactNode};
+export function Hero({onExplore,onCreate,children}:Props) {
+  return <section className={styles.hero} aria-labelledby="hero-heading">
+    <Reveal className={styles.heroCopy}>
+      <p className={styles.kicker}>A NEW CHAPTER IN AFRICAN STORYTELLING</p>
+      <h1 id="hero-heading">Many voices.<br/>New <em>perspectives.</em></h1>
+      <p className={styles.heroDescription}>A place for the stories that broaden our world. Follow your curiosity, find a different perspective, or begin something of your own.</p>
+      <div className={styles.heroActions}><button type="button" className={styles.solidButton} onClick={onExplore}>Explore stories <Arrow/></button>{onCreate&&<button type="button" className={styles.textButton} onClick={onCreate}>Make something <span aria-hidden="true">&rarr;</span></button>}</div>
+      <div className={styles.heroFootnote}><span>DISCOVER / CREATE / OWN</span><span>A human-first prototype.<br/>Fictional stories, real possibilities.</span></div>
+    </Reveal>
+    <Reveal className={styles.heroFeature}>{children}</Reveal>
+  </section>;
+}
