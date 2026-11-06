@@ -12,7 +12,7 @@ NewWave Africa is a human-centred African storytelling prototype built for the *
 - Browse and search stories by topic, title, excerpt and country.
 - Filter eight thematic categories and adjust a **diversity weighting** slider.
 - Explore a simple dashboard comparing category coverage in two illustrative ranking approaches.
-- Listen to story previews using the browser's Web Speech API, with pause/resume/stop and available system voices.
+- Listen to reviewed, published story recordings with pause/resume/stop. Browser-generated robotic voices and automatic speech fallback are removed; stories without recordings show **Narration unavailable**.
 
 The eight starter stories are **fictional demonstration content**, not verified reporting or real creator submissions. The diversity algorithm is illustrative, not a validated recommender or proof of fair outcomes.
 
@@ -60,19 +60,19 @@ The app runs without an API key. An `.env.example` file may be present, but the 
 
 - **Next.js 15 App Router**, React 19, TypeScript and Tailwind CSS v4
 - **Motion for React** for interface transitions, respecting reduced-motion preferences
-- **Web Speech API** for device-dependent text-to-speech
+- **HTML audio playback** for reviewed recordings; no Web Speech synthesis or browser-voice picker
 - **MediaRecorder / Web Audio** for microphone capture and audio activity indication
 - **LocalStorage** for written drafts; temporary browser object URLs for audio recordings
 - **Local keyword rules** for demo category suggestions; illustrative relevance/scarcity ranking
 - **GitHub Pages** static export, with `/newwave-africa` base path and a GitHub Actions build/deployment workflow
 
-Browser speech voices, recording formats and microphone permission support vary by browser and device. Passing CI does not establish audible playback or microphone functionality.
+Recordings must be reviewed and published separately under `public/narration/` before they can be heard. Deepgram generation artifacts are not automatically deployed. See [the site-audio guide](docs/video/DEEPGRAM-SITE.md). Recording formats and microphone support vary by browser/device; passing CI does not establish audible playback or microphone functionality.
 
 ## Five-minute demonstration
 
 1. Introduce the need for creator-owned, discoverable African stories.
 2. Explore fictional sample stories; search/filter and adjust diversity weighting.
-3. Demonstrate narration and explain that available voices depend on the device.
+3. Demonstrate recorded narration only when reviewed clips are published; otherwise show the honest narration-unavailable state.
 4. In Creator Studio, write a short **original** test story, preview it and confirm rights before saving locally.
 5. If the browser permits, demonstrate recording, playback and downloading a test voice clip.
 6. Show the illustrative diversity dashboard and distinguish demo metrics from real-world impact.
@@ -95,7 +95,7 @@ The repository's [AGENTS.md](AGENTS.md) sets the contribution and approval rules
 
 ## Next steps
 
-- Validate keyboard, mobile, microphone and narration behavior in real browsers.
+- Validate keyboard, mobile, microphone and recorded-narration behavior in real browsers.
 - Review and merge the Creator Craft Toolkit after CI and UX checks.
 - Add creator-controlled category review before any future public publishing.
 - Evaluate ranking relevance and category coverage using a fixed test dataset.

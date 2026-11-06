@@ -1,0 +1,26 @@
+/* Scope the recorded-only layout so the old voice-selector grid cannot misalign it. */
+.actions.actions {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 12px;
+  min-width: 0;
+}
+.buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  min-width: 0;
+}
+.actions .buttons button {
+  min-height: 44px;
+  max-width: 100%;
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+.actions .buttons button:disabled {
+  opacity: 1;
+  color: var(--muted);
+  background: transparent;
+  cursor: not-allowed;
+}
