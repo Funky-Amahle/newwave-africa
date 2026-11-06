@@ -1,0 +1,23 @@
+Welcome to the NewWave Africa technical walkthrough. This is a prototype for the OpenAI and Andela Telling African Stories challenge. I will show what is implemented, how it works, and what remains future work.
+
+The application is built with Next.js, React, TypeScript and Tailwind CSS. A static export is designed for GitHub Pages. The current implementation demonstrates a browser-first experience rather than a fully deployed publishing backend.
+
+We begin in story discovery. The interface presents eight fictional sample stories. They are deliberately labelled as demonstration content. There is no production catalogue of published creator work behind these cards.
+
+Search and category controls update the visible story set. A diversity slider demonstrates one way to explore the trade-off between relevance and category variety. The current behaviour uses local data and rules. It is not a live artificial intelligence recommendation engine and has not been validated for fairness.
+
+The listening controls use the browser's Web Speech capabilities. Available voices and pronunciations depend on the user's browser and operating system. This video uses a separate generated narration track; that track is not evidence that every browser voice behaves the same way.
+
+Creator Studio lets someone write a story, preview it and manage a browser-local draft. A rights confirmation step reinforces that the creator must have permission to submit their content. Local storage does not mean public publishing. Nothing in this demonstration shows a working hosted submission service.
+
+For audio, the prototype uses browser microphone permissions and recording APIs. Recording, playback and downloads need real-device tests. A successful application build alone cannot verify the microphone, sound quality or voice coverage.
+
+The Creation and Craft Toolkit adds five human-led planning canvases. The supported disciplines are storytelling and writing, film and animation, journalism, music and audio, and games and interactive narratives. Each canvas gives creators structured questions and offers an editable Markdown production brief. The design deliberately keeps creative choices with the person doing the work.
+
+The dashboard visualises category coverage and ranking comparisons drawn from sample data. It is a prototype diagnostic view, not measured evidence of audience outcomes or balanced representation at scale.
+
+For development, the repository uses GitHub pull requests and Actions checks. Builds and deployments should be verified against the relevant commit and workflow results before a live demonstration. The source code and project documentation distinguish implemented behaviour from planned integrations.
+
+The next steps involve testing with real creators, accessible and multilingual experiences, stronger consent and rights workflows, backend publishing, and evidence-based evaluation of discovery quality. Real artificial intelligence models might support parts of that future system, but the present demo does not claim they are already deployed.
+
+The technical principle is to make tools that extend creative craft, preserve human agency and keep limitations visible. That is NewWave Africa today, and that is the foundation we hope to build on.
