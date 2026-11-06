@@ -1,1 +1,20 @@
-export function Brand(){return <a className="brand" href="#top" aria-label="NewWave Africa home"><span className="brandmark" aria-hidden="true"><svg viewBox="0 0 52 38" fill="none"><path d="M2 35L15 3L27 35L38 3L50 35" stroke="currentColor" strokeWidth="8" strokeLinecap="square" strokeLinejoin="round"/><path d="M25 35L38 3" stroke="var(--accent)" strokeWidth="8"/></svg></span><span className="brandname">newwave<span>africa</span></span></a>}
+import artwork from '../lib/brand-artwork.json';
+import styles from './brand.module.css';
+
+type BrandProps = { inverse?: boolean };
+
+/** Approved NW identity. SVG outlines keep the wordmark consistent without font requests. */
+export function Brand({inverse = false}: BrandProps = {}) {
+  return (
+    <a className={styles.root} data-inverse={inverse || undefined} href="#top" aria-label="NewWave Africa home">
+      <svg className={styles.mark} viewBox={artwork.markViewBox} aria-hidden="true" focusable="false">
+        <path d={artwork.markInk} fill="currentColor"/>
+        <path className={styles.accent} d={artwork.markAccent}/>
+      </svg>
+      <span className={styles.divider} aria-hidden="true"/>
+      <svg className={styles.wordmark} viewBox={artwork.wordViewBox} aria-hidden="true" focusable="false">
+        <path d={artwork.wordmark} fill="currentColor" fillRule="evenodd"/>
+      </svg>
+    </a>
+  );
+}

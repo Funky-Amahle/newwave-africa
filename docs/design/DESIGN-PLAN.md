@@ -9,5 +9,6 @@
 | DESIGN-05 | P1 | Cultural and multilingual review | Document reviewed locales and unresolved gaps | todo |
 | DESIGN-06 | P1 | Dashboard and data visualization design | Accessible chart equivalents and truthful caveats | todo |
 | DESIGN-07 | P1 | QA and frontend handoff | Annotated specs and tested checklist | todo |
+| DESIGN-11 | P1 | Apply approved classic NW identity | Header/footer artwork, responsive home link, favicon, brand tests; see NW-IDENTITY.md | proposed in PR |
 
 Design is not implemented merely by documenting it. Coordinate with frontend-builder and quality-guardian.

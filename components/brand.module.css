@@ -1,0 +1,47 @@
+/* Identity is isolated from the former .brand/.brandmark/.brandname rules. */
+.root {
+  --brand-ink: #151916;
+  --brand-accent: #173e2b;
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 12px;
+  max-inline-size: 100%;
+  min-block-size: 44px;
+  padding-block: 4px;
+  flex: 0 0 auto;
+  color: var(--brand-ink);
+  text-decoration: none;
+  line-height: 1;
+}
+.root:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 6px;
+  border-radius: 2px;
+}
+.mark { display: block; inline-size: 78px; block-size: 36px; flex: 0 0 auto; }
+.accent { fill: var(--brand-accent); }
+.divider { inline-size: 1px; block-size: 39px; flex: 0 0 auto; background: var(--brand-accent); }
+.wordmark { display: block; inline-size: 150px; block-size: auto; flex: 0 0 auto; }
+.root[data-inverse], :global(footer) .root {
+  --brand-ink: #f6f2e9;
+  --brand-accent: #f6f2e9;
+}
+@media (max-width: 1050px) {
+  .root { gap: 10px; }
+  .mark { inline-size: 64px; block-size: 30px; }
+  .wordmark { inline-size: 132px; }
+  .divider { block-size: 35px; }
+}
+/* The compact header keeps the full name legible beside its call to action. */
+@media (max-width: 420px) {
+  .root { gap: 0; }
+  .mark, .divider { display: none; }
+  .wordmark { inline-size: 148px; }
+  :global(footer) .root { gap: 10px; }
+  :global(footer) .root .mark, :global(footer) .root .divider { display: block; }
+  :global(footer) .root .wordmark { inline-size: 132px; }
+}
+@media (forced-colors: active) {
+  .root, .root[data-inverse], :global(footer) .root { color: LinkText; --brand-accent: LinkText; }
+}
