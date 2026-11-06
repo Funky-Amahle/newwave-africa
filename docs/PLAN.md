@@ -24,3 +24,6 @@ Payments, production social network, unsupported language claims, unreviewed pub
 
 ## Handoff format
 Task ID / Owner / Summary / Files / Tests run / Limitations / Next action.
+
+## Product design workstream
+See docs/design/DESIGN-PLAN.md for DESIGN-01 through DESIGN-07: UX audit, category review, discovery, design tokens, cultural/language review, dashboard design and QA handoff. All tasks are proposed until validated and merged.

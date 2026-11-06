@@ -22,3 +22,6 @@ Never commit secrets or expose OPENAI_API_KEY in client code. Treat submitted st
 
 ## Quality gate
 Validate build, API input handling, privacy, mobile UX, keyboard navigation, errors, attribution, metrics and README accuracy.
+
+## Product designer
+Use .agents/skills/product-designer/SKILL.md for UX/UI, brand, inclusive research framing, wireframes and design-system work. Track DESIGN tasks in docs/design/DESIGN-PLAN.md. Designer hands off specifications to frontend-builder and evidence to quality-guardian. Require creator agency, cultural review and rights clearance for external assets.
