@@ -12,7 +12,8 @@
     "next": "^15.5.0",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
-    "openai": "^6.0.0"
+    "openai": "^6.0.0",
+    "motion": "^12.23.0"
   },
   "devDependencies": {
     "typescript": "^5.9.0",

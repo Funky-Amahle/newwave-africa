@@ -8,3 +8,18 @@
 @media(max-width:1000px){.story-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.controls{grid-template-columns:1fr}.top nav{gap:14px}.hackathon{display:none}.hero{min-height:540px}.hero h1{font-size:clamp(64px,9vw,110px)}}
 @media(max-width:700px){.top{padding:18px 22px}.top nav{display:none}.hero{grid-template-columns:1fr}.hero-copy{padding:66px 24px 36px}.hero h1{font-size:clamp(66px,15vw,100px);margin:40px 0 20px}.hero-art{min-height:270px}.hero-art-wave{font-size:150px}.hero-footnote{padding-top:34px}.metrics{gap:12px;padding:22px;grid-template-columns:repeat(3,1fr)}.metrics div{display:block}.metrics strong{display:block;font-size:30px}.metrics span{font-size:10px}.story-grid,.compare,.formrow{grid-template-columns:1fr}.section-title{display:block;margin-top:48px}.workspace{padding:34px 20px 70px}.story{min-height:250px}footer{flex-direction:column;align-items:start;padding:36px 24px}}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*::before,*::after{transition:none!important;animation:none!important}}
+
+/* Voice and motion enhancements */
+.story-audio{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-top:16px;padding-top:14px;border-top:1px solid var(--line)}
+.story-audio button,.voice-actions button,.voice-actions a{border:1px solid var(--ink);border-radius:100px;background:transparent;color:var(--ink);font-size:12px;font-weight:750;padding:9px 13px;text-decoration:none}
+.story-audio button:hover,.voice-actions button:hover,.voice-actions a:hover{background:var(--ink);color:var(--paper)}
+.voice-caption{font-size:10px;color:var(--muted);line-height:1.5}
+.voice-studio{border:1px solid var(--line);background:#ece3d6;padding:clamp(18px,3vw,30px);display:grid;gap:16px}
+.voice-studio-head{display:flex;justify-content:space-between;align-items:end;gap:16px;flex-wrap:wrap}
+.voice-studio h3{font-size:clamp(24px,3vw,34px);letter-spacing:-.05em;margin:8px 0 0}
+.voice-privacy{font-size:11px;color:var(--muted)}
+.waveform{height:100px;display:flex;align-items:center;justify-content:center;gap:4px;background:var(--ink);padding:20px;overflow:hidden}
+.waveform span{flex:1;max-width:9px;min-height:3px;background:var(--accent);border-radius:8px;transition:height .12s linear}
+.voice-actions{display:flex;align-items:center;flex-wrap:wrap;gap:12px}
+.voice-actions audio{max-width:100%;width:290px}
+@media(prefers-reduced-motion:reduce){.waveform span{transition:none!important}}
