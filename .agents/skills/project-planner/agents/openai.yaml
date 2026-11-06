@@ -1,0 +1,3 @@
+interface:
+  display_name: "Project Planner"
+  short_description: "Translate feature requests into prioritized tasks, milestones and acceptance criteria"
