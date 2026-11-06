@@ -1,0 +1,38 @@
+name: Generate site story narration (manual, review only)
+on:
+  workflow_dispatch:
+    inputs:
+      voice:
+        description: Deepgram Flux voice for fictional sample stories
+        required: true
+        type: choice
+        default: flux-haley-en
+        options:
+          - flux-haley-en
+          - flux-alexis-en
+          - flux-kit-en
+
+permissions:
+  contents: read
+
+jobs:
+  sample-audio:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Generate fictional sample story clips
+        env:
+          DEEPGRAM_API_KEY: ${{ secrets.DEEPGRAM_API_KEY }}
+          VOICE: ${{ inputs.voice }}
+        run: python3 scripts/generate_site_audio.py --voice "$VOICE"
+      - name: Upload unpublished review artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: sample-story-narration-${{ github.run_number }}
+          path: site-narration-output/narration/
+          retention-days: 1
+          if-no-files-found: error
