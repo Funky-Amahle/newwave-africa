@@ -20,6 +20,7 @@ ALLOWED_VOICES = ("flux-haley-en", "flux-alexis-en", "flux-kit-en")
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--voice", choices=ALLOWED_VOICES, default="flux-haley-en")
+    parser.add_argument("--sample", default="all", choices=("all", "s1", "s2", "s3", "s4", "s5", "s6", "s7", "s8"))
     parser.add_argument("--output", type=Path, default=Path("site-narration-output/narration"))
     args = parser.parse_args()
     token = os.environ.get("DEEPGRAM_API_KEY", "")
@@ -30,7 +31,10 @@ def main():
         sys.exit("Expected exactly eight fictional samples.")
     args.output.mkdir(parents=True, exist_ok=True)
     clips = {}
-    for story in samples:
+    selected = [story for story in samples if args.sample == "all" or story["id"] == args.sample]
+    if not selected:
+        sys.exit("Requested sample is unavailable.")
+    for story in selected:
         story_id = story["id"]
         if not re.fullmatch(r"s[0-9]+", story_id) or story.get("sample") is not True:
             sys.exit("Refusing to send non-sample content to Deepgram.")
@@ -63,7 +67,7 @@ def main():
         json.dumps({"version": 1, "provider": "Deepgram Flux", "voice": args.voice, "clips": clips}, indent=2) + "\n",
         encoding="utf-8",
     )
-    print("Generated eight audio clips for review (not deployed).")
+    print("Generated", len(clips), "sample audio clips for review (not deployed).")
 
 
 if __name__ == "__main__":
