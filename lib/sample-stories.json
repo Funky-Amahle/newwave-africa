@@ -1,0 +1,122 @@
+[
+  {
+    "id": "s1",
+    "title": "The coders building for their neighborhoods",
+    "excerpt": "A fictional illustration of young developers creating tools for everyday community challenges.",
+    "category": "Technology & Innovation",
+    "country": "Kenya",
+    "author": "Sample storyteller",
+    "language": "English",
+    "tags": [
+      "Technology",
+      "Community"
+    ],
+    "date": "2026-11-01",
+    "sample": true
+  },
+  {
+    "id": "s2",
+    "title": "A market stall becomes a family enterprise",
+    "excerpt": "A fictional story about small-business resilience and local knowledge.",
+    "category": "Business & Entrepreneurship",
+    "country": "Ghana",
+    "author": "Sample storyteller",
+    "language": "English",
+    "tags": [
+      "Business",
+      "Markets"
+    ],
+    "date": "2026-11-01",
+    "sample": true
+  },
+  {
+    "id": "s3",
+    "title": "The grandmother who kept our stories alive",
+    "excerpt": "An illustrative reflection on oral history, memory, and cultural inheritance.",
+    "category": "Culture & Heritage",
+    "country": "South Africa",
+    "author": "Sample storyteller",
+    "language": "English",
+    "tags": [
+      "Oral history",
+      "Heritage"
+    ],
+    "date": "2026-11-01",
+    "sample": true
+  },
+  {
+    "id": "s4",
+    "title": "Growing food with less water",
+    "excerpt": "An invented example exploring the creativity of smallholder farmers confronting dry seasons.",
+    "category": "Agriculture & Climate",
+    "country": "Namibia",
+    "author": "Sample storyteller",
+    "language": "English",
+    "tags": [
+      "Farming",
+      "Climate"
+    ],
+    "date": "2026-11-01",
+    "sample": true
+  },
+  {
+    "id": "s5",
+    "title": "Learning science under an open sky",
+    "excerpt": "A fictional feature about curiosity, mentorship and making science accessible.",
+    "category": "Education & Science",
+    "country": "Rwanda",
+    "author": "Sample storyteller",
+    "language": "English",
+    "tags": [
+      "Education",
+      "Science"
+    ],
+    "date": "2026-11-01",
+    "sample": true
+  },
+  {
+    "id": "s6",
+    "title": "Where rhythm meets new imagination",
+    "excerpt": "A sample profile of creators combining traditional inspiration with contemporary performance.",
+    "category": "Arts & Entertainment",
+    "country": "Nigeria",
+    "author": "Sample storyteller",
+    "language": "English",
+    "tags": [
+      "Music",
+      "Art"
+    ],
+    "date": "2026-11-01",
+    "sample": true
+  },
+  {
+    "id": "s7",
+    "title": "A community football pitch makes space for everyone",
+    "excerpt": "An illustrative story about access, sport and shared ambition.",
+    "category": "Sports & Gaming",
+    "country": "Uganda",
+    "author": "Sample storyteller",
+    "language": "English",
+    "tags": [
+      "Sports",
+      "Youth"
+    ],
+    "date": "2026-11-01",
+    "sample": true
+  },
+  {
+    "id": "s8",
+    "title": "The neighborhood library that brings people together",
+    "excerpt": "A fictional story about reading, participation and community organizing.",
+    "category": "Community & Society",
+    "country": "Zambia",
+    "author": "Sample storyteller",
+    "language": "English",
+    "tags": [
+      "Community",
+      "Learning"
+    ],
+    "date": "2026-11-01",
+    "sample": true
+  }
+]
