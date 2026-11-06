@@ -9,13 +9,18 @@ const MotionContext = createContext(true);
 export const useQuietMotion = () => useContext(MotionContext);
 export function Experience({children}:{children:ReactNode}) {
   const preference = useReducedMotion();
+  const [ready,setReady] = useState(false);
   const [paused,setPaused] = useState(false);
-  const quiet = paused || preference !== false;
+  useEffect(()=>setReady(true),[]);
+  // Keep server markup and the first client render identical. Respect the
+  // device preference before enabling optional effects after hydration.
+  const systemReduced = ready && preference === true;
+  const quiet = !ready || paused || preference !== false;
   return <MotionContext.Provider value={quiet}><MotionConfig reducedMotion={quiet?'always':'user'}>
     <div className={styles.experience} data-quiet={quiet}>
       <div className={styles.utility}><span>Independent voices. Shared perspectives.</span>
-        <button type="button" aria-pressed={quiet} disabled={preference===true} onClick={()=>setPaused(v=>!v)}>
-          {preference ? 'Reduced effects: system' : quiet ? 'Reduced effects' : 'Full effects'}
+        <button type="button" aria-pressed={quiet} disabled={!ready||systemReduced} onClick={()=>setPaused(v=>!v)}>
+          {systemReduced ? 'Reduced effects: system' : quiet ? 'Reduced effects' : 'Full effects'}
           <span className={styles.srOnly}>. Toggle optional effects.</span>
         </button>
       </div>{children}

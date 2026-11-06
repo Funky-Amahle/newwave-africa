@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import {test} from 'node:test';
 import {readFileSync} from 'node:fs';
-import {CATEGORIES,parseStories,parseSaved,toggleSaved,getDiscovery} from '../lib/discovery.ts';
+import {CATEGORIES,parseStories,prependDraft,parseSaved,toggleSaved,getDiscovery} from '../lib/discovery.ts';
 const story=(id,category=CATEGORIES[0],title=id)=>({id,title,category,excerpt:'An original demonstration story with enough detail.',country:'South Africa',author:'Demo author',language:'English',tags:['community'],date:'2026-11-06'});
 const options={query:'',interest:'All categories',diversity:60,savedOnly:false,saved:[]};
 
@@ -67,4 +67,20 @@ test('all referenced CSS module classes exist',()=>{
     for(const [,name] of src.matchAll(/styles\.([A-Za-z]\w*)/g))assert.match(css,new RegExp('\\.'+name+'(?![\\w-])'),name);
   }
   assert.match(css,/@media \(prefers-reduced-motion:reduce\)/);
+});
+test('saving a draft preserves existing drafts from the latest storage snapshot',()=>{
+  const original=story('existing');const next=story('new');
+  assert.deepEqual(prependDraft(JSON.stringify([original]),next),[next,{...original,sample:false}]);
+  assert.deepEqual(prependDraft(null,next),[next]);
+});
+test('saving refuses malformed or incomplete storage rather than overwriting it',()=>{
+  for(const raw of ['{','{}','null','[null]',JSON.stringify([story('existing'),{}])])assert.throws(()=>prependDraft(raw,story('new')));
+});
+test('saving at the draft limit never evicts an older story',()=>{
+  const raw=JSON.stringify(Array.from({length:100},(_,i)=>story('old-'+i)));
+  assert.throws(()=>prependDraft(raw,story('new')),/100-draft limit/);
+});
+test('saving rejects duplicate and reserved draft IDs',()=>{
+  assert.throws(()=>prependDraft(JSON.stringify([story('same')]),story('same')),/validate/);
+  assert.throws(()=>prependDraft('[]',story('s1')),/validate/);
 });

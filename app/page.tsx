@@ -8,7 +8,7 @@ import {VoiceRecorder} from '../components/voice-recorder';
 import {CreatorCraftToolkit} from '../components/creator-craft-toolkit';
 import {categorizeLocally} from '../lib/demo-categorize';
 import sampleStories from '../lib/sample-stories.json';
-import {CATEGORIES,STORY_KEY,SAVED_KEY,parseStories,parseSaved,toggleSaved,getDiscovery} from '../lib/discovery';
+import {CATEGORIES,STORY_KEY,SAVED_KEY,parseStories,prependDraft,parseSaved,toggleSaved,getDiscovery} from '../lib/discovery';
 import type {Story} from '../lib/discovery';
 import {Experience,Reveal,SectionHeading,Spotlight,DiscoveryRoutes,StudioInvitation,ExperienceHelp,StoryReader,Arrow,SaveIcon,useQuietMotion} from '../components/experience';
 import styles from '../components/experience.module.css';
@@ -71,11 +71,11 @@ function HomeContent(){
     try {
       const result=categorizeLocally(title,content);
       const story:Story={id:globalThis.crypto?.randomUUID?.()||String(Date.now()),title:title.trim(),excerpt:content.trim(),author:author.trim()||'Anonymous creator',country:country.trim(),language:'English',category:result.category,tags:[],date:new Date().toISOString().slice(0,10)};
-      const next=[story,...added].slice(0,100);
+      const next=prependDraft(localStorage.getItem(STORY_KEY),story);
       localStorage.setItem(STORY_KEY,JSON.stringify(next));setAdded(next);
       setTitle('');setContent('');setRightsConfirmed(false);
       setMessage('Saved in this browser only. Suggested category: '+story.category+'. Local keyword rules, not AI.');
-    }catch{setMessage('Unable to save in browser storage. Copy your text somewhere safe before leaving this page.')}
+    }catch(error){setMessage(error instanceof SyntaxError?'Saved draft data could not be read safely. It has not been overwritten. Copy your new text somewhere safe.':error instanceof Error?error.message:'Unable to save in browser storage. Copy your text somewhere safe before leaving this page.')}
     finally{setBusy(false)}
   }
 

@@ -36,6 +36,17 @@ export function parseStories(raw: string | null): Story[] {
   } catch { return []; }
 }
 
+/** Prepare a save without dropping older/invalid entries or another tab's drafts. */
+export function prependDraft(raw: string | null, story: Story): Story[] {
+  const data: unknown = JSON.parse(raw || '[]');
+  if (!Array.isArray(data)) throw new Error('Saved draft data needs review. Copy your new text somewhere safe; existing data has not been overwritten.');
+  if (data.length >= 100) throw new Error('This browser has reached the 100-draft limit. Copy your new text somewhere safe; existing drafts have not been removed.');
+  const current = parseStories(raw);
+  if (current.length !== data.length) throw new Error('Some saved draft data needs review. Existing data has not been overwritten. Copy your new text somewhere safe.');
+  if (current.some(s => s.id === story.id) || parseStories(JSON.stringify([story])).length !== 1) throw new Error('Unable to validate this draft. Your existing stories have not been changed.');
+  return [story, ...current];
+}
+
 export function parseSaved(raw: string | null): string[] {
   try {
     const value: unknown = JSON.parse(raw || '[]');
