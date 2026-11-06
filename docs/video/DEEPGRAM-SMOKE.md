@@ -1,6 +1,6 @@
 # One-story narration smoke test
 
-Task NW-07; depends on PR #16. This runbook and its offline tests do not approve merging, deployment, or audio publication.
+Task NW-07; PR #16 is merged into main at `206747c822e12e1621986a0278425f4eea6a8c30`. This runbook and its offline tests do not approve merging, deployment, or audio publication.
 
 ## Verified preparation
 
@@ -10,7 +10,7 @@ Task NW-07; depends on PR #16. This runbook and its offline tests do not approve
 
 ## Offline contract check
 
-From the PR #16 branch plus this change:
+From this PR's branch (or main after this PR is approved and merged):
 
 ```sh
 python3 -m unittest discover -s tests -p 'test_deepgram_*.py' -v
@@ -20,14 +20,14 @@ Provider calls in these tests are mocked. Dummy MP3 bytes test file association 
 
 ## Real one-story run
 
-Use the existing registered `deepgram-site-audio.yml` workflow. Select the reviewed feature branch `fix/deepgram-audio-workflows`, `sample=s1`, and `voice=flux-haley-en`. Do not run the default main-branch version: it lacks the one-story input and generates all samples.
+Use the existing registered `deepgram-site-audio.yml` workflow. Select branch `main`, `sample=s1`, and `voice=flux-haley-en`. Main includes the merged one-story support from PR #16. Confirm the sample selection before dispatching; `all` makes eight paid requests.
 
 With an authenticated GitHub CLI, the equivalent is:
 
 ```sh
 gh workflow run deepgram-site-audio.yml \
   --repo Funky-Amahle/newwave-africa \
-  --ref fix/deepgram-audio-workflows \
+  --ref main \
   -f sample=s1 -f voice=flux-haley-en
 ```
 
