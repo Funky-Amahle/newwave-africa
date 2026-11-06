@@ -2,6 +2,14 @@ name: Generate site story narration (manual, review only)
 on:
   workflow_dispatch:
     inputs:
+      sample:
+        description: Generate one fictional sample for testing or all eight
+        required: true
+        type: choice
+        default: s1
+        options:
+          - s1
+          - all
       voice:
         description: Deepgram Flux voice for fictional sample stories
         required: true
@@ -28,7 +36,8 @@ jobs:
         env:
           DEEPGRAM_API_KEY: ${{ secrets.DEEPGRAM_API_KEY }}
           VOICE: ${{ inputs.voice }}
-        run: python3 scripts/generate_site_audio.py --voice "$VOICE"
+          SAMPLE: ${{ inputs.sample }}
+        run: python3 scripts/generate_site_audio.py --voice "$VOICE" --sample "$SAMPLE"
       - name: Upload unpublished review artifact
         uses: actions/upload-artifact@v4
         with:
