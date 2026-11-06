@@ -22,6 +22,8 @@ jobs:
           node-version: '22'
       - run: npm install --no-audit --no-fund
       - run: npm run typecheck
+      - name: Validate approved brand and browser icon
+        run: node --test tests/brand.test.mjs
       - name: Validate shared narration loading and playback ownership
         run: node --experimental-strip-types --test tests/narration.test.mjs
       - name: Validate Deepgram narration segmentation (offline)

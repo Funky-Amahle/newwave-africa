@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" role="img" aria-label="NewWave Africa">
+  <rect width="64" height="64" rx="12" fill="#173e2b"/>
+  <g transform="translate(5 16) scale(.118 .15)" fill="#f6f2e9" stroke="#f6f2e9" stroke-width="3" stroke-linejoin="round">
+    <path d="M3 5H91Q103 5 111 16L202 126L239 192L113 100L53 34V145Q53 191 104 203H3Q44 194 44 145V36Q44 15 3 5ZM157 5H210Q229 5 238 26L291 143L313 89L289 34Q278 10 258 5H354Q341 8 332 14L386 137L410 66Q427 18 377 5H454Q434 17 425 42L370 203H364L318 101L275 203H267L201 61Q180 12 157 5Z"/>
+    <path d="M81 101L173 203H237L139 139Z"/>
+  </g>
+</svg>
