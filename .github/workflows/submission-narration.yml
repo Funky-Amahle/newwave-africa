@@ -1,0 +1,32 @@
+name: Submission video Haley narration (review artifacts only)
+on:
+  create:
+permissions:
+  contents: read
+jobs:
+  narration:
+    if: github.event.ref_type == 'branch' && github.event.ref == 'video/submission-haley-2026-11-07'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      matrix:
+        video: [vision, technical]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Check fixed scripts without provider requests
+        run: python3 -m unittest discover -s scripts -p 'test_submission_narration.py' -v
+      - name: Generate bounded fixed-script narration
+        env:
+          DEEPGRAM_API_KEY: ${{ secrets.DEEPGRAM_API_KEY }}
+          VIDEO: ${{ matrix.video }}
+        run: python3 scripts/generate_submission_narration.py --video "$VIDEO" --output-dir narration-output
+      - uses: actions/upload-artifact@v4
+        with:
+          name: submission-${{ matrix.video }}-haley
+          path: narration-output/
+          retention-days: 1
+          if-no-files-found: error
