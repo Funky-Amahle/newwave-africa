@@ -22,6 +22,8 @@ jobs:
           node-version: '22'
       - run: npm install --no-audit --no-fund
       - run: npm run typecheck
+      - name: Validate shared narration loading and playback ownership
+        run: node --experimental-strip-types --test tests/narration.test.mjs
       - name: Validate Deepgram narration segmentation (offline)
         run: python3 -m unittest discover -s tests -p 'test_deepgram_narration.py'
       - run: npm run build
