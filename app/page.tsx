@@ -3,21 +3,13 @@ import {useEffect,useMemo,useState} from 'react';
 import {Brand} from '../components/brand';
 import {Hero} from '../components/hero';
 import {StoryCard} from '../components/story-card';
+import sampleStories from '../lib/sample-stories.json';
 import {categorizeLocally} from '../lib/demo-categorize';
 import {VoiceRecorder} from '../components/voice-recorder';
 import {CreatorCraftToolkit} from '../components/creator-craft-toolkit';
 type Story={id:string;title:string;excerpt:string;category:string;country:string;author:string;language:string;tags:string[];date:string;sample?:boolean};
 const categories=['Technology & Innovation','Business & Entrepreneurship','Culture & Heritage','Agriculture & Climate','Education & Science','Arts & Entertainment','Sports & Gaming','Community & Society'];
-const samples:Story[]=[
-{id:'s1',title:'The coders building for their neighborhoods',excerpt:'A fictional illustration of young developers creating tools for everyday community challenges.',category:categories[0],country:'Kenya',author:'Sample storyteller',language:'English',tags:['Technology','Community'],date:'2026-11-01',sample:true},
-{id:'s2',title:'A market stall becomes a family enterprise',excerpt:'A fictional story about small-business resilience and local knowledge.',category:categories[1],country:'Ghana',author:'Sample storyteller',language:'English',tags:['Business','Markets'],date:'2026-11-01',sample:true},
-{id:'s3',title:'The grandmother who kept our stories alive',excerpt:'An illustrative reflection on oral history, memory, and cultural inheritance.',category:categories[2],country:'South Africa',author:'Sample storyteller',language:'English',tags:['Oral history','Heritage'],date:'2026-11-01',sample:true},
-{id:'s4',title:'Growing food with less water',excerpt:'An invented example exploring the creativity of smallholder farmers confronting dry seasons.',category:categories[3],country:'Namibia',author:'Sample storyteller',language:'English',tags:['Farming','Climate'],date:'2026-11-01',sample:true},
-{id:'s5',title:'Learning science under an open sky',excerpt:'A fictional feature about curiosity, mentorship and making science accessible.',category:categories[4],country:'Rwanda',author:'Sample storyteller',language:'English',tags:['Education','Science'],date:'2026-11-01',sample:true},
-{id:'s6',title:'Where rhythm meets new imagination',excerpt:'A sample profile of creators combining traditional inspiration with contemporary performance.',category:categories[5],country:'Nigeria',author:'Sample storyteller',language:'English',tags:['Music','Art'],date:'2026-11-01',sample:true},
-{id:'s7',title:'A community football pitch makes space for everyone',excerpt:'An illustrative story about access, sport and shared ambition.',category:categories[6],country:'Uganda',author:'Sample storyteller',language:'English',tags:['Sports','Youth'],date:'2026-11-01',sample:true},
-{id:'s8',title:'The neighborhood library that brings people together',excerpt:'A fictional story about reading, participation and community organizing.',category:categories[7],country:'Zambia',author:'Sample storyteller',language:'English',tags:['Community','Learning'],date:'2026-11-01',sample:true}
-];
+const samples:Story[]=sampleStories;
 const key='newwave-local-stories-v1';
 export default function Home(){
 const [added,setAdded]=useState<Story[]>([]);
