@@ -16,21 +16,23 @@ spec.loader.exec_module(module)
 
 
 class SiteAudioSmokeTests(unittest.TestCase):
-    def run_generation(self, sample="s1", invalid=None, key="dummy-offline-key"):
+    def run_generation(self, sample="s1", invalid=None, invalid_index=0, key="dummy-offline-key",
+                       payload=b"ID3-offline-fixture-not-playable-audio", content_type="audio/mpeg"):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
             (root / "lib").mkdir()
             stories = [{"id": "s%d" % i, "sample": True, "title": "Fictional sample %d" % i,
                         "excerpt": "An invented story for an offline contract test."} for i in range(1, 9)]
             if invalid:
-                stories[0].update(invalid)
+                stories[invalid_index].update(invalid)
             (root / "lib/sample-stories.json").write_text(json.dumps(stories), encoding="utf-8")
             destination = root / "output"
             response = mock.MagicMock()
             response.__enter__.return_value = response
             response.status = 200
-            response.headers = {"Content-Type": "audio/mpeg"}
-            response.read.return_value = b"ID3-offline-fixture-not-playable-audio"
+            response.headers = {"Content-Type": content_type}
+            response.read.return_value = payload
+            self.response = response
             output = io.StringIO()
             with mock.patch.dict(os.environ, {"DEEPGRAM_API_KEY": key}, clear=True), \
                  mock.patch("sys.argv", [str(SCRIPT), "--sample", sample, "--output", str(destination)]), \
@@ -50,7 +52,8 @@ class SiteAudioSmokeTests(unittest.TestCase):
         self.assertIsNone(error)
         self.assertEqual(len(calls), 1)
         request = calls[0].args[0]
-        self.assertEqual(request.full_url, "https://api.deepgram.com/v2/speak?model=flux-haley-en")
+        self.assertEqual(request.full_url, "https://api.deepgram.com/v2/speak?model=flux-haley-en&encoding=mp3")
+        self.response.read.assert_called_once_with(module.MAX_AUDIO_BYTES + 1)
         self.assertEqual(request.get_method(), "POST")
         self.assertEqual(request.get_header("Authorization"), "Token dummy-offline-key")
         self.assertEqual(json.loads(request.data), {"text": stories[0]["title"] + ". " + stories[0]["excerpt"]})
@@ -89,6 +92,39 @@ class SiteAudioSmokeTests(unittest.TestCase):
         self.assertEqual(calls, [])
         self.assertEqual(files, {})
         self.assertIn("safety cap", error)
+
+    def test_invalid_eighth_sample_prevents_all_paid_requests(self):
+        calls, files, _, error, _ = self.run_generation(sample="all", invalid={"sample": False}, invalid_index=7)
+        self.assertEqual(calls, [])
+        self.assertEqual(files, {})
+        self.assertIn("Refusing to send non-sample", error)
+
+    def test_duplicate_ids_prevent_all_paid_requests(self):
+        calls, files, _, error, _ = self.run_generation(sample="all", invalid={"id": "s1"}, invalid_index=7)
+        self.assertEqual(calls, [])
+        self.assertEqual(files, {})
+        self.assertIn("unique sample IDs", error)
+
+    def test_invalid_late_text_prevents_all_paid_requests(self):
+        calls, files, _, error, _ = self.run_generation(sample="all", invalid={"title": None}, invalid_index=7)
+        self.assertEqual(calls, [])
+        self.assertEqual(files, {})
+        self.assertIn("non-empty text", error)
+
+    def test_non_mp3_response_is_not_saved(self):
+        calls, files, _, error, _ = self.run_generation(content_type="audio/wav")
+        self.assertEqual(len(calls), 1)
+        self.assertEqual(files, {})
+        self.assertIn("unexpected response", error)
+        self.response.read.assert_not_called()
+
+    def test_response_size_cap_rejects_before_writing(self):
+        with mock.patch.object(module, "MAX_AUDIO_BYTES", 32):
+            calls, files, _, error, _ = self.run_generation(payload=b"x" * 33)
+        self.assertEqual(len(calls), 1)
+        self.assertEqual(files, {})
+        self.assertIn("Unexpected audio size", error)
+        self.response.read.assert_called_once_with(33)
 
 
 if __name__ == "__main__":
