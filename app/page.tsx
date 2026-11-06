@@ -1,41 +1,150 @@
 'use client';
-import {useEffect,useMemo,useState} from 'react';
+import {useEffect,useMemo,useRef,useState} from 'react';
+import type {FormEvent} from 'react';
 import {Brand} from '../components/brand';
 import {Hero} from '../components/hero';
 import {StoryCard} from '../components/story-card';
-import sampleStories from '../lib/sample-stories.json';
-import {categorizeLocally} from '../lib/demo-categorize';
 import {VoiceRecorder} from '../components/voice-recorder';
 import {CreatorCraftToolkit} from '../components/creator-craft-toolkit';
-type Story={id:string;title:string;excerpt:string;category:string;country:string;author:string;language:string;tags:string[];date:string;sample?:boolean};
-const categories=['Technology & Innovation','Business & Entrepreneurship','Culture & Heritage','Agriculture & Climate','Education & Science','Arts & Entertainment','Sports & Gaming','Community & Society'];
+import {categorizeLocally} from '../lib/demo-categorize';
+import sampleStories from '../lib/sample-stories.json';
+import {CATEGORIES,STORY_KEY,SAVED_KEY,parseStories,prependDraft,parseSaved,toggleSaved,getDiscovery} from '../lib/discovery';
+import type {Story} from '../lib/discovery';
+import {Experience,Reveal,SectionHeading,Spotlight,DiscoveryRoutes,StudioInvitation,ExperienceHelp,StoryReader,Arrow,SaveIcon,useQuietMotion} from '../components/experience';
+import styles from '../components/experience.module.css';
+
 const samples:Story[]=sampleStories;
-const key='newwave-local-stories-v1';
-export default function Home(){
-const [added,setAdded]=useState<Story[]>([]);
-const [tab,setTab]=useState<'discover'|'create'|'impact'>('discover');
-const [interest,setInterest]=useState('All categories');
-const [diversity,setDiversity]=useState(60);
-const [query,setQuery]=useState('');
-const [showAll,setShowAll]=useState(false);
-const [title,setTitle]=useState('');const [content,setContent]=useState('');const [author,setAuthor]=useState('');const [country,setCountry]=useState('South Africa');
-const [rightsConfirmed,setRightsConfirmed]=useState(false);const [busy,setBusy]=useState(false);const [message,setMessage]=useState('');const [mode,setMode]=useState('');
-useEffect(()=>{try{const stored=JSON.parse(localStorage.getItem(key)||'[]');if(Array.isArray(stored))setAdded(stored.filter((s)=>s&&typeof s.id==='string').slice(0,100))}catch{}},[]);
-const stories=useMemo(()=>[...added,...samples], [added]);
-const counts=useMemo(()=>Object.fromEntries(categories.map(c=>[c,stories.filter(s=>s.category===c).length])),[stories]);
-const ordered=useMemo(()=>stories.map(s=>{const relevant=interest==='All categories'?0.65:(s.category===interest?1:0.35);const scarcity=1/(counts[s.category]||1);const score=(1-diversity/100)*relevant+(diversity/100)*(0.3*relevant+0.7*scarcity);return {...s,score}}).filter(s=>(s.title+' '+s.excerpt+' '+s.category+' '+s.country).toLowerCase().includes(query.toLowerCase())).sort((a,b)=>b.score-a.score||a.title.localeCompare(b.title)),[stories,interest,diversity,counts,query]);
-const feed=ordered.slice(0,showAll?ordered.length:Math.min(6,ordered.length));
-const resetFilters=()=>{setQuery('');setInterest('All categories');setDiversity(60);setShowAll(false)};
-const baseline=stories.map(s=>({...s,score:interest==='All categories'?1:(s.category===interest?1:0)})).sort((a,b)=>b.score-a.score).slice(0,8);
-const distinct=(items:Story[])=>new Set(items.map(s=>s.category)).size;
-function publish(e:React.FormEvent){e.preventDefault();if(!rightsConfirmed){setMessage('Confirm that you own or have permission to use this story before saving.');return;}setMessage('');setBusy(true);try{const result=categorizeLocally(title,content);const story:Story={id:globalThis.crypto?.randomUUID?.()||String(Date.now()),title:title.trim(),excerpt:content.trim(),author:author.trim()||'Anonymous creator',country,language:'English',category:result.category,tags:[],date:new Date().toISOString().slice(0,10)};const next=[story,...added];localStorage.setItem(key,JSON.stringify(next));setAdded(next);setMode('demo-rules');setTitle('');setContent('');setRightsConfirmed(false);setMessage('Story saved in this browser only. Suggested category: '+story.category+'. Categorized using local demo rules, not AI.');}catch(err){setMessage(err instanceof Error?err.message:'Unable to save')}finally{setBusy(false)}}
-return <main id="top">
-<a className="skip-link" href="#workspace">Skip to stories and tools</a><header className="top"><Brand/><nav aria-label="Primary navigation"><a href="#workspace" onClick={()=>setTab('discover')}>Discover</a><a href="#workspace" onClick={()=>setTab('create')}>Creator studio</a><a href="#workspace" onClick={()=>setTab('impact')}>Our impact</a></nav><a className="nav-cta" href="#workspace" onClick={()=>setTab('create')}>Share your story <span aria-hidden="true">↗</span></a></header>
-<Hero onExplore={()=>{setTab('discover');document.getElementById('workspace')?.scrollIntoView({behavior:'smooth'})}}/>
-<div className="editorial-strip"><span>INDEPENDENT VOICES / SHARED PERSPECTIVES</span><span>DISCOVER · LISTEN · CREATE</span><span>VOL. 001 — A STORYTELLING EXPERIMENT</span></div><div className="metrics"><div><strong>{stories.length}</strong><span>Stories to discover</span></div><div><strong>{new Set(stories.map(s=>s.category)).size}</strong><span>Categories represented</span></div><div><strong>{new Set(stories.map(s=>s.country)).size}</strong><span>Countries represented</span></div></div>
-<section className="workspace" id="workspace" aria-label="Story discovery and creator tools"><div className="workspace-intro"><span className="eyebrow dark">THE NEW WAVE / ISSUE 001</span><p>Stories cross borders. Perspectives change everything.</p></div><div className="tabs" role="group" aria-label="Workspace sections">{(['discover','create','impact'] as const).map(t=><button key={t} aria-pressed={tab===t} className={tab===t?'active':''} onClick={()=>setTab(t)}>{t==='discover'?'Discover stories':t==='create'?'Share your story':'Diversity dashboard'}</button>)}</div>
-{tab==='discover'&&<><div className="section-title"><div><span className="eyebrow dark">THE DISCOVERY ENGINE</span><h2>A continent of perspectives.</h2></div><p>Explore ideas, places and voices beyond the familiar.</p></div><div className="discovery-lead"><div><span className="eyebrow dark">EXPLORE THE EDITION</span><h3>Find the stories that speak to you.</h3></div><span>Choose a theme, follow a curiosity, or make room for something unexpected.</span></div><div className="category-chips" role="group" aria-label="Quick category filters">{['All categories',...categories].map(c=><button key={c} type="button" aria-pressed={interest===c} className={interest===c?'selected':''} onClick={()=>{setInterest(c);setShowAll(false)}}>{c==='All categories'?'Everything':c}</button>)}</div><div className="controls"><label>Explore a category<select value={interest} onChange={e=>setInterest(e.target.value)}><option>All categories</option>{categories.map(c=><option key={c}>{c}</option>)}</select></label><label>Search stories<input placeholder="Try climate, community, science..." value={query} onChange={e=>setQuery(e.target.value)}/></label><label>Discovery diversity <b>{diversity}%</b><span className="field-help">Higher values give less-represented categories more visibility.</span><input aria-label="Discovery diversity percentage" type="range" min="0" max="100" step="10" value={diversity} onChange={e=>setDiversity(Number(e.target.value))}/></label></div><div className="results-toolbar"><div className="results-count" role="status">{ordered.length} matching {ordered.length===1?'story':'stories'} · {feed.length} shown · Fictional samples clearly labeled</div><button type="button" className="text-action" onClick={resetFilters}>Reset filters ↺</button></div><div className="story-grid">{feed.map((s,i)=><StoryCard key={s.id} story={s} index={i}/>)}</div>{feed.length===0&&<div className="empty-state"><h3>No stories found — yet.</h3><p>Try a different keyword or explore all categories.</p><button type="button" className="primary" onClick={resetFilters}>Show all stories ↗</button></div>}{ordered.length>6&&<div className="load-more"><button type="button" className="primary" onClick={()=>setShowAll(v=>!v)}>{showAll?'Show fewer stories ↑':`View all ${ordered.length} stories ↗`}</button></div>}</>}
-{tab==='create'&&<><CreatorCraftToolkit/><div className="section-title"><div><span className="eyebrow dark">CREATOR STUDIO</span><h2>Make space for your story.</h2></div><p>Human-authored stories. Locally assisted discovery.</p></div><div className="studio-intro"><div><span className="eyebrow">YOUR VOICE. YOUR WORDS.</span><h3>Start with what matters to you.</h3><p>Write, record, and keep a private draft in your browser. You stay in control of your story.</p></div><div className="studio-steps" aria-label="Creator steps"><span>01 / WRITE</span><span>02 / RECORD</span><span>03 / SAVE</span></div></div><form className="creator" onSubmit={publish}><label>Story title<input required minLength={3} maxLength={180} value={title} onChange={e=>setTitle(e.target.value)} placeholder="Give your story a title"/></label><div className="formrow"><label>Creator name<input value={author} onChange={e=>setAuthor(e.target.value)} placeholder="Your name (optional)"/></label><label>Country<input required value={country} onChange={e=>setCountry(e.target.value)} placeholder="Country"/></label></div><label>Your story<textarea required minLength={20} maxLength={5000} rows={8} value={content} onChange={e=>setContent(e.target.value)} placeholder="Write an original story about your community, innovation, heritage or experience..."/></label><div className="draft-preview"><span className="eyebrow dark">LIVE DRAFT PREVIEW</span><h3>{title.trim()||'Your story title will appear here'}</h3><p>{content.trim()?content.trim().slice(0,220)+(content.trim().length>220?'…':''):'As you write, a preview of your story will appear here.'}</p><small>{author.trim()||'Anonymous creator'} · {country||'Country not set'}</small></div><VoiceRecorder/><label className="rights-check"><input type="checkbox" checked={rightsConfirmed} onChange={e=>setRightsConfirmed(e.target.checked)} required/><span>I confirm this is my original story or I have permission to use it. I understand this saves a draft only in my browser.</span></label><p className="note">Your story is stored in this browser only; there are no user accounts or public publishing yet. This static GitHub Pages demo uses local keyword rules for category suggestions; no story text is sent to OpenAI. Use only content you have permission to share.</p><button className="primary" type="submit" disabled={busy}>{busy?'Categorizing...':'Categorize & save locally ↗'}</button>{message&&<p role="status" className="notice">{message}</p>}{mode&&<p className="note">Most recent categorization mode: {mode} (not AI)</p>}</form></>}
-{tab==='impact'&&<><div className="section-title"><div><span className="eyebrow dark">MEASURING DISCOVERY</span><h2>Beyond the familiar.</h2></div><p>Transparent metrics from your current demo stories.</p></div><div className="compare"><div><span>RELEVANCE-ONLY BASELINE</span><strong>{distinct(baseline)} / {categories.length}</strong><p>Distinct categories in first eight results</p></div><div><span>DIVERSITY-AWARE FEED</span><strong>{distinct(feed)} / {categories.length}</strong><p>Distinct categories in first eight results</p></div></div><h3>Available story categories</h3><div className="bars" role="list" aria-label="Story counts by category">{categories.map(c=><div role="listitem" key={c}><div className="bar-label"><span>{c}</span><b>{counts[c]}</b></div><div className="bar"><span style={{width:(100*counts[c]/Math.max(1,...Object.values(counts)))+'%'}}/></div></div>)}</div><p className="note">Illustrative MVP comparison, not evidence of improved real-world recommendations. The baseline uses a simple interest match. Sample stories are invented and clearly labeled.</p></>}
-</section><footer><div><Brand/><p>Stories are richer when more people get to tell them.</p></div><span>NewWave Africa · An OpenAI × Andela hackathon prototype<br/>Fictional examples · Browser-local drafts · No public publishing</span></footer>
-</main>}
+type Workspace='discover'|'create'|'impact';
+export default function Home(){return <Experience><HomeContent/></Experience>}
+
+function HomeContent(){
+  const quiet=useQuietMotion();
+  const workspace=useRef<HTMLElement|null>(null);
+  const [added,setAdded]=useState<Story[]>([]);
+  const [saved,setSaved]=useState<string[]>([]);
+  const [savedOnly,setSavedOnly]=useState(false);
+  const [savedMessage,setSavedMessage]=useState('');
+  const [tab,setTab]=useState<Workspace>('discover');
+  const [interest,setInterest]=useState('All categories');
+  const [diversity,setDiversity]=useState(60);
+  const [query,setQuery]=useState('');
+  const [showAll,setShowAll]=useState(false);
+  const [reader,setReader]=useState<Story|null>(null);
+  const [title,setTitle]=useState('');
+  const [content,setContent]=useState('');
+  const [author,setAuthor]=useState('');
+  const [country,setCountry]=useState('South Africa');
+  const [rightsConfirmed,setRightsConfirmed]=useState(false);
+  const [busy,setBusy]=useState(false);
+  const [message,setMessage]=useState('');
+
+  useEffect(()=>{
+    try {setAdded(parseStories(localStorage.getItem(STORY_KEY)));setSaved(parseSaved(localStorage.getItem(SAVED_KEY)))}
+    catch {setSavedMessage('Browser storage is unavailable. Your reading list will last for this visit only.')}
+  },[]);
+  const stories=useMemo(()=>[...added,...samples],[added]);
+  const discovery=useMemo(()=>getDiscovery(stories,{query,interest,diversity,savedOnly,saved}),[stories,query,interest,diversity,savedOnly,saved]);
+  const feed=showAll?discovery.ranked:discovery.ranked.slice(0,6);
+  const savedCount=stories.filter(s=>saved.includes(s.id)).length;
+
+  function openWorkspace(next:Workspace){
+    setTab(next);
+    requestAnimationFrame(()=>{
+      workspace.current?.focus({preventScroll:true});
+      workspace.current?.scrollIntoView({behavior:quiet?'auto':'smooth',block:'start'});
+    });
+  }
+  function chooseInterest(category:string){setInterest(category);setQuery('');setSavedOnly(false);setShowAll(false);openWorkspace('discover')}
+  function resetFilters(){setQuery('');setInterest('All categories');setDiversity(60);setShowAll(false);setSavedOnly(false)}
+  function bookmark(story:Story){
+    const next=toggleSaved(saved,story.id);
+    setSaved(next);
+    const action=next.includes(story.id)?'Added to':'Removed from';
+    try {localStorage.setItem(SAVED_KEY,JSON.stringify(next));setSavedMessage(action+' your reading list. Bookmarks are stored in this browser only.')}
+    catch {setSavedMessage(action+' your reading list for this visit. Browser storage is unavailable.')}
+  }
+  function publish(event:FormEvent){
+    event.preventDefault();
+    if(!rightsConfirmed){setMessage('Confirm authorship or permission before saving.');return}
+    if(title.trim().length<3||content.trim().length<20||!country.trim()){setMessage('Add a title, country and at least 20 characters of story text.');return}
+    setBusy(true);setMessage('');
+    try {
+      const result=categorizeLocally(title,content);
+      const story:Story={id:globalThis.crypto?.randomUUID?.()||String(Date.now()),title:title.trim(),excerpt:content.trim(),author:author.trim()||'Anonymous creator',country:country.trim(),language:'English',category:result.category,tags:[],date:new Date().toISOString().slice(0,10)};
+      const next=prependDraft(localStorage.getItem(STORY_KEY),story);
+      localStorage.setItem(STORY_KEY,JSON.stringify(next));setAdded(next);
+      setTitle('');setContent('');setRightsConfirmed(false);
+      setMessage('Saved in this browser only. Suggested category: '+story.category+'. Local keyword rules, not AI.');
+    }catch(error){setMessage(error instanceof SyntaxError?'Saved draft data could not be read safely. It has not been overwritten. Copy your new text somewhere safe.':error instanceof Error?error.message:'Unable to save in browser storage. Copy your text somewhere safe before leaving this page.')}
+    finally{setBusy(false)}
+  }
+
+  return <main id="top">
+    <a className="skip-link" href="#workspace">Skip to stories and tools</a>
+    <header className={styles.header}>
+      <Brand/>
+      <nav className={styles.nav} aria-label="Primary navigation">{(['discover','create','impact'] as const).map(item=><a key={item} href="#workspace" aria-current={tab===item?'page':undefined} onClick={event=>{event.preventDefault();openWorkspace(item)}}>{item==='discover'?'Discover':item==='create'?'Creator studio':'Our approach'}</a>)}</nav>
+      <a className={styles.navCta} href="#workspace" onClick={event=>{event.preventDefault();openWorkspace('create')}}>Start a story <Arrow/></a>
+    </header>
+    <Hero onExplore={()=>openWorkspace('discover')} onCreate={()=>openWorkspace('create')}><Spotlight stories={samples} onRead={setReader}/></Hero>
+    <div className={styles.frame}>
+      <div className={styles.metrics} aria-label="Current demonstration collection">
+        <div><strong>{stories.length}</strong><span>Stories in this browser<br/>Includes 8 fictional samples</span></div>
+        <div><strong>{new Set(stories.map(s=>s.category)).size}</strong><span>Story categories<br/>More than one perspective</span></div>
+        <div><strong>5</strong><span>Creative planning canvases<br/>Human authorship first</span></div>
+      </div>
+      <Reveal><DiscoveryRoutes onChoose={chooseInterest}/></Reveal>
+      <section className={styles.workspace} ref={workspace} id="workspace" tabIndex={-1} aria-label="Story discovery and creator tools">
+        <div className={styles.tabs} role="group" aria-label="Workspace sections">{(['discover','create','impact'] as const).map(item=><button key={item} type="button" aria-pressed={tab===item} onClick={()=>setTab(item)}>{item==='discover'?'Discover stories':item==='create'?'Creator studio':'Discovery insights'}</button>)}</div>
+        {tab==='discover'&&<>
+          <SectionHeading eyebrow="THE OPEN EDITION" title="Beyond your usual scroll." description="Stay close to an interest. Leave room for something you did not expect."/>
+          <div className={styles.filters}>
+            <label>Your interest<select value={interest} onChange={event=>{setInterest(event.target.value);setShowAll(false)}}><option>All categories</option>{CATEGORIES.map(c=><option key={c}>{c}</option>)}</select><small>Prioritises a category without excluding other voices.</small></label>
+            <label>Search the collection<input type="search" value={query} onChange={event=>{setQuery(event.target.value);setShowAll(false)}} placeholder="Try community, science or a country"/><small>Search titles, text, countries and themes.</small></label>
+            <label><span className={styles.rangeTitle}>Make room for variety <output>{diversity}%</output></span><input type="range" aria-label="Discovery diversity percentage" min="0" max="100" step="10" value={diversity} onChange={event=>setDiversity(Number(event.target.value))}/><small>Higher values favour less-represented categories.</small></label>
+          </div>
+          <div className={styles.results}>
+            <p role="status">{discovery.ranked.length} {discovery.ranked.length===1?'story':'stories'} / {feed.length} shown{savedOnly?' / Reading list':''}</p>
+            <div className={styles.resultActions}><button type="button" className={styles.outlineButton} aria-pressed={savedOnly} onClick={()=>{setSavedOnly(v=>!v);setShowAll(false)}}><SaveIcon saved={savedOnly}/>Reading list ({savedCount})</button><button type="button" className={styles.textButton} onClick={resetFilters}>Reset discovery</button></div>
+          </div>
+          {savedMessage&&<p className={styles.status} role="status">{savedMessage}</p>}
+          <p className={styles.interestNote}>{interest==='All categories'?'An open mix of themes.':'Prioritising '+interest+', with room for other perspectives.'} Samples are fictional. Your saved drafts are private to this browser.</p>
+          <div className={styles.storyGrid}>{feed.map((story,index)=><div key={story.id} className={styles.storyFrame}>
+            <StoryCard story={story} index={index}/>
+            <div className={styles.cardActions}><button type="button" aria-label={'Read '+story.title} onClick={()=>setReader(story)}>Read story <Arrow/></button><button type="button" aria-pressed={saved.includes(story.id)} aria-label={'Save '+story.title+' to reading list'} onClick={()=>bookmark(story)}><SaveIcon saved={saved.includes(story.id)}/>{saved.includes(story.id)?'Saved':'Save'}</button></div>
+          </div>)}</div>
+          {feed.length===0&&<div className={styles.empty}><h3>{savedOnly?'A little space for your favourites.':'No stories here just yet.'}</h3><p>{savedOnly?'Save a story from the collection, or clear your search to see saved items.':'Try a different search or return to the complete collection.'}</p><button type="button" className={styles.solidButton} onClick={resetFilters}>Explore all stories <Arrow/></button></div>}
+          {discovery.ranked.length>6&&<div className={styles.more}><button type="button" className={styles.outlineButton} onClick={()=>setShowAll(v=>!v)}>{showAll?'Show fewer stories':'Explore all '+discovery.ranked.length+' stories'} <Arrow/></button></div>}
+        </>}
+        {tab==='create'&&<>
+          <SectionHeading eyebrow="CREATION & CRAFT" title="Your words. Your next chapter." description="A practical space to plan, write and record. No account and no automatic publishing."/>
+          <CreatorCraftToolkit/>
+          <SectionHeading eyebrow="A BROWSER-LOCAL DRAFT" title="Make space for your story."/>
+          <div className={styles.creatorFrame}><form className="creator" onSubmit={publish}>
+            <label>Story title<input required minLength={3} maxLength={180} value={title} onChange={e=>setTitle(e.target.value)} placeholder="Give your story a title"/></label>
+            <div className="formrow"><label>Creator name<input maxLength={180} value={author} onChange={e=>setAuthor(e.target.value)} placeholder="Your name (optional)"/></label><label>Country<input required maxLength={120} value={country} onChange={e=>setCountry(e.target.value)}/></label></div>
+            <label>Your story<textarea required minLength={20} maxLength={5000} rows={8} value={content} onChange={e=>setContent(e.target.value)} placeholder="Write an original story about an experience, idea or community..."/></label>
+            <div className="draft-preview"><span className="eyebrow dark">LIVE DRAFT PREVIEW</span><h3>{title.trim()||'Your story begins here'}</h3><p>{content.trim()?content.trim().slice(0,220)+(content.trim().length>220?'...':''):'Your words will appear here as you write.'}</p><small>{author.trim()||'Anonymous creator'} / {country}</small></div>
+            <VoiceRecorder/>
+            <label className="rights-check"><input type="checkbox" checked={rightsConfirmed} onChange={e=>setRightsConfirmed(e.target.checked)} required/><span>This is my original story or I have permission to use it. I understand this saves a draft only in this browser.</span></label>
+            <p className="note">There are no accounts or public publishing. Category suggestions use local keyword rules, not AI. No story text is sent to OpenAI or Deepgram. Recordings remain separate from the saved draft.</p>
+            <button className="primary" type="submit" disabled={busy}>{busy?'Saving...':'Categorise & save locally'}</button>{message&&<p className="notice" role="status">{message}</p>}
+          </form></div>
+        </>}
+        {tab==='impact'&&<>
+          <SectionHeading eyebrow="TRANSPARENT, NOT MAGIC" title="Make discovery visible." description="An illustrative category comparison using your current search and reading-list settings."/>
+          <div className={styles.compare}>
+            <div><span>RELEVANCE-ONLY BASELINE</span><strong>{discovery.baselineCoverage} / {CATEGORIES.length}</strong><p>Categories in the first {discovery.windowSize} matching stories</p></div>
+            <div><span>DIVERSITY-AWARE ORDER</span><strong>{discovery.diverseCoverage} / {CATEGORIES.length}</strong><p>Categories in the same {discovery.windowSize}-story window</p></div>
+          </div>
+          <p className={styles.interestNote}>Same collection. Same window. Different weighting. Diversity is set to {diversity}%. These counts do not measure fairness, audience reach or real-world impact.</p>
+          <h3>Available story categories</h3><div className="bars" role="list" aria-label="Story counts by category">{CATEGORIES.map(c=><div role="listitem" key={c}><div className="bar-label"><span>{c}</span><b>{discovery.counts[c]}</b></div><div className="bar" aria-hidden="true"><span style={{width:(100*discovery.counts[c]/Math.max(1,...Object.values(discovery.counts)))+'%'}}/></div></div>)}</div>
+        </>}
+      </section>
+      <Reveal><StudioInvitation onCreate={()=>openWorkspace('create')}/></Reveal>
+      <ExperienceHelp/>
+    </div>
+    <footer className={styles.footer}><div><Brand inverse/><p>Stories are richer when more people get to tell them.</p></div><div><a href="#top">Back to the beginning <Arrow/></a><br/>NewWave Africa / Hackathon prototype<br/>Fictional samples. Local drafts. Your authorship.</div></footer>
+    {reader&&<StoryReader key={reader.id} story={reader} saved={saved.includes(reader.id)} onSave={()=>bookmark(reader)} onClose={()=>setReader(null)}/>}
+  </main>;
+}
