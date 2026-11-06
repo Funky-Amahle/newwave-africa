@@ -1,0 +1,3 @@
+interface:
+  display_name: "Ai Discovery Engine"
+  short_description: "Develop and evaluate AI categorization, semantic retrieval and category-diversity recommendations"

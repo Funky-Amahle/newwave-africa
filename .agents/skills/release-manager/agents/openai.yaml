@@ -1,0 +1,3 @@
+interface:
+  display_name: "Release Manager"
+  short_description: "Prepare deployment, release documentation and hackathon demonstration"

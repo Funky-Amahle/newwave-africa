@@ -1,0 +1,3 @@
+interface:
+  display_name: "Quality Guardian"
+  short_description: "Review and test changes for functionality, accessibility, privacy and security"
