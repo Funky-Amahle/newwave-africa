@@ -1,0 +1,3 @@
+interface:
+  display_name: "Document Intelligence"
+  short_description: "Analyze public reports, PDFs and datasets with traceable page-level evidence"
