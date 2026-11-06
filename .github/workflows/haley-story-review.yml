@@ -1,0 +1,30 @@
+name: Haley story voices (review artifacts only)
+on: create
+
+permissions:
+  contents: read
+
+jobs:
+  story-voices:
+    if: github.event.ref_type == 'branch' && github.event.ref == 'feature/haley-story-voices-2026-11-07'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Check generation contracts before paid requests
+        run: python3 -m unittest discover -s tests -p 'test_deepgram_*.py' -v
+      - name: Generate eight fictional story recordings with approved Haley voice
+        env:
+          DEEPGRAM_API_KEY: ${{ secrets.DEEPGRAM_API_KEY }}
+        run: python3 scripts/generate_site_audio.py --voice flux-haley-en --sample all
+      - name: Validate all eight recordings and manifest
+        run: python3 scripts/validate_site_audio.py --voice flux-haley-en --sample all
+      - uses: actions/upload-artifact@v4
+        with:
+          name: haley-eight-story-review
+          path: site-narration-output/narration/
+          retention-days: 7
+          if-no-files-found: error
