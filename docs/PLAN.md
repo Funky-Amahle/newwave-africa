@@ -24,3 +24,6 @@ Payments, production social network, unsupported language claims, unreviewed pub
 
 ## Handoff format
 Task ID / Owner / Summary / Files / Tests run / Limitations / Next action.
+
+## Public research workstream
+See docs/research/RESEARCH-PLAN.md. RES-01 through RES-07 cover source discovery, document inspection, fact verification, licensing, African context, evidence curation and external approval. All start as todo; no public sources have yet been verified.

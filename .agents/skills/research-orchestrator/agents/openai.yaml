@@ -1,0 +1,3 @@
+interface:
+  display_name: "Research Orchestrator"
+  short_description: "Coordinate public internet research tasks, assign verification work and manage internal/external release gates"

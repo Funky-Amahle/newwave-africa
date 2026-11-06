@@ -1,0 +1,3 @@
+interface:
+  display_name: "Rights License Reviewer"
+  short_description: "Assess reuse licenses, attribution, privacy and copyright before external distribution"

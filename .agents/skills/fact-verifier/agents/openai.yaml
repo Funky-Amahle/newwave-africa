@@ -1,0 +1,3 @@
+interface:
+  display_name: "Fact Verifier"
+  short_description: "Independently cross-check factual claims, sources and contradictory evidence"

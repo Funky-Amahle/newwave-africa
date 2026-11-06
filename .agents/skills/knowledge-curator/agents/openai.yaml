@@ -1,0 +1,3 @@
+interface:
+  display_name: "Knowledge Curator"
+  short_description: "Maintain versioned, provenance-rich evidence and research briefs in GitHub"
