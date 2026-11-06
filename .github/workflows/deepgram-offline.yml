@@ -4,6 +4,7 @@ on:
     paths:
       - 'scripts/generate*audio.py'
       - 'scripts/generate_deepgram_narration.py'
+      - 'scripts/validate_site_audio.py'
       - 'tests/test_deepgram_*.py'
       - '.github/workflows/deepgram-offline.yml'
 permissions:
