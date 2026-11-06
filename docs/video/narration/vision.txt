@@ -1,0 +1,21 @@
+African stories are not one story. They are millions of perspectives, spoken in different languages, carried through music, film, journalism, poetry, games and everyday life. And yet, too often, the platforms that shape discovery make it harder for lesser-known voices to be found.
+
+NewWave Africa begins with a simple principle: the storyteller should remain at the centre. Technology should help people create, share and discover authentic work. It should not erase the human author, their context, or their rights.
+
+Our prototype explores what more intentional discovery could look like. On the homepage, visitors can browse a small collection of eight fictional sample stories. These are examples, not real creator submissions. The cards help us demonstrate different themes and formats without claiming to represent the full diversity of the continent.
+
+Search and category filters help an audience find work that speaks to them. A diversity control lets users explore a different balance between familiar relevance and broader category representation. This is an illustrative local ranking demonstration, not a validated fairness system.
+
+We also explore the power of listening. Browser-based speech synthesis can read a story aloud, with voices dependent on the device and browser. For some users, listening can make a story easier to engage with. For others, recording their own voice is part of protecting its character and meaning.
+
+That is why our Creator Studio prioritises consent and authorship. A creator can prepare a draft, preview it and work with browser-local storage. We do not present those drafts as publicly published stories. A recording tool enables creators to capture an audio sample on their own device, subject to browser permissions.
+
+Creation and Craft extends that vision. Structured planning canvases for writers, filmmakers, journalists, musicians and game makers help creators organise ideas and turn them into production briefs. The prompts support human decisions rather than replacing the creator with generated work.
+
+Our dashboard illustrates category coverage within a controlled demo. It does not prove real-world impact, reach or fairness. We want to be transparent about that distinction because trust matters when the goal is cultural representation.
+
+NewWave Africa is an early step, not a finished platform. Its next chapter will require real creators, meaningful feedback, rights-aware publishing and evaluation that respects the many contexts of African storytelling.
+
+The invitation is simple. Imagine more stories discovered because someone was given the right tools, the right audience and the confidence that their voice remains their own.
+
+NewWave Africa. African stories, told by African voices.

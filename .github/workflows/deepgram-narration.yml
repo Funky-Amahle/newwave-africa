@@ -1,0 +1,46 @@
+name: Generate Deepgram narration (manual, review only)
+on:
+  workflow_dispatch:
+    inputs:
+      video:
+        description: Which narration to generate?
+        required: true
+        type: choice
+        options:
+          - vision
+          - technical
+      voice:
+        description: Deepgram Flux voice
+        required: true
+        default: flux-haley-en
+        type: choice
+        options:
+          - flux-haley-en
+          - flux-alexis-en
+          - flux-kit-en
+
+permissions:
+  contents: read
+
+jobs:
+  narration:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Synthesize narration
+        env:
+          DEEPGRAM_API_KEY: ${{ secrets.DEEPGRAM_API_KEY }}
+          VIDEO: ${{ inputs.video }}
+          VOICE: ${{ inputs.voice }}
+        run: python3 scripts/generate_deepgram_narration.py --video "$VIDEO" --voice "$VOICE"
+      - name: Upload review-only audio
+        uses: actions/upload-artifact@v4
+        with:
+          name: narration-${{ inputs.video }}-${{ github.run_number }}
+          path: narration-output/*.mp3
+          retention-days: 1
+          if-no-files-found: error
