@@ -1,0 +1,21 @@
+name: Deepgram offline contracts
+on:
+  pull_request:
+    paths:
+      - 'scripts/generate*audio.py'
+      - 'scripts/generate_deepgram_narration.py'
+      - 'tests/test_deepgram_*.py'
+      - '.github/workflows/deepgram-offline.yml'
+permissions:
+  contents: read
+jobs:
+  offline-contracts:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Validate narration contracts without secrets or provider requests
+        run: python3 -m unittest discover -s tests -p 'test_deepgram_*.py' -v
