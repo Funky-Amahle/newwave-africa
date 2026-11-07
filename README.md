@@ -48,6 +48,10 @@ Each canvas guides the creator with prompts and lets them **download an editable
 
 There are **no accounts, public publishing, shared creator profiles, persistent server storage or live audience metrics**. LocalStorage data stays on that browser/device.
 
+### Speech-to-text roadmap
+
+For now, keep the app on GitHub Pages with typing, local recording, uploads, playback and downloads. Deepgram transcription is planned and remains unavailable until a separate secure backend is approved and connected. Demo audio still requires a private provider key on that backend. See [the phased Pages speech-to-text plan](docs/PAGES-SPEECH-TO-TEXT-PLAN.md).
+
 ### Prepared voice and visual upgrade
 
 - Choose a planning question or story field, review an editable English transcript, then explicitly append it to your own writing.

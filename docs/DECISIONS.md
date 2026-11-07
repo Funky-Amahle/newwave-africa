@@ -50,3 +50,10 @@ Base44's hosted copy remains independent and its builder is currently credit-blo
 The owner chose GitHub Pages for the combined app. Export `/creator-studio/` and `/our-approach/` alongside the homepage; Next Link supplies the configured `/newwave-africa` base path. A shared client layout owns the existing browser-local collection and in-memory written draft state across client-side route changes. Media capture panels unmount when leaving the studio; no new upload/storage service is introduced. Legacy homepage creator fragments redirect to the dedicated route, preserving nested tool fragments. Discovery insights remain a homepage view.
 
 Our Approach describes human authorship, seven creator audiences/five practices, fictional samples, illustrative diversity ranking and exact storage/transcription limits. Pages is fully usable for typing, recording, local media preview, separate downloads and prerecorded sample narration. It cannot host a secret-backed Deepgram endpoint: the optional server implementation remains prepared but is not part of Pages. No Base44 runtime dependency or hosted copy is required. Existing localStorage keys stay unchanged. Revert this feature commit to roll back page routing without altering stored drafts.
+
+
+## ADR-007 — Keep Pages-only now; defer the Deepgram connection
+
+**Status:** Owner direction recorded; roadmap proposed in NW-13.
+
+The owner reaffirmed GitHub Pages and asked for a plan rather than a backend deployment. Keep the existing static recording/upload/playback/writing/download tools. Do not enable Deepgram transcription or put credentials in the public build. Demo recording content does not remove the credential boundary. The approved future direction remains Deepgram behind a separately approved secure HTTPS endpoint, with exact-origin CORS, access and spend limits, explicit audio consent and reviewed insertion. No backend host is selected by this decision. See docs/PAGES-SPEECH-TO-TEXT-PLAN.md.

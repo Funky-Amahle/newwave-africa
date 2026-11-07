@@ -23,6 +23,8 @@ todo = not started; in progress = assigned; blocked = unresolved dependency; don
 
 | NW-12 | P1 | frontend-builder / quality-guardian | Consolidate navigation on GitHub Pages with Creator Studio and Our Approach routes | NW-11 | Static direct-entry pages with shared identity and persistent written draft state during client navigation; transparent approach copy; Pages/server builds and route checks | in progress |
 
+| NW-13 | P1 | system-architect / backend-builder / quality-guardian | Plan Deepgram speech-to-text while retaining GitHub Pages | approved backend account/endpoint deferred | Pages-only tools remain usable without secrets; reviewed backend/CORS/consent/limits/verification roadmap documented; no live transcription claimed | in progress (plan only) |
+
 ## Definition of done
 Story submission, category review, diverse discovery, honest metrics, passing build and reproducible demonstration.
 
