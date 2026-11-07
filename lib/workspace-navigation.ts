@@ -10,7 +10,10 @@ export function workspaceHash(section:Workspace):string { return routes[section]
 export function workspaceFromHash(fragment:string):Workspace|null {
   switch(fragment.trim().toLowerCase()){
     case '#discover': return 'discover';
-    case '#creator-studio': return 'create';
+    case '#creator-studio':
+    case '#studio-plan':
+    case '#studio-visual':
+    case '#studio-draft': return 'create';
     case '#discovery-insights': return 'impact';
     default: return null;
   }

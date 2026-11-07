@@ -6,6 +6,12 @@ NewWave Africa is a human-centred African storytelling prototype built for the *
 
 **[Live demo](https://funky-amahle.github.io/newwave-africa/)** · **[Hackathon recording runbook](docs/HACKATHON-RECORDING.md)**
 
+## Combined design and source of truth
+
+The repository app combines Base44’s warm cream, forest-green and clay visual direction with GitHub’s discovery, reviewed narration, five craft canvases, visual previews and private drafts. `components/creator-studio.tsx` composes the creator tools into one responsive workspace. Both the Pages export and optional server edition use these same components.
+
+Base44’s hosted copy is a separate deployment and is currently blocked by its message allowance. Repository changes do not automatically update that copy. See [the consolidation record](docs/design/UNIFIED-EXPERIENCE.md) for provenance and verification.
+
 ## What the prototype does
 
 ### Discover African stories
@@ -83,7 +89,7 @@ Recordings must be reviewed and published separately under `public/narration/` b
 4. In Creator Studio, write a short **original** test story, preview it and confirm rights before saving locally.
 5. If the browser permits, demonstrate recording, playback and downloading a test voice clip.
 6. Show the illustrative diversity dashboard and distinguish demo metrics from real-world impact.
-7. Once PR #13 is deployed, demonstrate a craft planning canvas and export an editable brief.
+7. Demonstrate a craft planning canvas and export an editable brief.
 
 For two separate ~5-minute videos (professional pitch and technical walkthrough), use [the recording runbook](docs/HACKATHON-RECORDING.md).
 
@@ -93,7 +99,7 @@ For two separate ~5-minute videos (professional pitch and technical walkthrough)
 - **Creator agency:** obtain permission for stories, recordings, images, music and other assets.
 - **Cultural specificity:** invite local language expertise and avoid treating Africa as one homogeneous culture.
 - **Transparency:** fictional examples, local-only storage, rule-based classification and illustrative metrics must be clearly labeled.
-- **Privacy:** drafts and audio remain in the browser; users should download backups before clearing data or leaving the page.
+- **Privacy:** written drafts and visuals remain in the browser. Only explicitly consented audio is sent to Deepgram on the configured server edition; download backups before clearing data or leaving the page.
 - **Accessibility:** prioritize keyboard controls, captions/transcripts, responsive layouts and reduced motion; manual device testing remains necessary.
 
 ## Project workflow
@@ -103,7 +109,7 @@ The repository's [AGENTS.md](AGENTS.md) sets the contribution and approval rules
 ## Next steps
 
 - Validate keyboard, mobile, microphone and recorded-narration behavior in real browsers.
-- Review and merge the Creator Craft Toolkit after CI and UX checks.
+- Review the combined experience PR after CI and UX checks.
 - Add creator-controlled category review before any future public publishing.
 - Evaluate ranking relevance and category coverage using a fixed test dataset.
 - Research language accessibility, offline/low-bandwidth workflows and consent-driven publishing.
