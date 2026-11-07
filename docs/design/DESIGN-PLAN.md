@@ -15,4 +15,6 @@
 
 | DESIGN-13 | P1 | Apply supplied interface polish guidelines | Clearer hierarchy, consistent controls, truthful rapid bookmark feedback, focus contrast, desktop/mobile and reduced-motion checks | in progress |
 
+| DESIGN-14 | P1 | Add Creation & Craft mission | Homepage names all seven creative audiences; human-centred production principles link to the existing five canvases and editable export; no unsupported production automation claims | in progress |
+
 Design is not implemented merely by documenting it. Coordinate with frontend-builder and quality-guardian.
