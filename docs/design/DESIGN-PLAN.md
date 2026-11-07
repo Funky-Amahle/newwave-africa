@@ -17,4 +17,6 @@
 
 | DESIGN-14 | P1 | Add Creation & Craft mission | Homepage names all seven creative audiences; human-centred production principles link to the existing five canvases and editable export; no unsupported production automation claims | in progress |
 
+| DESIGN-15 | P1 | Voice and visual creation studio with landing waves | Responsive dictation review per question, consent, private local visuals/audio preview, original backgrounds and controllable wave animation; server deployment prepared separately | in progress |
+
 Design is not implemented merely by documenting it. Coordinate with frontend-builder and quality-guardian.

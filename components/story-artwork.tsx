@@ -3,7 +3,7 @@ import {useEffect,useRef,useState} from 'react';
 import styles from './story-artwork.module.css';
 
 // Motion runs only while the artwork is on screen and its tab is visible.
-function useVisibleMotion(quiet:boolean) {
+export function useVisibleMotion(quiet:boolean) {
   const ref=useRef<HTMLDivElement>(null);
   const [visible,setVisible]=useState(false);
   const [pageVisible,setPageVisible]=useState(false);

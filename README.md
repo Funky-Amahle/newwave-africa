@@ -10,15 +10,15 @@ NewWave Africa is a human-centred African storytelling prototype built for the *
 
 ### Discover African stories
 - Browse and search stories by topic, title, excerpt and country.
-- Filter eight thematic categories and adjust a **diversity weighting** slider.
+- Prioritise eight thematic categories and adjust a **diversity weighting** slider.
 - Explore a simple dashboard comparing category coverage in two illustrative ranking approaches.
 - Listen to reviewed, published story recordings with pause/resume/stop. Browser-generated robotic voices and automatic speech fallback are removed; stories without recordings show **Narration unavailable**.
 
 The eight starter stories are **fictional demonstration content**, not verified reporting or real creator submissions. The diversity algorithm is illustrative, not a validated recommender or proof of fair outcomes.
 
-### Create and craft (proposed in [PR #13](https://github.com/Funky-Amahle/newwave-africa/pull/13))
+### Create and craft
 
-The **Creator Craft Toolkit** is proposed for the Creator Studio and is **not on the deployed site until the PR is approved, merged and deployed**. It offers five editable planning canvases:
+The **Creator Craft Toolkit** offers five editable planning canvases in Creator Studio:
 
 | Creative practice | Human-led production support |
 | --- | --- |
@@ -33,17 +33,24 @@ Each canvas guides the creator with prompts and lets them **download an editable
 ### Creator Studio in the current MVP
 - Write an original story, preview it and save a **browser-local draft**.
 - Receive a category suggestion from **local keyword-based demo rules**; no live AI categorization is used in this deployed static app.
-- Record a voice clip through the browser microphone, preview, download or discard it. Recordings are **not uploaded or attached to saved stories**.
+- Record or upload a voice answer, preview it and download it. Selected audio is sent to Deepgram **only with explicit consent on the configured server edition**. Recordings are not attached to saved text drafts.
 - Confirm authorship or permission before saving a written draft.
 
 There are **no accounts, public publishing, shared creator profiles, persistent server storage or live audience metrics**. LocalStorage data stays on that browser/device.
 
+### Prepared voice and visual upgrade
+
+- Choose a planning question or story field, review an editable English transcript, then explicitly append it to your own writing.
+- Upload a permitted JPG/PNG/WebP image or select one of three original wave backgrounds. Preview with actual selected audio and download assets separately.
+- The landing wave respects reduced effects, system motion preferences and visibility.
+- GitHub Pages retains typing, recording and visual tools; it **cannot run transcription**. The secret-backed Next.js server edition is prepared separately, not hosted by this change. See [server deployment](server-deploy/README.md) for private pilot setup and verification.
+
 ## Quick start
 
-Requires **Node.js 20+**.
+Use a current **Node.js 22 release or newer**.
 
 ```bash
-npm install
+npm ci
 npm run dev
 ```
 

@@ -4,7 +4,8 @@ import type {FormEvent} from 'react';
 import {Brand} from '../components/brand';
 import {Hero} from '../components/hero';
 import {StoryCard} from '../components/story-card';
-import {VoiceRecorder} from '../components/voice-recorder';
+import {VoiceToText} from '../components/voice-to-text';
+import {StoryVisuals} from '../components/story-visuals';
 import {CreatorCraftToolkit} from '../components/creator-craft-toolkit';
 import {categorizeLocally} from '../lib/demo-categorize';
 import sampleStories from '../lib/sample-stories.json';
@@ -33,6 +34,7 @@ function HomeContent(){
   const [reader,setReader]=useState<Story|null>(null);
   const [title,setTitle]=useState('');
   const [content,setContent]=useState('');
+  const [storyAudio,setStoryAudio]=useState<Blob|null>(null);
   const [author,setAuthor]=useState('');
   const [country,setCountry]=useState('South Africa');
   const [rightsConfirmed,setRightsConfirmed]=useState(false);
@@ -119,17 +121,18 @@ function HomeContent(){
           {discovery.ranked.length>6&&<div className={styles.more}><button type="button" className={styles.outlineButton} onClick={()=>setShowAll(v=>!v)}>{showAll?'Show fewer stories':'Explore all '+discovery.ranked.length+' stories'} <Arrow/></button></div>}
         </>}
         {tab==='create'&&<>
-          <SectionHeading title="Your words. Your next chapter" description="A practical space to plan, write and record. No account and no automatic publishing."/>
-          <CreatorCraftToolkit/>
-          <SectionHeading title="Make space for your story"/>
+          <SectionHeading title="Your words. Your next chapter" description="Build a story from what you know. Use a planning canvas, speak an answer, or bring a visual into the process. You make the creative decisions; nothing is automatically published."/>
+          <CreatorCraftToolkit onAudio={setStoryAudio}/>
+          <StoryVisuals audio={storyAudio}/>
+          <SectionHeading title="Share your story" description="Write from experience, answer by voice, and review your draft before saving. Your words stay yours."/>
           <div className={styles.creatorFrame}><form className="creator" onSubmit={publish}>
             <label>Story title<input required minLength={3} maxLength={180} value={title} onChange={e=>setTitle(e.target.value)} placeholder="Give your story a title"/></label>
             <div className="formrow"><label>Creator name<input maxLength={180} value={author} onChange={e=>setAuthor(e.target.value)} placeholder="Your name (optional)"/></label><label>Country<input required maxLength={120} value={country} onChange={e=>setCountry(e.target.value)}/></label></div>
             <label>Your story<textarea required minLength={20} maxLength={5000} rows={8} value={content} onChange={e=>setContent(e.target.value)} placeholder="Write an original story about an experience, idea or community..."/></label>
             <div className="draft-preview"><span className="draft-label">Draft preview</span><h3>{title.trim()||'Your story begins here'}</h3><p>{content.trim()?content.trim().slice(0,220)+(content.trim().length>220?'...':''):'Your words will appear here as you write.'}</p><small>{author.trim()||'Anonymous creator'} / {country}</small></div>
-            <VoiceRecorder/>
+            <VoiceToText fields={[{id:'title',label:'What is your story called?'},{id:'author',label:'Who is telling this story?'},{id:'country',label:'Where does your story come from?'},{id:'content',label:'What happened, and why does it matter to you?'}]} onAudio={setStoryAudio} onInsert={(id,text)=>{const values:Record<string,string>={title,author,country,content};const limits:Record<string,number>={title:180,author:180,country:120,content:5000};const next=[values[id],text].filter(Boolean).join(id==='content'?'\n\n':' ');if(next.length>limits[id])return 'This answer is too long for the selected field. Shorten the transcript first.';if(id==='title')setTitle(next);else if(id==='author')setAuthor(next);else if(id==='country')setCountry(next);else setContent(next)}}/>
             <label className="rights-check"><input type="checkbox" checked={rightsConfirmed} onChange={e=>setRightsConfirmed(e.target.checked)} required/><span>This is my original story or I have permission to use it. I understand this saves a draft only in this browser.</span></label>
-            <p className="note">There are no accounts or public publishing. Category suggestions use local keyword rules, not AI. No story text is sent to OpenAI or Deepgram. Recordings remain separate from the saved draft.</p>
+            <p className="note">There are no accounts or public publishing. Category suggestions use local keyword rules, not AI. Written drafts and visuals are not sent to OpenAI or Deepgram. Only audio you explicitly submit for transcription is sent to Deepgram. Download recordings and visuals separately; they are not included in the saved text draft.</p>
             <button className="primary" type="submit" disabled={busy}>{busy?'Saving...':'Categorise & save locally'}</button>{message&&<p className="notice" role="status">{message}</p>}
           </form></div>
         </>}
