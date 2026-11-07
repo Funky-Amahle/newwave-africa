@@ -20,3 +20,6 @@ Design is not implemented merely by documenting it. Coordinate with frontend-bui
 Use [DESIGN-QUALITY-GATE.md](DESIGN-QUALITY-GATE.md) for severity, mobile/reflow, keyboard, focus, motion, failure behavior and truthful content checks. Start scoped work with [TASK-BRIEF.md](../templates/TASK-BRIEF.md) and transfer evidence using [AGENT-HANDOFF.md](../AGENT-HANDOFF.md).
 
 `DESIGN-01` remains an audit task requiring actual current-state screenshots and severity-rated findings. `DESIGN-13` has implementation evidence in [INTERFACE-POLISH.md](INTERFACE-POLISH.md) and merged PR #26, but its status remains in progress until the remaining required checks are reconciled. Do not mark either done solely because implementation code was merged or deployed.
+| DESIGN-14 | P1 | Add Creation & Craft mission | Homepage names all seven creative audiences; human-centred production principles link to the existing five canvases and editable export; no unsupported production automation claims | in progress |
+
+Design is not implemented merely by documenting it. Coordinate with frontend-builder and quality-guardian.

@@ -77,8 +77,8 @@ export function DiscoveryRoutes({onChoose}:{onChoose:(category:string)=>void}) {
 
 export function StudioInvitation({onCreate}:{onCreate:()=>void}) {
   return <section className={styles.studioInvite} aria-labelledby="invitation-heading">
-    <div><h2 id="invitation-heading">An idea deserves<br/>a place to begin.</h2><p>Writing, film, reporting, music or interactive worlds. Use a planning canvas, keep your own words, and take an editable brief with you.</p><button type="button" className={styles.lightButton} onClick={onCreate}>Open creator studio <Arrow/></button></div>
-    <ol className={styles.steps}><li><span>01</span><div><h3>Find your form</h3><p>Five canvases, shaped around different creative practices.</p></div></li><li><span>02</span><div><h3>Develop the work</h3><p>Make the creative decisions. Keep your context and voice.</p></div></li><li><span>03</span><div><h3>Take it forward</h3><p>Download a brief. Story drafts stay in this browser.</p></div></li></ol>
+    <div><h2 id="invitation-heading">Creation &amp; Craft</h2><p>For African storytellers, writers, filmmakers, journalists, animators, musicians and game makers. Turn your ideas into work you can produce and share, with the human author at the centre.</p><p>Our priority is to extend your craft, lower the cost and complexity of production, and help you take the next step. Start with a free planning canvas and an editable brief that stays yours.</p><button type="button" className={styles.lightButton} onClick={onCreate}>Open creator studio <Arrow/></button></div>
+    <ol className={styles.steps}><li><span>01</span><div><h3>Extend your craft</h3><p>Develop your own stories, scenes, reporting, music or interactive worlds.</p></div></li><li><span>02</span><div><h3>Keep production practical</h3><p>Plan around available equipment, collaborators, permissions and your next steps.</p></div></li><li><span>03</span><div><h3>Make it shareable</h3><p>Download an editable production brief. Keep your words, decisions and creator credits.</p></div></li></ol>
   </section>;
 }
 
