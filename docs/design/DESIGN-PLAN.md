@@ -14,14 +14,12 @@
 | DESIGN-12 | P1 | Animated editorial story visuals and narration feedback | Bounded SVG print composition, actual playback indicator, reduced-effects/system preference, offscreen/hidden pause, desktop/mobile review | in progress |
 
 | DESIGN-13 | P1 | Apply supplied interface polish guidelines | Clearer hierarchy, consistent controls, truthful rapid bookmark feedback, focus contrast, desktop/mobile and reduced-motion checks | in progress |
-
-Design is not implemented merely by documenting it. Coordinate with frontend-builder and quality-guardian.## Evidence and audit references
-
-Use [DESIGN-QUALITY-GATE.md](DESIGN-QUALITY-GATE.md) for severity, mobile/reflow, keyboard, focus, motion, failure behavior and truthful content checks. Start scoped work with [TASK-BRIEF.md](../templates/TASK-BRIEF.md) and transfer evidence using [AGENT-HANDOFF.md](../AGENT-HANDOFF.md).
-
-`DESIGN-01` remains an audit task requiring actual current-state screenshots and severity-rated findings. `DESIGN-13` has implementation evidence in [INTERFACE-POLISH.md](INTERFACE-POLISH.md) and merged PR #26, but its status remains in progress until the remaining required checks are reconciled. Do not mark either done solely because implementation code was merged or deployed.
 | DESIGN-14 | P1 | Add Creation & Craft mission | Homepage names all seven creative audiences; human-centred production principles link to the existing five canvases and editable export; no unsupported production automation claims | in progress |
-
 | DESIGN-15 | P1 | Voice and visual creation studio with landing waves | Responsive dictation review per question, consent, private local visuals/audio preview, original backgrounds and controllable wave animation; server deployment prepared separately | in progress |
+| DESIGN-16 | P1 | Complement GitHub and Base44 creator experiences | Shareable Creator Studio and insights links, accurate format progress, distinct visual design, reviewed security roadmap, responsive/focus checks | in progress |
 
-Design is not implemented merely by documenting it. Coordinate with frontend-builder and quality-guardian.
+## Evidence and audit references
+
+Use [DESIGN-QUALITY-GATE.md](DESIGN-QUALITY-GATE.md) for responsive, focus, state and motion QA. Start tasks with [TASK-BRIEF.md](../templates/TASK-BRIEF.md) and transfer evidence using [AGENT-HANDOFF.md](../AGENT-HANDOFF.md).
+
+DESIGN-01 remains an audit task needing current-state evidence. DESIGN-13 has merged implementation evidence but remains in progress until remaining checks are reconciled. See [CREATOR-EXPERIENCE-FUSION.md](CREATOR-EXPERIENCE-FUSION.md) for DESIGN-16. Design is not implemented by documentation alone; coordinate with frontend-builder and quality-guardian.
