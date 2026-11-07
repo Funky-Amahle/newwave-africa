@@ -17,6 +17,7 @@ todo = not started; in progress = assigned; blocked = unresolved dependency; don
 | NW-07 | P1 | release-manager | Deploy and rehearse demo | NW-02,NW-03,NW-04,NW-06 | Live demo verified, 5-minute script accurate | todo |
 | NW-08 | P1 | quality-guardian | Prepare Haley recordings for eight fictional sample stories | recorded-only playback | All eight MP3s match fixed source text, decode successfully, load through the existing manifest, and pass review; merge/deployment requires owner approval | in progress |
 | NW-09 | P1 | system-architect / quality-guardian | Voice and visual story studio | server deployment for transcription | Explicit audio consent, protected bounded Deepgram endpoint, editable transcript per question, local image/audio preview, original backgrounds, quiet landing waves; verified server and Pages builds | in progress |
+| NW-10 | P1 | product-designer / frontend-builder | Complement GitHub/Base44 creator journeys | DESIGN-15 | Shareable static-workspace links, truthful canvas progress, documented boundaries and QA; publishing/security separate | in progress |
 
 ## Definition of done
 Story submission, category review, diverse discovery, honest metrics, passing build and reproducible demonstration.
@@ -30,7 +31,9 @@ Task ID / Owner / Summary / Files / Tests run / Limitations / Next action.
 ## Product design workstream
 See docs/design/DESIGN-PLAN.md for DESIGN-01 through DESIGN-07: UX audit, category review, discovery, design tokens, cultural/language review, dashboard design and QA handoff. All tasks are proposed until validated and merged.
 ## Public research workstream
-See docs/research/RESEARCH-PLAN.md. RES-01 through RES-07 cover source discovery, document inspection, fact verification, licensing, African context, evidence curation and external approval. All start as todo; no public sources have yet been verified.## Workspace operating blueprint adoption (WS workstream)
+See docs/research/RESEARCH-PLAN.md. RES-01 through RES-07 cover source discovery, document inspection, fact verification, licensing, African context, evidence curation and external approval. All start as todo; no public sources have yet been verified.
+
+## Workspace operating blueprint adoption (WS workstream)
 
 The cross-project process and NewWave-specific adoption live in [WORKSPACE-OPERATING-BLUEPRINT.md](WORKSPACE-OPERATING-BLUEPRINT.md). This does not supersede existing NW/Design/Research tasks. Status remains distinct from implementation and may change only after verified acceptance.
 
@@ -44,3 +47,7 @@ The cross-project process and NewWave-specific adoption live in [WORKSPACE-OPERA
 | WS-06 | P1 | workspace-handoff | Add repo-local handoff skill | Scoped SKILL.md and a validated handoff exercise | in progress |
 | WS-07 | P2 | project-planner | Consider recurring documentation drift report | Manual pilot completed first; report read-only and no autonomous policy writes | todo |
 | WS-08 | P2 | quality-guardian | Assess adoption and instruction drift | Compare pilot evidence, reconcile stale task statuses via approved PR | todo |
+
+## Dual-experience fusion (NW-10)
+
+See [CREATOR-EXPERIENCE-FUSION.md](design/CREATOR-EXPERIENCE-FUSION.md) for both platforms' complementary strengths, the pilot, QA requirements, and the guarded future roadmap. No merge or deployment is approved merely by adding this plan.

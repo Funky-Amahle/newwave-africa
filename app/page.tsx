@@ -13,9 +13,10 @@ import {CATEGORIES,STORY_KEY,SAVED_KEY,parseStories,prependDraft,parseSaved,togg
 import type {Story} from '../lib/discovery';
 import {Experience,Reveal,SectionHeading,Spotlight,DiscoveryRoutes,StudioInvitation,ExperienceHelp,StoryReader,Arrow,SaveIcon,useQuietMotion} from '../components/experience';
 import styles from '../components/experience.module.css';
+import {workspaceHash,workspaceFromHash} from '../lib/workspace-navigation';
+import type {Workspace} from '../lib/workspace-navigation';
 
 const samples:Story[]=sampleStories;
-type Workspace='discover'|'create'|'impact';
 export default function Home(){return <Experience><HomeContent/></Experience>}
 
 function HomeContent(){
@@ -45,13 +46,42 @@ function HomeContent(){
     try {setAdded(parseStories(localStorage.getItem(STORY_KEY)));savedRef.current=parseSaved(localStorage.getItem(SAVED_KEY));setSaved(savedRef.current)}
     catch {setSavedMessage('Browser storage is unavailable. Your reading list will last for this visit only.')}
   },[]);
+  useEffect(()=>{
+    let frame=0;
+    const syncFromUrl=()=>{
+      const linked=workspaceFromHash(window.location.hash);
+      if(!linked){
+        if(!window.location.hash)setTab('discover');
+        return;
+      }
+      setTab(linked);
+      cancelAnimationFrame(frame);
+      frame=requestAnimationFrame(()=>{
+        workspace.current?.focus({preventScroll:true});
+        workspace.current?.scrollIntoView({behavior:'auto',block:'start'});
+      });
+    };
+    syncFromUrl();
+    window.addEventListener('hashchange',syncFromUrl);
+    window.addEventListener('popstate',syncFromUrl);
+    return ()=>{
+      cancelAnimationFrame(frame);
+      window.removeEventListener('hashchange',syncFromUrl);
+      window.removeEventListener('popstate',syncFromUrl);
+    };
+  },[]);
   const stories=useMemo(()=>[...added,...samples],[added]);
   const discovery=useMemo(()=>getDiscovery(stories,{query,interest,diversity,savedOnly,saved}),[stories,query,interest,diversity,savedOnly,saved]);
   const feed=showAll?discovery.ranked:discovery.ranked.slice(0,6);
   const savedCount=stories.filter(s=>saved.includes(s.id)).length;
 
-  function openWorkspace(next:Workspace){
+  function selectWorkspace(next:Workspace){
     setTab(next);
+    const hash=workspaceHash(next);
+    if(window.location.hash!==hash)window.history.pushState(null,'',hash);
+  }
+  function openWorkspace(next:Workspace){
+    selectWorkspace(next);
     requestAnimationFrame(()=>{
       workspace.current?.focus({preventScroll:true});
       workspace.current?.scrollIntoView({behavior:quiet?'auto':'smooth',block:'start'});
@@ -87,8 +117,8 @@ function HomeContent(){
     <a className="skip-link" href="#workspace">Skip to stories and tools</a>
     <header className={styles.header}>
       <Brand/>
-      <nav className={styles.nav} aria-label="Primary navigation">{(['discover','create','impact'] as const).map(item=><a key={item} href="#workspace" aria-current={tab===item?'page':undefined} onClick={event=>{event.preventDefault();openWorkspace(item)}}>{item==='discover'?'Discover':item==='create'?'Creator studio':'Our approach'}</a>)}</nav>
-      <a className={styles.navCta} href="#workspace" onClick={event=>{event.preventDefault();openWorkspace('create')}}>Start a story <Arrow/></a>
+      <nav className={styles.nav} aria-label="Primary navigation">{(['discover','create','impact'] as const).map(item=><a key={item} href={workspaceHash(item)} aria-current={tab===item?'location':undefined} onClick={event=>{event.preventDefault();openWorkspace(item)}}>{item==='discover'?'Discover':item==='create'?'Creator studio':'Our approach'}</a>)}</nav>
+      <a className={styles.navCta} href={workspaceHash('create')} onClick={event=>{event.preventDefault();openWorkspace('create')}}>Start a story <Arrow/></a>
     </header>
     <Hero onExplore={()=>openWorkspace('discover')} onCreate={()=>openWorkspace('create')}><Spotlight stories={samples} onRead={setReader}/></Hero>
     <div className={styles.frame}>
@@ -99,7 +129,7 @@ function HomeContent(){
       </div>
       <Reveal><DiscoveryRoutes onChoose={chooseInterest}/></Reveal>
       <section className={styles.workspace} ref={workspace} id="workspace" tabIndex={-1} aria-label="Story discovery and creator tools">
-        <div className={styles.tabs} role="group" aria-label="Workspace sections">{(['discover','create','impact'] as const).map(item=><button key={item} type="button" aria-pressed={tab===item} onClick={()=>setTab(item)}>{item==='discover'?'Discover stories':item==='create'?'Creator studio':'Discovery insights'}</button>)}</div>
+        <div className={styles.tabs} role="group" aria-label="Workspace sections">{(['discover','create','impact'] as const).map(item=><button key={item} type="button" aria-pressed={tab===item} onClick={()=>selectWorkspace(item)}>{item==='discover'?'Discover stories':item==='create'?'Creator studio':'Discovery insights'}</button>)}</div>
         {tab==='discover'&&<>
           <SectionHeading title="Beyond your usual scroll" description="Stay close to an interest. Leave room for something you did not expect."/>
           <div className={styles.filters}>

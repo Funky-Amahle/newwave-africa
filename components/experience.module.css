@@ -19,7 +19,7 @@
 .header { width:min(100% - 48px,1240px); margin:auto; display:flex; flex-wrap:wrap; gap:20px; align-items:center; justify-content:space-between; padding:20px 0; border-bottom:1px solid var(--nw-line); }
 .nav { display:flex; gap:clamp(12px,2vw,28px); }
 .nav a { padding:12px 0; font-size:13px; text-decoration:none; border-bottom:1px solid transparent; }
-.nav a[aria-current='page'], .nav a:hover { border-color:var(--nw-clay); color:var(--nw-clay); }
+.nav a[aria-current='location'], .nav a:hover { border-color:var(--nw-clay); color:var(--nw-clay); }
 .navCta { display:inline-flex; align-items:center; gap:12px; text-decoration:none; font-size:12px; min-height:44px; border-bottom:1px solid var(--nw-forest); }
 .kicker { font:700 10px/1.6 Arial,Helvetica,sans-serif; letter-spacing:.15em; margin:0 0 14px; color:var(--nw-clay); text-transform:uppercase; }
 .hero { width:min(100% - 48px,1240px); margin:50px auto 0; display:grid; grid-template-columns:minmax(0,1.12fr) minmax(0,1fr); gap:clamp(32px,5vw,74px); align-items:center; }

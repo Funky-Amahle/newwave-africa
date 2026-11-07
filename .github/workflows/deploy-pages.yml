@@ -26,6 +26,8 @@ jobs:
         run: node --test tests/brand.test.mjs
       - name: Validate discovery and editorial UI contracts
         run: node --experimental-strip-types --test tests/discovery.test.mjs
+      - name: Validate complementary creator links and prompt progress
+        run: node --experimental-strip-types --test tests/creator-fusion.test.mjs
       - name: Validate shared narration loading and playback ownership
         run: node --experimental-strip-types --test tests/narration.test.mjs
       - name: Validate protected transcription endpoint contracts (offline)
