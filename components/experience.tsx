@@ -4,6 +4,7 @@ import type {ReactNode} from 'react';
 import {motion,MotionConfig,useReducedMotion} from 'motion/react';
 import type {Story} from '../lib/discovery';
 import styles from './experience.module.css';
+import {StoryArtwork} from './story-artwork';
 
 const MotionContext = createContext(true);
 export const useQuietMotion = () => useContext(MotionContext);
@@ -46,7 +47,7 @@ export function Spotlight({stories,onRead}:{stories:Story[];onRead:(story:Story)
   if(!story)return null;
   return <section className={styles.spotlight} aria-label="Featured sample stories">
     <div className={styles.spotlightTop}><span>THE READING TABLE</span><span>Fictional sample</span></div>
-    <div className={styles.printArt} aria-hidden="true"><span>Perspective</span><i/><b>{String(index+1).padStart(2,'0')}</b></div>
+    <div className={styles.printArt}><StoryArtwork key={story.id} category={story.category} quiet={quiet} featured/></div>
     <motion.div key={story.id} className={styles.spotlightCopy} initial={false}
       animate={quiet?{opacity:1}:{opacity:[.4,1]}} transition={{duration:quiet?0:.25}}>
       <p className={styles.kicker}>{story.category}</p><h2>{story.title}</h2>

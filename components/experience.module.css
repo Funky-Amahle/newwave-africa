@@ -42,11 +42,7 @@
 .spotlightTop,.spotlightBottom { display:flex; align-items:center; justify-content:space-between; gap:12px; padding:18px 24px; font-size:10px; letter-spacing:.06em; }
 .spotlightTop { border-bottom:1px solid #ffffff30; }
 .spotlightTop span:last-child { border:1px solid #ffffff55; padding:4px 7px; border-radius:2px; }
-.printArt { height:150px; background:#bdc3a8; position:relative; overflow:hidden; color:var(--nw-forest); padding:18px 24px; }
-.printArt span { font:italic 19px var(--nw-serif); position:relative; z-index:1; }
-.printArt i { position:absolute; border:1px solid var(--nw-forest); border-radius:50%; height:250px; width:500px; transform:rotate(-24deg); left:6%; top:0; }
-.printArt i::after { content:''; position:absolute; inset:20px; border:1px solid var(--nw-forest); border-radius:50%; }
-.printArt b { font:400 130px/1 var(--nw-serif); position:absolute; right:20px; top:18px; }
+.printArt { height:190px; overflow:hidden; }
 .spotlightCopy { padding:24px 28px 26px; min-height:300px; }
 .spotlightCopy .kicker { color:#e7cfaa; }
 .spotlightCopy h2 { font:400 clamp(27px,3vw,38px)/1.12 var(--nw-serif); letter-spacing:-.03em; margin:0 0 16px; }
