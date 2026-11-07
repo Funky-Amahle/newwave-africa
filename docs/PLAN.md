@@ -16,6 +16,7 @@ todo = not started; in progress = assigned; blocked = unresolved dependency; don
 | NW-06 | P1 | frontend-builder | Accessibility review | NW-01 | Mobile, keyboard, empty/error states verified | todo |
 | NW-07 | P1 | release-manager | Deploy and rehearse demo | NW-02,NW-03,NW-04,NW-06 | Live demo verified, 5-minute script accurate | todo |
 | NW-08 | P1 | quality-guardian | Prepare Haley recordings for eight fictional sample stories | recorded-only playback | All eight MP3s match fixed source text, decode successfully, load through the existing manifest, and pass review; merge/deployment requires owner approval | in progress |
+| NW-09 | P1 | system-architect / quality-guardian | Voice and visual story studio | server deployment for transcription | Explicit audio consent, protected bounded Deepgram endpoint, editable transcript per question, local image/audio preview, original backgrounds, quiet landing waves; verified server and Pages builds | in progress |
 
 ## Definition of done
 Story submission, category review, diverse discovery, honest metrics, passing build and reproducible demonstration.

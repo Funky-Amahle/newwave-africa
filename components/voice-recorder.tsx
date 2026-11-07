@@ -1,21 +1,45 @@
 'use client';
-import {useEffect,useRef,useState} from 'react';
-export function VoiceRecorder(){
-const [supported,setSupported]=useState(false);
-const [state,setState]=useState<'idle'|'recording'|'preview'>('idle');
-const [error,setError]=useState('');
-const [url,setUrl]=useState('');
-const [level,setLevel]=useState(0);
-const recorder=useRef<MediaRecorder|null>(null);
-const stream=useRef<MediaStream|null>(null);
-const audioCtx=useRef<AudioContext|null>(null);
-const frame=useRef<number|null>(null);
-const currentUrl=useRef('');
-const chunks=useRef<Blob[]>([]);
-useEffect(()=>{setSupported(!!navigator.mediaDevices?.getUserMedia&&typeof MediaRecorder!=='undefined');return ()=>{recorder.current?.state==='recording'&&recorder.current.stop();stream.current?.getTracks().forEach(t=>t.stop());if(frame.current!==null)cancelAnimationFrame(frame.current);void audioCtx.current?.close();if(currentUrl.current)URL.revokeObjectURL(currentUrl.current)}},[]);
-function cleanup(){stream.current?.getTracks().forEach(t=>t.stop());stream.current=null;if(frame.current!==null)cancelAnimationFrame(frame.current);frame.current=null;void audioCtx.current?.close();audioCtx.current=null;setLevel(0)}
-async function start(){setError('');try{if(!supported)throw new Error('Recording is not available in this browser.');const mic=await navigator.mediaDevices.getUserMedia({audio:true});stream.current=mic;const mr=new MediaRecorder(mic);recorder.current=mr;chunks.current=[];mr.ondataavailable=e=>{if(e.data.size)chunks.current.push(e.data)};mr.onstop=()=>{const blob=new Blob(chunks.current,{type:mr.mimeType||'audio/webm'});cleanup();if(blob.size){if(currentUrl.current)URL.revokeObjectURL(currentUrl.current);currentUrl.current=URL.createObjectURL(blob);setUrl(currentUrl.current);setState('preview')}else{setError('No audio was captured.');setState('idle')}};mr.onerror=()=>{cleanup();setError('Recording failed. Please try again.');setState('idle')};const ctx=new AudioContext();audioCtx.current=ctx;const analyser=ctx.createAnalyser();analyser.fftSize=256;ctx.createMediaStreamSource(mic).connect(analyser);const values=new Uint8Array(analyser.frequencyBinCount);function draw(){analyser.getByteFrequencyData(values);setLevel(Math.min(1,values.reduce((a,b)=>a+b,0)/values.length/110));frame.current=requestAnimationFrame(draw)}draw();mr.start();setState('recording')}catch(e){cleanup();setState('idle');setError(e instanceof Error?e.message:'Microphone access failed')}}
-function stop(){if(recorder.current?.state==='recording')recorder.current.stop()}
-function discard(){if(currentUrl.current)URL.revokeObjectURL(currentUrl.current);currentUrl.current='';setUrl('');setState('idle')}
-return <section className="voice-studio" aria-labelledby="voice-studio-heading"><div className="voice-studio-head"><div><span className="eyebrow dark">VOICE STUDIO / BROWSER DEMO</span><h3 id="voice-studio-heading">Tell it in your voice.</h3></div><span className="voice-privacy">Private browser recording · not uploaded</span></div><div className="waveform" role="img" aria-label={state==='recording'?'Live microphone audio activity':'Decorative audio waveform'}>{Array.from({length:32},(_,i)=><span key={i} style={{height:(state==='recording'?Math.max(9,Math.min(100,(.12+level)*(18+(i*19%47)))):12+(i*13%25))+'%'}}/>)}</div><div className="voice-actions">{state!=='recording'&&<button type="button" onClick={start} disabled={!supported}>● {url?'Record again':'Start recording'}</button>}{state==='recording'&&<button type="button" onClick={stop}>■ Stop recording</button>}{url&&state!=='recording'&&<><audio controls src={url} aria-label="Your recorded story preview"/><a href={url} download="newwave-story-recording.webm">Download recording</a><button type="button" onClick={discard}>Discard</button></>}</div><p className="note">Microphone permission is requested only when you start. Audio stays in memory until you download or discard it; it is not attached to a story or saved to the platform. Keep a downloaded copy before leaving this page. Browser format and support vary.</p>{!supported&&<p role="status" className="note">Microphone recording is unavailable in this browser.</p>}{error&&<p role="alert" className="notice">{error}</p>}</section>
+import {useEffect,useId,useRef,useState} from 'react';
+const MAX_BYTES=8_000_000;
+let captureOwner:object|null=null;
+export function VoiceRecorder({onRecorded,onDiscard}:{onRecorded?:(blob:Blob)=>void;onDiscard?:()=>void}){
+  const titleId=useId();const [supported,setSupported]=useState(false);
+  const [state,setState]=useState<'idle'|'requesting'|'recording'|'preview'>('idle');
+  const [error,setError]=useState('');const [url,setUrl]=useState('');const [seconds,setSeconds]=useState(0);
+  const owner=useRef({});const recorder=useRef<MediaRecorder|null>(null);const stream=useRef<MediaStream|null>(null);
+  const mounted=useRef(true);const revision=useRef(0);const timer=useRef<ReturnType<typeof setInterval>|null>(null);
+  const currentUrl=useRef('');const chunks=useRef<Blob[]>([]);const callbacks=useRef({onRecorded,onDiscard});callbacks.current={onRecorded,onDiscard};
+  function cleanup(){stream.current?.getTracks().forEach(t=>t.stop());stream.current=null;if(timer.current)clearInterval(timer.current);timer.current=null;if(captureOwner===owner.current)captureOwner=null}
+  useEffect(()=>{mounted.current=true;setSupported(!!navigator.mediaDevices?.getUserMedia&&typeof MediaRecorder!=='undefined');return()=>{mounted.current=false;revision.current++;if(recorder.current?.state==='recording')recorder.current.stop();cleanup();if(currentUrl.current)URL.revokeObjectURL(currentUrl.current)}},[]);
+  async function start(){
+    if(captureOwner){setError('Finish the other recording first.');return}
+    captureOwner=owner.current;const ticket=++revision.current;setError('');setState('requesting');
+    try{
+      const mic=await navigator.mediaDevices.getUserMedia({audio:true});
+      if(!mounted.current||ticket!==revision.current){mic.getTracks().forEach(t=>t.stop());return}
+      stream.current=mic;const mr=new MediaRecorder(mic);recorder.current=mr;chunks.current=[];let size=0;let oversized=false;let failed=false;
+      mr.ondataavailable=e=>{if(size+e.data.size>MAX_BYTES){oversized=true;if(mr.state==='recording')mr.stop();return}size+=e.data.size;if(e.data.size)chunks.current.push(e.data)};
+      mr.onstop=()=>{cleanup();if(!mounted.current)return;if(failed)return;
+        if(oversized){setError('Recording exceeded 8 MB. Try a shorter answer.');setState(currentUrl.current?'preview':'idle');return}
+        const blob=new Blob(chunks.current,{type:mr.mimeType||'audio/webm'});
+        if(!blob.size){setError('No audio was captured.');setState(currentUrl.current?'preview':'idle');return}
+        if(currentUrl.current)URL.revokeObjectURL(currentUrl.current);currentUrl.current=URL.createObjectURL(blob);setUrl(currentUrl.current);setState('preview');callbacks.current.onRecorded?.(blob);
+      };
+      mr.onerror=()=>{failed=true;cleanup();if(mounted.current){setError('Recording failed. Try again.');setState(currentUrl.current?'preview':'idle')}};
+      setSeconds(0);mr.start(1000);setState('recording');let elapsed=0;
+      timer.current=setInterval(()=>{elapsed++;setSeconds(elapsed);if(elapsed>=180&&mr.state==='recording')mr.stop()},1000);
+    }catch{cleanup();if(mounted.current){setState(currentUrl.current?'preview':'idle');setError('Microphone access was unavailable. Check permission or upload an audio file.')}}
+  }
+  function discard(){if(currentUrl.current)URL.revokeObjectURL(currentUrl.current);currentUrl.current='';setUrl('');setState('idle');callbacks.current.onDiscard?.()}
+  return <section className="voice-studio" aria-labelledby={titleId}>
+    <div className="voice-studio-head"><h3 id={titleId}>Record an answer</h3><span className="voice-privacy">Up to 3 minutes · stays in this tab</span></div>
+    <p className="note">Speak naturally, then review the recording. Nothing is sent for transcription until you choose to send it.</p>
+    <div className="voice-actions">
+      {state!=='recording'&&<button type="button" onClick={start} disabled={!supported||state==='requesting'}>{state==='requesting'?'Waiting for microphone…':url?'Record again':'Start recording'}</button>}
+      {state==='recording'&&<><span role="status">Recording · {seconds}s</span><button type="button" onClick={()=>recorder.current?.stop()}>Stop recording</button></>}
+      {url&&state!=='recording'&&<><audio controls src={url} aria-label="Your recorded answer preview"/><a href={url} download={'newwave-answer.'+(recorder.current?.mimeType.includes('mp4')?'m4a':recorder.current?.mimeType.includes('ogg')?'ogg':'webm')}>Download recording</a><button type="button" onClick={discard}>Discard recording</button></>}
+    </div>
+    {!supported&&<p role="status" className="note">Microphone recording is unavailable here. You can upload audio or type your answer.</p>}
+    {error&&<p role="alert" className="notice">{error}</p>}
+  </section>;
 }
