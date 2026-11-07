@@ -29,4 +29,17 @@ Task ID / Owner / Summary / Files / Tests run / Limitations / Next action.
 ## Product design workstream
 See docs/design/DESIGN-PLAN.md for DESIGN-01 through DESIGN-07: UX audit, category review, discovery, design tokens, cultural/language review, dashboard design and QA handoff. All tasks are proposed until validated and merged.
 ## Public research workstream
-See docs/research/RESEARCH-PLAN.md. RES-01 through RES-07 cover source discovery, document inspection, fact verification, licensing, African context, evidence curation and external approval. All start as todo; no public sources have yet been verified.
+See docs/research/RESEARCH-PLAN.md. RES-01 through RES-07 cover source discovery, document inspection, fact verification, licensing, African context, evidence curation and external approval. All start as todo; no public sources have yet been verified.## Workspace operating blueprint adoption (WS workstream)
+
+The cross-project process and NewWave-specific adoption live in [WORKSPACE-OPERATING-BLUEPRINT.md](WORKSPACE-OPERATING-BLUEPRINT.md). This does not supersede existing NW/Design/Research tasks. Status remains distinct from implementation and may change only after verified acceptance.
+
+| ID | Priority | Skill owner | Task | Acceptance criteria | Status |
+| --- | --- | --- | --- | --- | --- |
+| WS-01 | P0 | project-planner | Review blueprint adoption | Repo-local links and sources of truth preserved; human-reviewed PR | in progress |
+| WS-02 | P0 | workspace-handoff | Pilot thread brief and handoff for DESIGN-01 and DESIGN-13 | Two linked, source-grounded brief/handoff examples; risks and next owner recorded | todo |
+| WS-03 | P0 | product-designer | Baseline two NewWave screens | Evidence at narrow and desktop widths; severity-rated findings for DESIGN-01 | todo |
+| WS-04 | P1 | quality-guardian | Pilot design-quality gate and PR evidence checklist | One reviewed UI PR with pass/fail/not-checked QA and rollback evidence | todo |
+| WS-05 | P1 | project-planner | Add a lightweight AGENTS pointer | Reviewed link only; no policy rewrite | in progress |
+| WS-06 | P1 | workspace-handoff | Add repo-local handoff skill | Scoped SKILL.md and a validated handoff exercise | in progress |
+| WS-07 | P2 | project-planner | Consider recurring documentation drift report | Manual pilot completed first; report read-only and no autonomous policy writes | todo |
+| WS-08 | P2 | quality-guardian | Assess adoption and instruction drift | Compare pilot evidence, reconcile stale task statuses via approved PR | todo |

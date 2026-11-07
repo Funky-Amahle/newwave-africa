@@ -15,4 +15,8 @@
 
 | DESIGN-13 | P1 | Apply supplied interface polish guidelines | Clearer hierarchy, consistent controls, truthful rapid bookmark feedback, focus contrast, desktop/mobile and reduced-motion checks | in progress |
 
-Design is not implemented merely by documenting it. Coordinate with frontend-builder and quality-guardian.
+Design is not implemented merely by documenting it. Coordinate with frontend-builder and quality-guardian.## Evidence and audit references
+
+Use [DESIGN-QUALITY-GATE.md](DESIGN-QUALITY-GATE.md) for severity, mobile/reflow, keyboard, focus, motion, failure behavior and truthful content checks. Start scoped work with [TASK-BRIEF.md](../templates/TASK-BRIEF.md) and transfer evidence using [AGENT-HANDOFF.md](../AGENT-HANDOFF.md).
+
+`DESIGN-01` remains an audit task requiring actual current-state screenshots and severity-rated findings. `DESIGN-13` has implementation evidence in [INTERFACE-POLISH.md](INTERFACE-POLISH.md) and merged PR #26, but its status remains in progress until the remaining required checks are reconciled. Do not mark either done solely because implementation code was merged or deployed.

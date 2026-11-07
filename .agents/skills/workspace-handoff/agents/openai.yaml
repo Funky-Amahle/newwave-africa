@@ -1,0 +1,3 @@
+interface:
+  display_name: "NewWave Africa Workspace Handoff"
+  short_description: "Source-grounded task transfer for ChatGPT, Codex and GitHub"
