@@ -41,3 +41,12 @@ are separate assets. No new media storage or video rendering service is introduc
 The owner explicitly requested one combined experience. Keep Next.js as the canonical implementation, adopting Base44's cream/forest/clay split hero, Fraunces type and two-column creative workspace. Compose all existing private creation tools through `components/creator-studio.tsx`, shared by the static Pages and optional server editions. Retain existing narration ownership, discovery diversity controls, local storage keys, permission confirmation, bounded transcription and asset downloads. No Base44 SDK, public Story writer or upload-to-publish handler is imported.
 
 Base44's hosted copy remains independent and its builder is currently credit-blocked. Source inspection of app `6aeea98065a4710c0d073bad` supplied visual reference only. This is neither a deployment to Base44 nor database synchronization. Transcription still requires the configured server edition; a visual merge cannot enable protected endpoints on Pages. Rollback: revert the feature commit; no storage schema or existing drafts are migrated.
+
+
+## ADR-006 — GitHub Pages as the primary app with dedicated static pages
+
+**Status:** Implemented on NW-12 feature branch, pending review/owner release approval.
+
+The owner chose GitHub Pages for the combined app. Export `/creator-studio/` and `/our-approach/` alongside the homepage; Next Link supplies the configured `/newwave-africa` base path. A shared client layout owns the existing browser-local collection and in-memory written draft state across client-side route changes. Media capture panels unmount when leaving the studio; no new upload/storage service is introduced. Legacy homepage creator fragments redirect to the dedicated route, preserving nested tool fragments. Discovery insights remain a homepage view.
+
+Our Approach describes human authorship, seven creator audiences/five practices, fictional samples, illustrative diversity ranking and exact storage/transcription limits. Pages is fully usable for typing, recording, local media preview, separate downloads and prerecorded sample narration. It cannot host a secret-backed Deepgram endpoint: the optional server implementation remains prepared but is not part of Pages. No Base44 runtime dependency or hosted copy is required. Existing localStorage keys stay unchanged. Revert this feature commit to roll back page routing without altering stored drafts.

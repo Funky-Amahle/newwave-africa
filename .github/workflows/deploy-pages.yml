@@ -39,6 +39,8 @@ jobs:
       - run: npm run build
         env:
           GITHUB_PAGES: 'true'
+      - name: Validate exported page routes and asset paths
+        run: node scripts/check_pages_routes.mjs
       - if: github.event_name != 'pull_request'
         uses: actions/upload-pages-artifact@v3
         with:

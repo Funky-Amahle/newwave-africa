@@ -14,6 +14,7 @@ const output=ts.transpileModule(source,{fileName:'brand.tsx',reportDiagnostics:t
 const jsx=(type,props)=>({type,props});
 const exports={};
 vm.runInNewContext(output.outputText,{exports,require(id){
+  if(id==='next/link')return {default:'NextLink'};
   if(id==='react/jsx-runtime')return {jsx,jsxs:jsx};
   if(id==='../lib/brand-artwork.json')return {default:art};
   if(id==='./brand.module.css')return {default:styles};
@@ -26,8 +27,8 @@ test('brand TSX transpiles without syntax errors',()=>{
 });
 test('logo is an accessible home link that preserves the Pages path',()=>{
   const logo=Brand();
-  assert.equal(logo.type,'a');
-  assert.equal(logo.props.href,'#top');
+  assert.equal(logo.type,'NextLink');
+  assert.equal(logo.props.href,'/');
   assert.equal(logo.props['aria-label'],'NewWave Africa home');
 });
 test('monogram and wordmark use the approved outlines, not remote fonts',()=>{
