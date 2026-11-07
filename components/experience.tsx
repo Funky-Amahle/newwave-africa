@@ -4,6 +4,7 @@ import type {ReactNode} from 'react';
 import {motion,MotionConfig,useReducedMotion} from 'motion/react';
 import type {Story} from '../lib/discovery';
 import styles from './experience.module.css';
+import {StoryArtwork} from './story-artwork';
 
 const MotionContext = createContext(true);
 export const useQuietMotion = () => useContext(MotionContext);
@@ -35,8 +36,8 @@ export function Reveal({children,className=''}:{children:ReactNode;className?:st
     whileInView={quiet?{opacity:1,y:0}:{opacity:[.6,1],y:[10,0]}}
     viewport={{once:true,amount:.08}} transition={{duration:quiet?0:.35}}>{children}</motion.div>;
 }
-export function SectionHeading({eyebrow,title,description}:{eyebrow:string;title:string;description?:string}) {
-  return <div className={styles.sectionHeading}><div><p className={styles.kicker}>{eyebrow}</p><h2>{title}</h2></div>{description&&<p>{description}</p>}</div>;
+export function SectionHeading({title,description}:{title:string;description?:string}) {
+  return <div className={styles.sectionHeading}><div><h2>{title}</h2></div>{description&&<p>{description}</p>}</div>;
 }
 
 export function Spotlight({stories,onRead}:{stories:Story[];onRead:(story:Story)=>void}) {
@@ -46,7 +47,7 @@ export function Spotlight({stories,onRead}:{stories:Story[];onRead:(story:Story)
   if(!story)return null;
   return <section className={styles.spotlight} aria-label="Featured sample stories">
     <div className={styles.spotlightTop}><span>THE READING TABLE</span><span>Fictional sample</span></div>
-    <div className={styles.printArt} aria-hidden="true"><span>Perspective</span><i/><b>{String(index+1).padStart(2,'0')}</b></div>
+    <div className={styles.printArt}><StoryArtwork key={story.id} category={story.category} quiet={quiet} featured/></div>
     <motion.div key={story.id} className={styles.spotlightCopy} initial={false}
       animate={quiet?{opacity:1}:{opacity:[.4,1]}} transition={{duration:quiet?0:.25}}>
       <p className={styles.kicker}>{story.category}</p><h2>{story.title}</h2>
@@ -67,7 +68,7 @@ const routes=[
 ];
 export function DiscoveryRoutes({onChoose}:{onChoose:(category:string)=>void}) {
   return <section className={styles.routes} aria-labelledby="routes-heading">
-    <div className={styles.inlineHeading}><h2 id="routes-heading">Follow a curiosity.</h2><p>A starting point, not a boundary.</p></div>
+    <div className={styles.inlineHeading}><h2 id="routes-heading">Follow a curiosity</h2><p>A starting point, not a boundary.</p></div>
     <div className={styles.routeGrid}>{routes.map(route=><button type="button" key={route.category} className={styles.routeCard} onClick={()=>onChoose(route.category)}>
       <span className={styles.routeNumber}>{route.index}<Arrow/></span><strong>{route.name}</strong><span>{route.note}</span>
     </button>)}</div>
@@ -76,13 +77,13 @@ export function DiscoveryRoutes({onChoose}:{onChoose:(category:string)=>void}) {
 
 export function StudioInvitation({onCreate}:{onCreate:()=>void}) {
   return <section className={styles.studioInvite} aria-labelledby="invitation-heading">
-    <div><p className={styles.kicker}>CREATION & CRAFT</p><h2 id="invitation-heading">An idea deserves<br/>a place to begin.</h2><p>Writing, film, reporting, music or interactive worlds. Use a planning canvas, keep your own words, and take an editable brief with you.</p><button type="button" className={styles.lightButton} onClick={onCreate}>Open creator studio <Arrow/></button></div>
+    <div><h2 id="invitation-heading">An idea deserves<br/>a place to begin.</h2><p>Writing, film, reporting, music or interactive worlds. Use a planning canvas, keep your own words, and take an editable brief with you.</p><button type="button" className={styles.lightButton} onClick={onCreate}>Open creator studio <Arrow/></button></div>
     <ol className={styles.steps}><li><span>01</span><div><h3>Find your form</h3><p>Five canvases, shaped around different creative practices.</p></div></li><li><span>02</span><div><h3>Develop the work</h3><p>Make the creative decisions. Keep your context and voice.</p></div></li><li><span>03</span><div><h3>Take it forward</h3><p>Download a brief. Story drafts stay in this browser.</p></div></li></ol>
   </section>;
 }
 
 export function ExperienceHelp(){return <section className={styles.help} aria-labelledby="help-heading">
-  <div><p className={styles.kicker}>GOOD TO KNOW</p><h2 id="help-heading">A little clarity<br/>goes a long way.</h2></div><div className={styles.accordion}>
+  <div><h2 id="help-heading">A little clarity<br/>goes a long way.</h2></div><div className={styles.accordion}>
     <details><summary>How does discovery work?</summary><p>Your selected interest changes the ranking, not a hard category filter. Search narrows the results. The diversity slider gives more weight to less-represented categories. This is a local demonstration, not a trained AI recommender.</p></details>
     <details><summary>Where are my saved stories?</summary><p>Reading-list bookmarks and saved story drafts stay in this browser, with no account or public publishing. Clearing browser data removes them. Storage may be unavailable in restricted browsing modes.</p></details>
     <details><summary>Why is narration sometimes unavailable?</summary><p>Only published, reviewed recordings can play. We do not substitute a robotic browser voice. Your own microphone recordings remain local and are not attached to published stories.</p></details>

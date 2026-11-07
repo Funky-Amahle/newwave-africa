@@ -1,0 +1,24 @@
+.artwork{--art-paper:#f4ead8;--art-ink:#294c40;--art-accent:#a95133;background:#cbb795;width:100%;height:100%;overflow:hidden;isolation:isolate}
+.artwork[data-theme='1'],.artwork[data-theme='6']{--art-paper:#e3e7d5;--art-ink:#193e32;--art-accent:#6e7c47;background:#a5b69b}
+.artwork[data-theme='2'],.artwork[data-theme='5']{--art-paper:#f3d9c6;--art-ink:#713d30;--art-accent:#b45a36;background:#d9b397}
+.artwork[data-theme='3'],.artwork[data-theme='7']{--art-paper:#e2e1cd;--art-ink:#354e43;--art-accent:#8d814b;background:#b8b9a0}
+.artwork[data-theme='4']{--art-paper:#e1e7df;--art-ink:#354c54;--art-accent:#758873;background:#acbcb8}
+.artwork svg{display:block;width:100%;height:100%;min-height:160px}
+.sheet,.orbit,.disc{transform-box:fill-box;transform-origin:center}
+.lines{stroke-dasharray:1200;stroke-dashoffset:0}
+.artwork[data-animate='true'] .sheet{animation:unfold 900ms cubic-bezier(.16,1,.3,1) both}
+.artwork[data-animate='true'] .orbit{animation:turn-print 1200ms cubic-bezier(.16,1,.3,1) both}
+.artwork[data-animate='true'] .lines{animation:ink 1100ms cubic-bezier(.16,1,.3,1) both}
+.artwork[data-animate='true'] .disc{animation:register 1000ms cubic-bezier(.16,1,.3,1) both}
+.narration{display:flex;align-items:center;gap:3px;height:24px;width:29px;color:#536957}
+.narration i{display:block;width:3px;height:5px;background:currentColor;border-radius:2px;transform-origin:center}
+.narration[data-playing='true']{color:#294c40}
+.narration[data-playing='true'] i{height:15px}
+.narration[data-animate='true'] i{animation:speaking 720ms ease-in-out infinite alternate}
+.narration i:nth-child(2){animation-delay:-320ms!important}.narration i:nth-child(3){animation-delay:-580ms!important}.narration i:nth-child(4){animation-delay:-160ms!important}.narration i:nth-child(5){animation-delay:-430ms!important}
+@keyframes unfold{from{transform:translateX(-36px);opacity:.65}to{transform:translateX(0);opacity:1}}
+@keyframes turn-print{from{transform:rotate(-18deg)}to{transform:rotate(0)}}
+@keyframes ink{from{stroke-dashoffset:1200}to{stroke-dashoffset:0}}
+@keyframes register{from{transform:translate(25px,-15px)}to{transform:translate(0,0)}}
+@keyframes speaking{from{transform:scaleY(.3)}to{transform:scaleY(1)}}
+@media(prefers-reduced-motion:reduce){.artwork *,.narration *{animation:none!important}}

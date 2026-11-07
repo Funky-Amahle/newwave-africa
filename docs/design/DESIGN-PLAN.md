@@ -11,4 +11,8 @@
 | DESIGN-07 | P1 | QA and frontend handoff | Annotated specs and tested checklist | todo |
 | DESIGN-11 | P1 | Apply approved classic NW identity | Header/footer artwork, responsive home link, favicon, brand tests; see NW-IDENTITY.md | proposed in PR |
 
+| DESIGN-12 | P1 | Animated editorial story visuals and narration feedback | Bounded SVG print composition, actual playback indicator, reduced-effects/system preference, offscreen/hidden pause, desktop/mobile review | in progress |
+
+| DESIGN-13 | P1 | Apply supplied interface polish guidelines | Clearer hierarchy, consistent controls, truthful rapid bookmark feedback, focus contrast, desktop/mobile and reduced-motion checks | in progress |
+
 Design is not implemented merely by documenting it. Coordinate with frontend-builder and quality-guardian.
