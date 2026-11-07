@@ -10,7 +10,11 @@ NewWave Africa is a human-centred African storytelling prototype built for the *
 
 The repository app combines Base44’s warm cream, forest-green and clay visual direction with GitHub’s discovery, reviewed narration, five craft canvases, visual previews and private drafts. `components/creator-studio.tsx` composes the creator tools into one responsive workspace. Both the Pages export and optional server edition use these same components.
 
-Base44’s hosted copy is a separate deployment and is currently blocked by its message allowance. Repository changes do not automatically update that copy. See [the consolidation record](docs/design/UNIFIED-EXPERIENCE.md) for provenance and verification.
+**GitHub Pages is the primary app destination.** Creator Studio and Our Approach are dedicated static routes, using the same shared layout and design as the homepage. Base44 supplied the visual reference; the GitHub app does not need a Base44 connection, account or credits.
+
+After this change is deployed, the routes are `/newwave-africa/creator-studio/` and `/newwave-africa/our-approach/`. Direct entry and refresh are supported by exported HTML documents. Navigation keeps unsaved written draft fields in page memory; refreshing or leaving the app still clears unsaved work. Planning notes and visual selections should be downloaded before navigating away.
+
+See [the Pages consolidation record](docs/design/PAGES-CONSOLIDATION.md) and [the original design record](docs/design/UNIFIED-EXPERIENCE.md) for provenance and verification.
 
 ## What the prototype does
 

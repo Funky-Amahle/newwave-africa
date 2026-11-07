@@ -21,6 +21,8 @@ todo = not started; in progress = assigned; blocked = unresolved dependency; don
 
 | NW-11 | P1 | product-designer / frontend-builder / quality-guardian | Consolidate Base44 design and GitHub functionality in one app | NW-09,NW-10 | Shared CreatorStudio component; split wave landing; self-hosted typography; existing ranking, narration, drafts, consent and exports retained; Pages/server builds and responsive browser evidence; current source pushed in a PR | in progress |
 
+| NW-12 | P1 | frontend-builder / quality-guardian | Consolidate navigation on GitHub Pages with Creator Studio and Our Approach routes | NW-11 | Static direct-entry pages with shared identity and persistent written draft state during client navigation; transparent approach copy; Pages/server builds and route checks | in progress |
+
 ## Definition of done
 Story submission, category review, diverse discovery, honest metrics, passing build and reproducible demonstration.
 

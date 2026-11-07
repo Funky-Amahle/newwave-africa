@@ -1,25 +1,25 @@
 'use client';
 import {useEffect,useMemo,useRef,useState} from 'react';
-import {Brand} from '../components/brand';
-import {CreatorStudio,useCreatorDraft} from '../components/creator-studio';
+import {useRouter} from 'next/navigation';
+import {useSiteState} from '../components/site-state';
 import {Hero} from '../components/hero';
 import {StoryCard} from '../components/story-card';
 import sampleStories from '../lib/sample-stories.json';
-import {CATEGORIES,STORY_KEY,SAVED_KEY,parseStories,parseSaved,toggleSaved,getDiscovery} from '../lib/discovery';
+import {CATEGORIES,SAVED_KEY,parseSaved,toggleSaved,getDiscovery} from '../lib/discovery';
 import type {Story} from '../lib/discovery';
-import {Experience,Reveal,SectionHeading,Spotlight,DiscoveryRoutes,StudioInvitation,ExperienceHelp,StoryReader,Arrow,SaveIcon,useQuietMotion} from '../components/experience';
+import {Reveal,SectionHeading,Spotlight,DiscoveryRoutes,StudioInvitation,ExperienceHelp,StoryReader,Arrow,SaveIcon,useQuietMotion} from '../components/experience';
 import styles from '../components/experience.module.css';
 import {workspaceHash,workspaceFromHash} from '../lib/workspace-navigation';
 import type {Workspace} from '../lib/workspace-navigation';
 
 const samples:Story[]=sampleStories;
-export default function Home(){return <Experience><HomeContent/></Experience>}
+export default function Home(){return <HomeContent/>}
 
 function HomeContent(){
   const quiet=useQuietMotion();
   const workspace=useRef<HTMLElement|null>(null);
-  const [added,setAdded]=useState<Story[]>([]);
-  const creator=useCreatorDraft(setAdded);
+  const router=useRouter();
+  const {added}=useSiteState();
   const [saved,setSaved]=useState<string[]>([]);
   const savedRef=useRef<string[]>([]);
   const [savedOnly,setSavedOnly]=useState(false);
@@ -32,7 +32,7 @@ function HomeContent(){
   const [reader,setReader]=useState<Story|null>(null);
 
   useEffect(()=>{
-    try {setAdded(parseStories(localStorage.getItem(STORY_KEY)));savedRef.current=parseSaved(localStorage.getItem(SAVED_KEY));setSaved(savedRef.current)}
+    try {savedRef.current=parseSaved(localStorage.getItem(SAVED_KEY));setSaved(savedRef.current)}
     catch {setSavedMessage('Browser storage is unavailable. Your reading list will last for this visit only.')}
   },[]);
   useEffect(()=>{
@@ -41,6 +41,11 @@ function HomeContent(){
       const linked=workspaceFromHash(window.location.hash);
       if(!linked){
         if(!window.location.hash)setTab('discover');
+        return;
+      }
+      if(linked==='create'){
+        const fragment=window.location.hash;
+        router.replace('/creator-studio/'+(fragment.startsWith('#studio-')?fragment:''));
         return;
       }
       setTab(linked);
@@ -88,14 +93,8 @@ function HomeContent(){
     catch {setSavedMessage(action+' your reading list for this visit. Browser storage is unavailable.')}
   }
 
-  return <main id="top">
-    <a className="skip-link" href="#workspace">Skip to stories and tools</a>
-    <header className={styles.header}>
-      <Brand/>
-      <nav className={styles.nav} aria-label="Primary navigation">{(['discover','create','impact'] as const).map(item=><a key={item} href={workspaceHash(item)} aria-current={tab===item?'location':undefined} onClick={event=>{event.preventDefault();openWorkspace(item)}}>{item==='discover'?'Discover':item==='create'?'Creator studio':'Our approach'}</a>)}</nav>
-      <a className={styles.navCta} href={workspaceHash('create')} onClick={event=>{event.preventDefault();openWorkspace('create')}}>Start a story <Arrow/></a>
-    </header>
-    <Hero onExplore={()=>openWorkspace('discover')} onCreate={()=>openWorkspace('create')}><Spotlight stories={samples} onRead={setReader}/></Hero>
+  return <>
+    <Hero onExplore={()=>openWorkspace('discover')} onCreate={()=>router.push('/creator-studio/')}><Spotlight stories={samples} onRead={setReader}/></Hero>
     <div className={styles.frame}>
       <div className={styles.metrics} aria-label="Current demonstration collection">
         <div><strong>{stories.length}</strong><span>Stories in this browser<br/>Includes 8 fictional samples</span></div>
@@ -104,7 +103,7 @@ function HomeContent(){
       </div>
       <Reveal><DiscoveryRoutes onChoose={chooseInterest}/></Reveal>
       <section className={styles.workspace} ref={workspace} id="workspace" tabIndex={-1} aria-label="Story discovery and creator tools">
-        <div className={styles.tabs} role="group" aria-label="Workspace sections">{(['discover','create','impact'] as const).map(item=><button key={item} type="button" aria-pressed={tab===item} onClick={()=>selectWorkspace(item)}>{item==='discover'?'Discover stories':item==='create'?'Creator studio':'Discovery insights'}</button>)}</div>
+        <div className={styles.tabs} role="group" aria-label="Workspace sections">{(['discover','create','impact'] as const).map(item=><button key={item} type="button" aria-pressed={tab===item} onClick={()=>item==='create'?router.push('/creator-studio/'):selectWorkspace(item)}>{item==='discover'?'Discover stories':item==='create'?'Creator studio':'Discovery insights'}</button>)}</div>
         {tab==='discover'&&<>
           <SectionHeading title="Beyond your usual scroll" description="Stay close to an interest. Leave room for something you did not expect."/>
           <div className={styles.filters}>
@@ -125,7 +124,6 @@ function HomeContent(){
           {feed.length===0&&<div className={styles.empty}><h3>{savedOnly?'A little space for your favourites.':'No stories here just yet.'}</h3><p>{savedOnly?'Save a story from the collection, or clear your search to see saved items.':'Try a different search or return to the complete collection.'}</p><button type="button" className={styles.solidButton} onClick={resetFilters}>Explore all stories <Arrow/></button></div>}
           {discovery.ranked.length>6&&<div className={styles.more}><button type="button" className={styles.outlineButton} onClick={()=>setShowAll(v=>!v)}>{showAll?'Show fewer stories':'Explore all '+discovery.ranked.length+' stories'} <Arrow/></button></div>}
         </>}
-        {tab==='create'&&<CreatorStudio draft={creator}/>}
         {tab==='impact'&&<>
           <SectionHeading title="Make discovery visible" description="An illustrative category comparison using your current search and reading-list settings."/>
           <div className={styles.compare}>
@@ -136,10 +134,9 @@ function HomeContent(){
           <h3>Available story categories</h3><div className="bars" role="list" aria-label="Story counts by category">{CATEGORIES.map(c=><div role="listitem" key={c}><div className="bar-label"><span>{c}</span><b>{discovery.counts[c]}</b></div><div className="bar" aria-hidden="true"><span style={{width:(100*discovery.counts[c]/Math.max(1,...Object.values(discovery.counts)))+'%'}}/></div></div>)}</div>
         </>}
       </section>
-      <Reveal><StudioInvitation onCreate={()=>openWorkspace('create')}/></Reveal>
+      <Reveal><StudioInvitation onCreate={()=>router.push('/creator-studio/')}/></Reveal>
       <ExperienceHelp/>
     </div>
-    <footer className={styles.footer}><div><Brand inverse/><p>Stories are richer when more people get to tell them.</p></div><div><a href="#top">Back to the beginning <Arrow/></a><br/>NewWave Africa / Hackathon prototype<br/>Fictional samples. Local drafts. Your authorship.</div></footer>
     {reader&&<StoryReader key={reader.id} story={reader} saved={saved.includes(reader.id)} onSave={()=>bookmark(reader)} onClose={()=>setReader(null)}/>}
-  </main>;
+  </>;
 }

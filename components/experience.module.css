@@ -231,3 +231,32 @@
 @media(min-width:1001px) { .studioMedia { position:sticky; top:24px; } }
 @media(max-width:1000px) { .studioColumns { grid-template-columns:minmax(0,1fr); gap:32px; }.studioMedia { grid-row:2; }.studioWork :global(.craft-heading) { display:flex; } }
 @media(max-width:700px) { .studioWork :global(.craft-heading) { display:block; }.studioWayfinding { gap:8px 20px; }.studioWayfinding a { font-size:12px; }.studioColumns { margin-top:24px; } }
+
+/* NW-12 / DESIGN-18: shared static routes and the editorial approach page. */
+.nav a[aria-current='page'] { border-color:var(--nw-clay); color:var(--nw-clay); }
+.pageHeading { margin:48px 0 0; padding-bottom:28px; border-bottom:1px solid var(--nw-line); }
+.pageHeading h1 { font:400 clamp(40px,5vw,64px)/1.05 var(--nw-serif); letter-spacing:-.03em; margin:0 0 20px; }
+.pageHeading p { max-width:60ch; color:var(--nw-muted); line-height:1.8; font-size:15px; }
+.studio { padding-bottom:64px; }
+.approachIntro { display:grid; grid-template-columns:1fr 1fr; gap:clamp(28px,5vw,72px); padding-block:clamp(44px,7vw,90px); align-items:end; }
+.approachIntro h1 { font:400 clamp(42px,5.2vw,72px)/1.05 var(--nw-serif); letter-spacing:-.03em; margin:0; max-width:16ch; }
+.approachIntro h1 em { color:var(--nw-clay); }
+.approachIntro p,.approachColumns p { font-size:15px; line-height:1.85; color:var(--nw-muted); max-width:65ch; }
+.approachIntro p:last-child { margin-bottom:0; }
+.approachColumns { display:grid; grid-template-columns:1fr 1fr; gap:clamp(32px,6vw,80px); padding-block:40px 72px; border-top:1px solid var(--nw-line); }
+.approachColumns h2,.approachBoundaries h2 { font:400 clamp(30px,3vw,40px)/1.15 var(--nw-serif); letter-spacing:-.02em; margin:0 0 24px; }
+.approachColumns .textButton { display:inline-flex; align-items:center; gap:10px; }
+.approachPrinciples { padding-block:64px; background:var(--nw-forest); color:var(--nw-paper); }
+.approachPrinciples h2 { font:400 clamp(32px,4vw,50px)/1.12 var(--nw-serif); margin:0 0 40px; max-width:24ch; }
+.principleGrid { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:28px; }
+.principleGrid>div { padding-top:24px; border-top:1px solid #e1e7d970; }
+.principleGrid h3 { font:400 24px/1.2 var(--nw-serif); margin:0 0 16px; }
+.principleGrid p { color:#e1e7d9; font-size:14px; line-height:1.8; margin:0; }
+.approachBoundaries { padding-block:64px; }
+.approachBoundaries dl { display:grid; grid-template-columns:1fr 1fr; gap:28px 48px; margin:32px 0 40px; }
+.approachBoundaries dl>div { border-top:1px solid var(--nw-line); padding-top:24px; }
+.approachBoundaries dt { font-size:15px; font-weight:700; margin-bottom:14px; }
+.approachBoundaries dd { font-size:14px; line-height:1.8; color:var(--nw-muted); margin:0; max-width:65ch; }
+@media(max-width:1000px) { .principleGrid { grid-template-columns:1fr 1fr; } }
+@media(max-width:700px) { .approachIntro,.approachColumns,.approachBoundaries dl { grid-template-columns:minmax(0,1fr); }.approachIntro h1 { max-width:20ch; }.approachColumns { padding-block:32px 48px; }.approachPrinciples,.approachBoundaries { padding-block:48px; } }
+@media(max-width:420px) { .principleGrid { grid-template-columns:minmax(0,1fr); } }

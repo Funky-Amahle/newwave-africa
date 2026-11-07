@@ -20,6 +20,8 @@
 
 | DESIGN-17 | P1 | One complementary Base44/GitHub design | Base44 cream/forest/clay visual composition in the repository app, reusable studio, preserved private behavior, browser QA and traceable source/hosting limits | in progress |
 
+| DESIGN-18 | P1 | Dedicated Creator Studio and Our Approach pages | Shared responsive shell, route links, accurate creator/privacy/discovery content, static refresh paths and documented QA | in progress |
+
 ## Evidence and audit references
 
 Use [DESIGN-QUALITY-GATE.md](DESIGN-QUALITY-GATE.md) for responsive, focus, state and motion QA. Start tasks with [TASK-BRIEF.md](../templates/TASK-BRIEF.md) and transfer evidence using [AGENT-HANDOFF.md](../AGENT-HANDOFF.md).

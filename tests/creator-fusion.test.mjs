@@ -31,8 +31,9 @@ test('homepage offers linkable views and Back/Forward state restoration',()=>{
   assert.match(src,/window\.history\.pushState/);
   assert.match(src,/addEventListener\('popstate'/);
   assert.match(src,/addEventListener\('hashchange'/);
-  assert.match(src,/href=\{workspaceHash\(item\)\}/);
-  assert.match(src,/href=\{workspaceHash\('create'\)\}/);
+  const shell=readFileSync(new URL('../components/site-shell.tsx',import.meta.url),'utf8');
+  assert.match(shell,/href="\/creator-studio\/"/);
+  assert.match(shell,/href="\/our-approach\/"/);
 });
 test('creator progress uses a truthful status and retains local notes messaging',()=>{
   const src=readFileSync(new URL('../components/creator-craft-toolkit.tsx',import.meta.url),'utf8');

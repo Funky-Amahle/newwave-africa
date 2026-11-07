@@ -17,7 +17,7 @@ try{
  assert.ok(ready,'Standalone server did not become ready.');
  const post=await fetch(origin+'/api/transcribe',{method:'POST',headers:{'Content-Type':'audio/wav'},body:'not-a-real-recording'});
  assert.equal(post.status,503);assert.match((await post.json()).error,/not available/);
- assert.equal((await fetch(origin)).status,200);
+ for(const path of ['/', '/creator-studio/', '/our-approach/'])assert.equal((await fetch(origin+path)).status,200,path+' serves directly');
  assert.equal((await fetch(origin+'/story-visuals/clay.svg')).status,200);
- console.log('Standalone startup, unavailable transcription, home and visual delivery passed.');
+ console.log('Standalone startup, unavailable transcription, all page routes and visual delivery passed.');
 }finally{child.kill('SIGTERM')}
