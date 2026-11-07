@@ -42,7 +42,7 @@ export function StoryCard({story,index}:{story:StoryPreview;index:number}){
   const caption=error || (!checked?'Checking for a recorded story.':clip?'Deepgram-generated recording. No browser voice fallback.':'Narration unavailable. You can still read this story.');
 
   return <motion.article initial={reduced?false:{opacity:0,y:18}} whileInView={reduced?undefined:{opacity:1,y:0}} viewport={{once:true,amount:.12}} transition={{duration:.4,delay:Math.min(index,4)*.045}} className="story">
-    <div className="story-index"><span>STORY {String(index+1).padStart(2,'0')} / NEW WAVE</span><span>{story.country}</span></div>
+    <div className="story-index"><span>{story.country}</span><span>{story.sample?'Fictional sample':'Your draft'}</span></div>
     <div className="story-art"><StoryArtwork key={story.id} category={story.category} quiet={reduced}/></div>
     <span className="category">{story.category}</span><h3>{story.title}</h3><p>{story.excerpt}</p>
     {clip&&<audio hidden ref={audio} src={clip} preload="none" onEnded={e=>player.current?.ended(e.currentTarget)} onError={e=>player.current?.failed(e.currentTarget)}/>}
@@ -54,6 +54,6 @@ export function StoryCard({story,index}:{story:StoryPreview;index:number}){
       </div>
       <span id={captionId} role="status" aria-live="polite" className="voice-caption">{caption}</span>
     </div>
-    <div className="story-bottom"><span>By {story.author}{story.language?' \u00b7 '+story.language:''}</span>{story.sample&&<span className="sample">Fictional sample</span>}</div>
+    <div className="story-bottom"><span>By {story.author}{story.language?' \u00b7 '+story.language:''}</span></div>
   </motion.article>;
 }

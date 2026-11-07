@@ -15,6 +15,9 @@
 }
 .actions .buttons button {
   min-height: 44px;
+  min-width: 76px;
+  border-radius: 4px;
+  transition: background 140ms ease, color 140ms ease;
   max-width: 100%;
   white-space: normal;
   overflow-wrap: anywhere;

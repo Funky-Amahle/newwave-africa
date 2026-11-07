@@ -22,6 +22,7 @@ function HomeContent(){
   const workspace=useRef<HTMLElement|null>(null);
   const [added,setAdded]=useState<Story[]>([]);
   const [saved,setSaved]=useState<string[]>([]);
+  const savedRef=useRef<string[]>([]);
   const [savedOnly,setSavedOnly]=useState(false);
   const [savedMessage,setSavedMessage]=useState('');
   const [tab,setTab]=useState<Workspace>('discover');
@@ -39,7 +40,7 @@ function HomeContent(){
   const [message,setMessage]=useState('');
 
   useEffect(()=>{
-    try {setAdded(parseStories(localStorage.getItem(STORY_KEY)));setSaved(parseSaved(localStorage.getItem(SAVED_KEY)))}
+    try {setAdded(parseStories(localStorage.getItem(STORY_KEY)));savedRef.current=parseSaved(localStorage.getItem(SAVED_KEY));setSaved(savedRef.current)}
     catch {setSavedMessage('Browser storage is unavailable. Your reading list will last for this visit only.')}
   },[]);
   const stories=useMemo(()=>[...added,...samples],[added]);
@@ -57,7 +58,8 @@ function HomeContent(){
   function chooseInterest(category:string){setInterest(category);setQuery('');setSavedOnly(false);setShowAll(false);openWorkspace('discover')}
   function resetFilters(){setQuery('');setInterest('All categories');setDiversity(60);setShowAll(false);setSavedOnly(false)}
   function bookmark(story:Story){
-    const next=toggleSaved(saved,story.id);
+    const next=toggleSaved(savedRef.current,story.id);
+    savedRef.current=next;
     setSaved(next);
     const action=next.includes(story.id)?'Added to':'Removed from';
     try {localStorage.setItem(SAVED_KEY,JSON.stringify(next));setSavedMessage(action+' your reading list. Bookmarks are stored in this browser only.')}
@@ -97,7 +99,7 @@ function HomeContent(){
       <section className={styles.workspace} ref={workspace} id="workspace" tabIndex={-1} aria-label="Story discovery and creator tools">
         <div className={styles.tabs} role="group" aria-label="Workspace sections">{(['discover','create','impact'] as const).map(item=><button key={item} type="button" aria-pressed={tab===item} onClick={()=>setTab(item)}>{item==='discover'?'Discover stories':item==='create'?'Creator studio':'Discovery insights'}</button>)}</div>
         {tab==='discover'&&<>
-          <SectionHeading eyebrow="THE OPEN EDITION" title="Beyond your usual scroll." description="Stay close to an interest. Leave room for something you did not expect."/>
+          <SectionHeading title="Beyond your usual scroll" description="Stay close to an interest. Leave room for something you did not expect."/>
           <div className={styles.filters}>
             <label>Your interest<select value={interest} onChange={event=>{setInterest(event.target.value);setShowAll(false)}}><option>All categories</option>{CATEGORIES.map(c=><option key={c}>{c}</option>)}</select><small>Prioritises a category without excluding other voices.</small></label>
             <label>Search the collection<input type="search" value={query} onChange={event=>{setQuery(event.target.value);setShowAll(false)}} placeholder="Try community, science or a country"/><small>Search titles, text, countries and themes.</small></label>
@@ -117,14 +119,14 @@ function HomeContent(){
           {discovery.ranked.length>6&&<div className={styles.more}><button type="button" className={styles.outlineButton} onClick={()=>setShowAll(v=>!v)}>{showAll?'Show fewer stories':'Explore all '+discovery.ranked.length+' stories'} <Arrow/></button></div>}
         </>}
         {tab==='create'&&<>
-          <SectionHeading eyebrow="CREATION & CRAFT" title="Your words. Your next chapter." description="A practical space to plan, write and record. No account and no automatic publishing."/>
+          <SectionHeading title="Your words. Your next chapter" description="A practical space to plan, write and record. No account and no automatic publishing."/>
           <CreatorCraftToolkit/>
-          <SectionHeading eyebrow="A BROWSER-LOCAL DRAFT" title="Make space for your story."/>
+          <SectionHeading title="Make space for your story"/>
           <div className={styles.creatorFrame}><form className="creator" onSubmit={publish}>
             <label>Story title<input required minLength={3} maxLength={180} value={title} onChange={e=>setTitle(e.target.value)} placeholder="Give your story a title"/></label>
             <div className="formrow"><label>Creator name<input maxLength={180} value={author} onChange={e=>setAuthor(e.target.value)} placeholder="Your name (optional)"/></label><label>Country<input required maxLength={120} value={country} onChange={e=>setCountry(e.target.value)}/></label></div>
             <label>Your story<textarea required minLength={20} maxLength={5000} rows={8} value={content} onChange={e=>setContent(e.target.value)} placeholder="Write an original story about an experience, idea or community..."/></label>
-            <div className="draft-preview"><span className="eyebrow dark">LIVE DRAFT PREVIEW</span><h3>{title.trim()||'Your story begins here'}</h3><p>{content.trim()?content.trim().slice(0,220)+(content.trim().length>220?'...':''):'Your words will appear here as you write.'}</p><small>{author.trim()||'Anonymous creator'} / {country}</small></div>
+            <div className="draft-preview"><span className="draft-label">Draft preview</span><h3>{title.trim()||'Your story begins here'}</h3><p>{content.trim()?content.trim().slice(0,220)+(content.trim().length>220?'...':''):'Your words will appear here as you write.'}</p><small>{author.trim()||'Anonymous creator'} / {country}</small></div>
             <VoiceRecorder/>
             <label className="rights-check"><input type="checkbox" checked={rightsConfirmed} onChange={e=>setRightsConfirmed(e.target.checked)} required/><span>This is my original story or I have permission to use it. I understand this saves a draft only in this browser.</span></label>
             <p className="note">There are no accounts or public publishing. Category suggestions use local keyword rules, not AI. No story text is sent to OpenAI or Deepgram. Recordings remain separate from the saved draft.</p>
@@ -132,7 +134,7 @@ function HomeContent(){
           </form></div>
         </>}
         {tab==='impact'&&<>
-          <SectionHeading eyebrow="TRANSPARENT, NOT MAGIC" title="Make discovery visible." description="An illustrative category comparison using your current search and reading-list settings."/>
+          <SectionHeading title="Make discovery visible" description="An illustrative category comparison using your current search and reading-list settings."/>
           <div className={styles.compare}>
             <div><span>RELEVANCE-ONLY BASELINE</span><strong>{discovery.baselineCoverage} / {CATEGORIES.length}</strong><p>Categories in the first {discovery.windowSize} matching stories</p></div>
             <div><span>DIVERSITY-AWARE ORDER</span><strong>{discovery.diverseCoverage} / {CATEGORIES.length}</strong><p>Categories in the same {discovery.windowSize}-story window</p></div>

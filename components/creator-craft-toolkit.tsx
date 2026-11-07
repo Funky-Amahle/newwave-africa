@@ -22,9 +22,9 @@ export function CreatorCraftToolkit(){
     setStatus('Your editable Markdown brief was downloaded. Keep a backup of your notes.');
   }
   return <section className="craft-toolkit" aria-labelledby="craft-heading">
-    <div className="craft-heading"><div><span className="eyebrow dark">CREATION & CRAFT / HUMAN FIRST</span><h3 id="craft-heading">Shape the work. Keep your voice.</h3></div><p>Free, browser-based planning tools for getting from an idea to a production-ready brief. No account, AI generation, or upload required.</p></div>
+    <div className="craft-heading"><div><h3 id="craft-heading">Shape the work. Keep your voice.</h3></div><p>Free, browser-based planning tools for getting from an idea to a production-ready brief. No account, AI generation, or upload required.</p></div>
     <div className="craft-formats" role="group" aria-label="Choose your creative practice">{formats.map(item=><button key={item.id} type="button" className={format===item.id?'selected':''} aria-pressed={format===item.id} onClick={()=>{setFormat(item.id);setStatus('')}}>{item.label}</button>)}</div>
-    <div className="craft-sheet"><div className="craft-sheet-intro"><span className="eyebrow dark">YOUR WORKING CANVAS</span><h4>{active.label}</h4><p>{active.audience} · A practical outline you can adapt, translate, and share on your terms.</p></div>
+    <div className="craft-sheet"><div className="craft-sheet-intro"><h4>{active.label}</h4><p>{active.audience} · A practical outline you can adapt, translate, and share on your terms.</p></div>
     <div className="craft-fields">{active.sections.map((section,index)=><label key={format+':'+index}>{String(index+1).padStart(2,'0')} / {section}<textarea rows={2} value={notes[format+':'+index]||''} onChange={e=>setNotes(previous=>({...previous,[format+':'+index]:e.target.value}))} placeholder="Write your own notes here..." /></label>)}</div>
     <div className="craft-actions"><button type="button" className="primary" onClick={download}>Download editable brief ↓</button><p>Notes remain in this page's memory until you refresh or leave. Download to keep them. Your work stays yours.</p></div>{status&&<p role="status" className="notice">{status}</p>}</div>
   </section>;

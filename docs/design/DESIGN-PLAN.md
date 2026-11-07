@@ -13,4 +13,6 @@
 
 | DESIGN-12 | P1 | Animated editorial story visuals and narration feedback | Bounded SVG print composition, actual playback indicator, reduced-effects/system preference, offscreen/hidden pause, desktop/mobile review | in progress |
 
+| DESIGN-13 | P1 | Apply supplied interface polish guidelines | Clearer hierarchy, consistent controls, truthful rapid bookmark feedback, focus contrast, desktop/mobile and reduced-motion checks | in progress |
+
 Design is not implemented merely by documenting it. Coordinate with frontend-builder and quality-guardian.
