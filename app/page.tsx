@@ -1,15 +1,11 @@
 'use client';
 import {useEffect,useMemo,useRef,useState} from 'react';
-import type {FormEvent} from 'react';
 import {Brand} from '../components/brand';
+import {CreatorStudio,useCreatorDraft} from '../components/creator-studio';
 import {Hero} from '../components/hero';
 import {StoryCard} from '../components/story-card';
-import {VoiceToText} from '../components/voice-to-text';
-import {StoryVisuals} from '../components/story-visuals';
-import {CreatorCraftToolkit} from '../components/creator-craft-toolkit';
-import {categorizeLocally} from '../lib/demo-categorize';
 import sampleStories from '../lib/sample-stories.json';
-import {CATEGORIES,STORY_KEY,SAVED_KEY,parseStories,prependDraft,parseSaved,toggleSaved,getDiscovery} from '../lib/discovery';
+import {CATEGORIES,STORY_KEY,SAVED_KEY,parseStories,parseSaved,toggleSaved,getDiscovery} from '../lib/discovery';
 import type {Story} from '../lib/discovery';
 import {Experience,Reveal,SectionHeading,Spotlight,DiscoveryRoutes,StudioInvitation,ExperienceHelp,StoryReader,Arrow,SaveIcon,useQuietMotion} from '../components/experience';
 import styles from '../components/experience.module.css';
@@ -23,6 +19,7 @@ function HomeContent(){
   const quiet=useQuietMotion();
   const workspace=useRef<HTMLElement|null>(null);
   const [added,setAdded]=useState<Story[]>([]);
+  const creator=useCreatorDraft(setAdded);
   const [saved,setSaved]=useState<string[]>([]);
   const savedRef=useRef<string[]>([]);
   const [savedOnly,setSavedOnly]=useState(false);
@@ -33,14 +30,6 @@ function HomeContent(){
   const [query,setQuery]=useState('');
   const [showAll,setShowAll]=useState(false);
   const [reader,setReader]=useState<Story|null>(null);
-  const [title,setTitle]=useState('');
-  const [content,setContent]=useState('');
-  const [storyAudio,setStoryAudio]=useState<Blob|null>(null);
-  const [author,setAuthor]=useState('');
-  const [country,setCountry]=useState('South Africa');
-  const [rightsConfirmed,setRightsConfirmed]=useState(false);
-  const [busy,setBusy]=useState(false);
-  const [message,setMessage]=useState('');
 
   useEffect(()=>{
     try {setAdded(parseStories(localStorage.getItem(STORY_KEY)));savedRef.current=parseSaved(localStorage.getItem(SAVED_KEY));setSaved(savedRef.current)}
@@ -57,8 +46,9 @@ function HomeContent(){
       setTab(linked);
       cancelAnimationFrame(frame);
       frame=requestAnimationFrame(()=>{
-        workspace.current?.focus({preventScroll:true});
-        workspace.current?.scrollIntoView({behavior:'auto',block:'start'});
+        const destination=document.getElementById(window.location.hash.slice(1))||workspace.current;
+        destination?.focus({preventScroll:true});
+        destination?.scrollIntoView({behavior:'auto',block:'start'});
       });
     };
     syncFromUrl();
@@ -96,21 +86,6 @@ function HomeContent(){
     const action=next.includes(story.id)?'Added to':'Removed from';
     try {localStorage.setItem(SAVED_KEY,JSON.stringify(next));setSavedMessage(action+' your reading list. Bookmarks are stored in this browser only.')}
     catch {setSavedMessage(action+' your reading list for this visit. Browser storage is unavailable.')}
-  }
-  function publish(event:FormEvent){
-    event.preventDefault();
-    if(!rightsConfirmed){setMessage('Confirm authorship or permission before saving.');return}
-    if(title.trim().length<3||content.trim().length<20||!country.trim()){setMessage('Add a title, country and at least 20 characters of story text.');return}
-    setBusy(true);setMessage('');
-    try {
-      const result=categorizeLocally(title,content);
-      const story:Story={id:globalThis.crypto?.randomUUID?.()||String(Date.now()),title:title.trim(),excerpt:content.trim(),author:author.trim()||'Anonymous creator',country:country.trim(),language:'English',category:result.category,tags:[],date:new Date().toISOString().slice(0,10)};
-      const next=prependDraft(localStorage.getItem(STORY_KEY),story);
-      localStorage.setItem(STORY_KEY,JSON.stringify(next));setAdded(next);
-      setTitle('');setContent('');setRightsConfirmed(false);
-      setMessage('Saved in this browser only. Suggested category: '+story.category+'. Local keyword rules, not AI.');
-    }catch(error){setMessage(error instanceof SyntaxError?'Saved draft data could not be read safely. It has not been overwritten. Copy your new text somewhere safe.':error instanceof Error?error.message:'Unable to save in browser storage. Copy your text somewhere safe before leaving this page.')}
-    finally{setBusy(false)}
   }
 
   return <main id="top">
@@ -150,22 +125,7 @@ function HomeContent(){
           {feed.length===0&&<div className={styles.empty}><h3>{savedOnly?'A little space for your favourites.':'No stories here just yet.'}</h3><p>{savedOnly?'Save a story from the collection, or clear your search to see saved items.':'Try a different search or return to the complete collection.'}</p><button type="button" className={styles.solidButton} onClick={resetFilters}>Explore all stories <Arrow/></button></div>}
           {discovery.ranked.length>6&&<div className={styles.more}><button type="button" className={styles.outlineButton} onClick={()=>setShowAll(v=>!v)}>{showAll?'Show fewer stories':'Explore all '+discovery.ranked.length+' stories'} <Arrow/></button></div>}
         </>}
-        {tab==='create'&&<>
-          <SectionHeading title="Your words. Your next chapter" description="Build a story from what you know. Use a planning canvas, speak an answer, or bring a visual into the process. You make the creative decisions; nothing is automatically published."/>
-          <CreatorCraftToolkit onAudio={setStoryAudio}/>
-          <StoryVisuals audio={storyAudio}/>
-          <SectionHeading title="Share your story" description="Write from experience, answer by voice, and review your draft before saving. Your words stay yours."/>
-          <div className={styles.creatorFrame}><form className="creator" onSubmit={publish}>
-            <label>Story title<input required minLength={3} maxLength={180} value={title} onChange={e=>setTitle(e.target.value)} placeholder="Give your story a title"/></label>
-            <div className="formrow"><label>Creator name<input maxLength={180} value={author} onChange={e=>setAuthor(e.target.value)} placeholder="Your name (optional)"/></label><label>Country<input required maxLength={120} value={country} onChange={e=>setCountry(e.target.value)}/></label></div>
-            <label>Your story<textarea required minLength={20} maxLength={5000} rows={8} value={content} onChange={e=>setContent(e.target.value)} placeholder="Write an original story about an experience, idea or community..."/></label>
-            <div className="draft-preview"><span className="draft-label">Draft preview</span><h3>{title.trim()||'Your story begins here'}</h3><p>{content.trim()?content.trim().slice(0,220)+(content.trim().length>220?'...':''):'Your words will appear here as you write.'}</p><small>{author.trim()||'Anonymous creator'} / {country}</small></div>
-            <VoiceToText fields={[{id:'title',label:'What is your story called?'},{id:'author',label:'Who is telling this story?'},{id:'country',label:'Where does your story come from?'},{id:'content',label:'What happened, and why does it matter to you?'}]} onAudio={setStoryAudio} onInsert={(id,text)=>{const values:Record<string,string>={title,author,country,content};const limits:Record<string,number>={title:180,author:180,country:120,content:5000};const next=[values[id],text].filter(Boolean).join(id==='content'?'\n\n':' ');if(next.length>limits[id])return 'This answer is too long for the selected field. Shorten the transcript first.';if(id==='title')setTitle(next);else if(id==='author')setAuthor(next);else if(id==='country')setCountry(next);else setContent(next)}}/>
-            <label className="rights-check"><input type="checkbox" checked={rightsConfirmed} onChange={e=>setRightsConfirmed(e.target.checked)} required/><span>This is my original story or I have permission to use it. I understand this saves a draft only in this browser.</span></label>
-            <p className="note">There are no accounts or public publishing. Category suggestions use local keyword rules, not AI. Written drafts and visuals are not sent to OpenAI or Deepgram. Only audio you explicitly submit for transcription is sent to Deepgram. Download recordings and visuals separately; they are not included in the saved text draft.</p>
-            <button className="primary" type="submit" disabled={busy}>{busy?'Saving...':'Categorise & save locally'}</button>{message&&<p className="notice" role="status">{message}</p>}
-          </form></div>
-        </>}
+        {tab==='create'&&<CreatorStudio draft={creator}/>}
         {tab==='impact'&&<>
           <SectionHeading title="Make discovery visible" description="An illustrative category comparison using your current search and reading-list settings."/>
           <div className={styles.compare}>

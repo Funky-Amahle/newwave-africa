@@ -19,6 +19,8 @@ todo = not started; in progress = assigned; blocked = unresolved dependency; don
 | NW-09 | P1 | system-architect / quality-guardian | Voice and visual story studio | server deployment for transcription | Explicit audio consent, protected bounded Deepgram endpoint, editable transcript per question, local image/audio preview, original backgrounds, quiet landing waves; verified server and Pages builds | in progress |
 | NW-10 | P1 | product-designer / frontend-builder | Complement GitHub/Base44 creator journeys | DESIGN-15 | Shareable static-workspace links, truthful canvas progress, documented boundaries and QA; publishing/security separate | in progress |
 
+| NW-11 | P1 | product-designer / frontend-builder / quality-guardian | Consolidate Base44 design and GitHub functionality in one app | NW-09,NW-10 | Shared CreatorStudio component; split wave landing; self-hosted typography; existing ranking, narration, drafts, consent and exports retained; Pages/server builds and responsive browser evidence; current source pushed in a PR | in progress |
+
 ## Definition of done
 Story submission, category review, diverse discovery, honest metrics, passing build and reproducible demonstration.
 

@@ -10,6 +10,9 @@ test('workspace views have stable shareable fragments',()=>{
   assert.equal(workspaceHash('impact'),'#discovery-insights');
   for(const view of ['discover','create','impact'])assert.equal(workspaceFromHash(workspaceHash(view)),view);
 });
+test('studio tool links select the creator workspace on direct entry',()=>{
+  for(const hash of ['#studio-plan','#studio-visual','#studio-draft'])assert.equal(workspaceFromHash(hash),'create');
+});
 test('unrelated fragments are not treated as workspace links',()=>{
   for(const hash of ['','#top','#workspace','#unknown','https://example.invalid/#creator-studio'])assert.equal(workspaceFromHash(hash),null);
   assert.equal(workspaceFromHash('  #CREATOR-STUDIO '),'create');
