@@ -4,7 +4,9 @@
 Demonstrate creator-controlled story categorization and transparent diversity-aware discovery.
 
 ## Status
-todo = not started; in progress = assigned; blocked = unresolved dependency; done = merged and verified. All tasks below are proposed, not complete.
+todo = not started; in progress = assigned or implemented with acceptance evidence outstanding; blocked = unresolved dependency; done = merged and verified against the stated acceptance criteria. A merged PR or passing CI does not by itself establish mobile, microphone, or accessibility acceptance.
+
+**Release evidence (8 November 2026):** [NW-18 PR #38](https://github.com/Funky-Amahle/newwave-africa/pull/38) was merged into `main` at `a065da0be6dc9226ad87e6dad81a72ad9664fff9`; [production GitHub Pages workflow 42500343925](https://github.com/Funky-Amahle/newwave-africa/actions/runs/42500343925) passed. Public device/browser interactions and the final video remain separate QA gates.
 
 | ID | Priority | Skill owner | Task | Dependencies | Acceptance criteria | Status |
 |---|---|---|---|---|---|---|
@@ -25,13 +27,13 @@ todo = not started; in progress = assigned; blocked = unresolved dependency; don
 
 | NW-13 | P1 | system-architect / backend-builder / quality-guardian | Plan Deepgram speech-to-text while retaining GitHub Pages | approved backend account/endpoint deferred | Pages-only tools remain usable without secrets; reviewed backend/CORS/consent/limits/verification roadmap documented; no live transcription claimed | in progress (plan only) |
 
-| NW-14 | P1 | frontend-builder / quality-guardian | Enable Pages-only session-key transcription demo | NW-13 | No bundled/stored/shared key; explicit consent; bounded direct Deepgram stream; cancel, review and append; accurate docs and provider verification limits | in progress |
+| NW-14 | P1 | frontend-builder / quality-guardian | Enable Pages-only session-key transcription demo | NW-13 | No bundled/stored/shared key; explicit consent; bounded direct Deepgram stream; cancel, review and append; accurate docs and provider verification limits | in progress (PR #34 merged/deployed; local-origin provider test passed; public-origin and device QA pending) |
 
 | NW-15 | P1 | product-designer / frontend-builder / quality-guardian | Add screenshot-guided question speech controls and story metadata | Per-question reviewed voice insertion, five practice pills, full-width prompts, credit/country/category/language controls, preserved local drafts and consent; responsive and keyboard evidence | in progress |
 
 | NW-16 | P1 | frontend-builder / quality-guardian | Animate discovery card artwork | Continuous gentle wave, orbit and disc motion; existing visibility and reduced-motion controls retained; static export build and review | in progress |
 
-| NW-18 | P0 | ai-discovery-engine / product-designer / quality-guardian / release-manager | Judging-readiness demonstration | Fixed deliberately imbalanced fictional dataset shows baseline versus diversity order; creator path links existing safe tools; CI checks and a pending real-device checklist; script describes current features accurately. Review PR before merge/deploy. | in progress (feature PR; not released) |
+| NW-18 | P0 | ai-discovery-engine / product-designer / quality-guardian / release-manager | Judging-readiness demonstration | Fixed deliberately imbalanced fictional dataset shows baseline versus diversity order; creator path links existing safe tools; CI checks and a pending real-device checklist; script describes current features accurately. Review PR before merge/deploy. | in progress (PR #38 merged/deployed; real-device acceptance and final demo video pending) |
 
 ## Definition of done
 Story submission, category review, diverse discovery, honest metrics, passing build and reproducible demonstration.
