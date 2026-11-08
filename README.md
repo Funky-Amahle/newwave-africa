@@ -26,6 +26,8 @@ See [the Pages consolidation record](docs/design/PAGES-CONSOLIDATION.md) and [th
 
 The eight starter stories are **fictional demonstration content**, not verified reporting or real creator submissions. The diversity algorithm is illustrative, not a validated recommender or proof of fair outcomes.
 
+**Featured fictional long read (NW-21, pending review):** The South African Culture & Heritage sample `s3` includes a complete, original, explicitly fictional written story with an editorial reading view and ~3-minute reading estimate. Existing audio on the card and external Google Translate link still cover **the short original excerpt only**, not this full narrative. No interview, real storyteller or verified cultural testimony is implied. Browser-local drafts remain unchanged.
+
 **Optional translation handoff (NW-19 and NW-20):** The shared header offers an English-first language selector and a link to Google Translate's external Websites feature. Users manually copy the public page URL to the external translator; translations are not embedded in the app, and the original page stays available. The Website feature is subject to browser and region availability. 
 
 **Story reader (NW-19):** In the story reader, choose from a curated selection of African languages and explicitly open a fictional sample's title/excerpt in Google Translate. A personal browser-local draft is **never embedded in an external URL**; users can copy its text locally and manually choose whether to share it with the external service. The original stays in the reader, machine translations are unreviewed and should be checked for nuance, and translation does **not** run inside the app. No Google Cloud key, billing account, backend, unsupported widget, or new stored data is required.
