@@ -328,7 +328,7 @@
   .utilityActions { gap:6px; }
   .siteLanguage summary { padding:8px; }
   .siteLanguage summary strong { max-width:75px; overflow:hidden; text-overflow:ellipsis; }
-  .siteLanguagePanel { right:-76px; width:min(350px,calc(100vw - 24px)); }
+  .siteLanguagePanel { position:fixed; top:58px; left:12px; right:12px; width:auto; max-height:calc(100dvh - 70px); }
 }
 
 /* NW-21: featured story reading. All imagery is the app's original abstract SVG artwork. */
@@ -450,3 +450,35 @@
   .creatorJourney ol { grid-template-columns:minmax(0,1fr); }
   .studioShortcutPicker label { display:none; }
 }
+
+
+/* DESIGN-SELECT: coherent selectors across discovery, metadata and translation. */
+.experience :is(.filters select,.translationControls select,.studioShortcutPicker select) {
+  appearance:none;-webkit-appearance:none;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23193b2c' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;background-position:right 13px center;background-size:18px 18px;
+  padding-right:42px;min-height:48px;max-width:100%;min-width:0;
+  border:1px solid #a8aaa0;border-radius:8px;
+  text-overflow:ellipsis;color:var(--nw-ink);
+}
+.experience :global(.creator select) {
+  appearance:none;-webkit-appearance:none;
+  background-color:var(--nw-surface);
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23193b2c' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;background-position:right 13px center;background-size:18px 18px;
+  padding-right:42px;min-height:48px;max-width:100%;min-width:0;
+  border:1px solid #a8aaa0;border-radius:8px;text-overflow:ellipsis;
+}
+.experience :is(.filters select,.translationControls select,.studioShortcutPicker select):hover,
+.experience :global(.creator select:hover) {border-color:var(--nw-forest);}
+.experience .filters label,.experience :global(.creator label),.experience :global(.metadata-choice){min-width:0;}
+.experience :global(.creator .formrow){grid-template-columns:repeat(2,minmax(0,1fr));}
+.siteLanguagePanel select {
+  appearance:none;-webkit-appearance:none;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23193b2c' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;background-position:right 13px center;background-size:18px 18px;
+  padding-right:42px;min-height:48px;border-radius:8px;
+}
+.siteLanguagePanel select:hover{border-color:var(--nw-forest);}
+@media(max-width:700px){.experience :global(.creator .formrow){grid-template-columns:minmax(0,1fr);}}
+@media(max-width:540px){.siteLanguagePanel{box-shadow:0 14px 42px #10251b55;}}
