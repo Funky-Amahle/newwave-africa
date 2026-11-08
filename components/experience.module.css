@@ -306,3 +306,27 @@
 .studioWork :global(#studio-draft),.studioWork :global(#studio-voice-answer),.studioWork :global(#studio-rights) { scroll-margin-top:24px; }
 @media(max-width:980px) { .creatorJourney ol { grid-template-columns:repeat(2,minmax(0,1fr)); } }
 @media(max-width:540px) { .creatorJourney ol { grid-template-columns:minmax(0,1fr); }.creatorJourney a { min-height:auto; }.creatorJourney { padding-top:22px; } }
+
+/* Homepage and shared-page language control. Accessible disclosure keeps narrow layouts clean. */
+.utilityActions { display:flex; align-items:center; justify-content:flex-end; flex-wrap:wrap; gap:10px; min-width:0; }
+.siteLanguage { position:relative; color:var(--nw-paper); font-size:12px; letter-spacing:0; }
+.siteLanguage summary { display:flex; gap:8px; align-items:center; cursor:pointer; border:1px solid #ffffff69; border-radius:3px; padding:8px 12px; min-height:44px; list-style:none; }
+.siteLanguage summary::-webkit-details-marker { display:none; }
+.siteLanguage summary:after { content:'⌄'; font-size:15px; }
+.siteLanguage summary strong { font-size:12px; white-space:nowrap; }
+.siteLanguagePanel { position:absolute; z-index:30; right:0; top:calc(100% + 8px); width:min(350px,calc(100vw - 32px)); max-height:min(68vh,520px); overflow-y:auto; background:var(--nw-surface); color:var(--nw-ink); padding:20px; border:1px solid var(--nw-line); box-shadow:0 20px 50px #10251b45; border-radius:6px; }
+.siteLanguagePanel label { display:block; font-size:12px; font-weight:700; margin:0 0 8px; }
+.siteLanguagePanel select,.siteLanguagePanel input { box-sizing:border-box; width:100%; min-height:44px; padding:10px 12px; border:1px solid var(--nw-line); border-radius:3px; background:var(--nw-paper); color:var(--nw-ink); font-size:13px; }
+.siteLanguagePanel p { color:var(--nw-muted); font-size:12px; line-height:1.65; margin:12px 0; }
+.siteLanguagePanel .siteLanguageUrlLabel { margin-top:14px; }
+.siteLanguageActions { display:flex; gap:8px; flex-wrap:wrap; margin-top:12px; }
+.siteLanguageActions button,.siteLanguageActions a { display:inline-flex; align-items:center; justify-content:center; min-height:44px; padding:9px 12px; border:1px solid var(--nw-forest); border-radius:3px; color:var(--nw-forest); background:transparent; font-size:12px; font-weight:700; text-decoration:none; cursor:pointer; }
+.siteLanguageActions :is(button,a):hover { background:#e6ebdf; }
+.siteLanguagePanel .siteLanguageDisclaimer { font-size:11px; }
+.siteLanguagePanel .siteLanguageStatus { color:var(--nw-forest); }
+@media(max-width:540px) {
+  .utilityActions { gap:6px; }
+  .siteLanguage summary { padding:8px; }
+  .siteLanguage summary strong { max-width:75px; overflow:hidden; text-overflow:ellipsis; }
+  .siteLanguagePanel { right:-76px; width:min(350px,calc(100vw - 24px)); }
+}

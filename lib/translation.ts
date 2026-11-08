@@ -31,3 +31,18 @@ export function blankGoogleTranslateUrl(target:string):string{
   const safeTarget=TRANSLATION_LANGUAGES.some(language=>language.code===target)?target:'sw';
   return 'https://translate.google.com/?'+new URLSearchParams({sl:'auto',tl:safeTarget,op:'translate'}).toString();
 }
+
+/** Current public route only; never include search parameters, fragments or local draft text. */
+export function publicSitePageUrl(pathname:string):string{
+  const base='https://funky-amahle.github.io/newwave-africa/';
+  const route=pathname.replace(/^\/newwave-africa(?=\/|$)/,'').replace(/^\/+|\/+$/g,'');
+  const safeRoutes=new Set(['','creator-studio','our-approach']);
+  const valid=safeRoutes.has(route)?route:'';
+  return base+(valid?valid+'/':'');
+}
+
+/** Google Translate's Websites feature opens without silently transmitting any site content. */
+export function googleWebsiteTranslatorUrl(target:string):string|null{
+  if(!TRANSLATION_LANGUAGES.some(language=>language.code===target))return null;
+  return 'https://translate.google.com/?'+new URLSearchParams({sl:'auto',tl:target,op:'websites'}).toString();
+}

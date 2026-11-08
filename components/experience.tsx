@@ -6,6 +6,7 @@ import type {Story} from '../lib/discovery';
 import styles from './experience.module.css';
 import {StoryArtwork} from './story-artwork';
 import {TRANSLATION_LANGUAGES,sampleGoogleTranslateUrl,blankGoogleTranslateUrl} from '../lib/translation';
+import {SiteLanguageSelector} from './site-language-selector';
 
 const MotionContext = createContext(true);
 export const useQuietMotion = () => useContext(MotionContext);
@@ -21,10 +22,11 @@ export function Experience({children}:{children:ReactNode}) {
   return <MotionContext.Provider value={quiet}><MotionConfig reducedMotion={quiet?'always':'user'}>
     <div className={styles.experience} data-quiet={quiet}>
       <div className={styles.utility}><span>Independent voices. Shared perspectives.</span>
+        <div className={styles.utilityActions}><SiteLanguageSelector/>
         <button type="button" aria-pressed={quiet} disabled={!ready||systemReduced} onClick={()=>setPaused(v=>!v)}>
           {systemReduced ? 'Reduced effects: system' : quiet ? 'Reduced effects' : 'Full effects'}
           <span className={styles.srOnly}>. Toggle optional effects.</span>
-        </button>
+        </button></div>
       </div>{children}
     </div>
   </MotionConfig></MotionContext.Provider>;
