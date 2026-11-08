@@ -83,6 +83,22 @@ audio of the full narrative. No new network request, secret, storage migration
 or external media asset is introduced. Human cultural/context and live browser
 review remain required before publishing.
 
+## Reader clarity and explainability — NW-22
+
+The `s3` original fictional long read now offers a **local, in-dialog**
+standard/large font toggle. It does not persist the preference or change private
+story data; other story views stay at their current size. Existing sample MP3s
+still narrate **short preview excerpts only**, not long-form prose.
+
+The disclosure on each discovery card is derived from `explainStoryPlacement`
+using the same `DiscoveryOptions` and `counts` returned by `getDiscovery`.
+The text describes the current search and reading-list selection, interest
+preference, the 0–100% category-diversity weight and full browser collection
+category counts. It states deterministic local scoring and alphabetical title
+tie-breaks, not trained recommendations or observed audience behaviors.
+Explanations are deliberately qualitative, not fabricated model attributions.
+This introduces no analytics, stored preferences, backend or network calls.
+
 ## Media and motion
 
 Original SVG background assets or local image blobs accompany the selected audio
