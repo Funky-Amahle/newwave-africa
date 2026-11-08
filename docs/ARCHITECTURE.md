@@ -69,6 +69,20 @@ provider billing and quotas, explicit consent, language quality review and a
 separate threat model. This handoff does not claim full multilingual app UI or
 automatic translation in a browser.
 
+## Editorial long read — NW-21
+
+The fictional `s3` sample retains its original title, excerpt and prerecorded
+preview audio. A separate bundled English long read is selected only when
+`story.sample === true` and `story.id === 's3'`; browser drafts never inherit
+it, even with a colliding ID. The story reader presents the fictional full text,
+reading time and original decorative category artwork, preserving creator credit,
+category, reading-list state and original story IDs. Google Translate continues
+to receive the **short excerpt only** when a user clicks its external link.
+The published Deepgram sample recording remains an **excerpt narration**, not
+audio of the full narrative. No new network request, secret, storage migration
+or external media asset is introduced. Human cultural/context and live browser
+review remain required before publishing.
+
 ## Media and motion
 
 Original SVG background assets or local image blobs accompany the selected audio
