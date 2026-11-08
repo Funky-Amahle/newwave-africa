@@ -107,7 +107,7 @@ For two separate ~5-minute videos (professional pitch and technical walkthrough)
 - **Creator agency:** obtain permission for stories, recordings, images, music and other assets.
 - **Cultural specificity:** invite local language expertise and avoid treating Africa as one homogeneous culture.
 - **Transparency:** fictional examples, local-only storage, rule-based classification and illustrative metrics must be clearly labeled.
-- **Privacy:** written drafts and visuals remain in the browser. Only explicitly consented audio is sent to Deepgram on the configured server edition; download backups before clearing data or leaving the page.
+- **Privacy:** written drafts and visuals remain in the browser. Only explicitly consented audio is sent to Deepgram, using the Pages session-key demo or the configured server edition; download backups before clearing data or leaving the page.
 - **Accessibility:** prioritize keyboard controls, captions/transcripts, responsive layouts and reduced motion; manual device testing remains necessary.
 
 ## Project workflow
