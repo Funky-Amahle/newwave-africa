@@ -51,6 +51,24 @@ Origin, an 8 MB audio cap, a 1 MB response cap, a 5,000-character transcript cap
 a timeout and per-process request/concurrency limits. These are private-pilot
 controls, not a distributed public authentication/quota service.
 
+## Optional translation handoff — NW-19
+
+The story-reader language picker creates an external Google Translate URL only
+for the eight explicitly fictional bundled samples and only after the reader
+clicks the link. The link carries the sample title and excerpt; it does not
+translate inside the app. For browser-local drafts the app never includes
+user-authored text in an external URL: users may copy it to the clipboard and
+separately choose whether to paste it into the external translator. No automatic
+network requests, translation key, widget, retained translations, draft mutation
+or public publishing is introduced. Machine output is not culturally or
+linguistically verified. The original text stays visible in the story reader.
+
+Google's embedded Website Translator widget is unsupported as of October 2026;
+true integrated cloud translation would require an approved secure backend,
+provider billing and quotas, explicit consent, language quality review and a
+separate threat model. This handoff does not claim full multilingual app UI or
+automatic translation in a browser.
+
 ## Media and motion
 
 Original SVG background assets or local image blobs accompany the selected audio
