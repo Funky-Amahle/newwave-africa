@@ -27,7 +27,7 @@ test('progress counts only nonblank answers for the active format',()=>{
   assert.equal(notes['story:0'],' A story ');
 });
 test('homepage offers linkable views and Back/Forward state restoration',()=>{
-  const src=readFileSync(new URL('../app/page.tsx',import.meta.url),'utf8');
+  const src=readFileSync(new URL('../components/home-content.tsx',import.meta.url),'utf8');
   assert.match(src,/window\.history\.pushState/);
   assert.match(src,/addEventListener\('popstate'/);
   assert.match(src,/addEventListener\('hashchange'/);
