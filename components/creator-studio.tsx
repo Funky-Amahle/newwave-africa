@@ -75,7 +75,7 @@ export function CreatorStudio({draft}:{draft:ReturnType<typeof useCreatorDraft>}
             <button className="primary" type="submit" disabled={busy}>{busy?'Saving...':'Save written draft locally'}</button>{message&&<p className="notice" role="status">{message}</p>}
           </form></div></div>
           </div>
-          <aside className={styles.studioMedia} id="studio-visual" tabIndex={-1} aria-label="Voice and visual companion"><CreatorVoicePicker voice={narrationVoice} onChange={setNarrationVoice} title={title} content={content}/><StoryVisuals audio={storyAudio}/><p className={styles.studioPrivacy}>A setting for your voice. Choose original artwork or an image you have permission to use. Media stays in this tab; download each asset to keep it.</p></aside>
+          <aside className={styles.studioMedia} aria-label="Voice and visual companion"><CreatorVoicePicker voice={narrationVoice} onChange={setNarrationVoice} title={title} content={content}/><StoryVisuals audio={storyAudio}/><p className={styles.studioPrivacy}>A setting for your voice. Choose original artwork or an image you have permission to use. Media stays in this tab; download each asset to keep it.</p></aside>
           </div>
 
   </section>;
