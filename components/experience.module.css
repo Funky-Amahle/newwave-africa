@@ -404,3 +404,49 @@
   .header .nav { justify-content:flex-start; column-gap:18px; row-gap:0; }
   .header .nav a { min-height:44px; display:inline-flex; align-items:center; }
 }
+
+
+/* NW-27: persistent Creator Studio wayfinding. Controls do not move user data. */
+.studioShortcutBar {
+  position:sticky; top:0; z-index:30; margin:18px 0 28px;
+  display:flex; flex-wrap:wrap; align-items:center; gap:8px 16px;
+  min-height:64px; padding:9px 14px; border:1px solid var(--nw-line);
+  border-radius:12px; background:var(--nw-surface); color:var(--nw-forest);
+  box-shadow:0 9px 26px -18px #102a1e66;
+}
+.studioShortcutTitle { font-size:11px; font-weight:700; letter-spacing:.04em; white-space:nowrap; }
+.studioShortcutLinks { display:flex; flex:1; min-width:0; flex-wrap:wrap; align-items:center; gap:5px; }
+.studioShortcutLinks a { display:inline-flex; align-items:center; justify-content:center; min-height:44px; padding:10px 12px;
+  border-radius:8px; color:var(--nw-forest); text-decoration:none; font-size:12px; font-weight:600; }
+.studioShortcutLinks a:hover,.studioBackToTop:hover { background:#e8efe5; }
+.studioBackToTop { display:inline-flex; align-items:center; justify-content:center; min-height:44px; padding:10px 13px;
+  border:1px solid var(--nw-line); border-radius:8px; text-decoration:none; font-size:12px; font-weight:700; white-space:nowrap; }
+.studioShortcutPicker { display:none; }
+.pageHeading:target { scroll-margin-top:88px; }
+.studio :global(#studio-plan), .studio :global(#studio-draft), .studio :global(#studio-voice-answer),
+.studio :global(#studio-rights), .studio :global(#studio-narration), .studio :global(#studio-visual) {
+  scroll-margin-top:92px;
+}
+@media(max-width:900px){
+  .studioShortcutLinks { display:none; }
+  .studioShortcutPicker { display:flex; align-items:center; gap:9px; flex:1; min-width:0; }
+  .studioShortcutPicker label { font-size:12px; font-weight:700; }
+  .studioShortcutPicker select { flex:1; min-width:0; width:100%; max-width:460px; min-height:44px; border:1px solid #adb8a6; border-radius:8px;
+    background:var(--nw-surface); color:var(--nw-forest); font-size:13px; padding:9px 10px; }
+}
+@media(max-width:540px){
+  .studioShortcutBar { gap:8px; padding:8px; margin:12px 0 18px; }
+  .studioShortcutTitle { display:none; }
+  .studioShortcutPicker { gap:7px; }
+  .studioShortcutPicker label { font-size:11px; }
+  .studioBackToTop { padding:8px 10px; }
+  /* Compact the existing four-step overview rather than hiding any tools. */
+  .creatorJourney ol { grid-template-columns:repeat(2,minmax(0,1fr)); gap:8px; }
+  .creatorJourney a { padding:12px; gap:5px; }
+  .creatorJourney a small { display:none; }
+  .creatorJourney a strong { font-size:12px; }
+}
+@media(max-width:350px){
+  .creatorJourney ol { grid-template-columns:minmax(0,1fr); }
+  .studioShortcutPicker label { display:none; }
+}
