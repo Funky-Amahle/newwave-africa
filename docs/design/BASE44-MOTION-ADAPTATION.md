@@ -18,6 +18,7 @@ Read-only Base44 editor conversation/preview confirms a visual wave-themed landi
 - When enabled, rotation waits 8.5 seconds between changes, pauses while the feature is hovered or keyboard-focused, offscreen, or document-hidden; any direct selection disables rotation. System and manually selected reduced effects disable the feature and all transitions.
 - The story preview uses a short entrance/exit effect (260 ms) only while full effects are enabled. No animation blocks content or hides focusable controls.
 - Explicit selected state and accessible names on dots, sensible narrow-screen wrapping and at least 44 px interaction height. No new external images, libraries, data storage or API calls.
+- Creator Studio mode cards receive a finite 240 ms entrance; switching Record/Upload is disabled during microphone permission requests or active recording, avoiding accidental interruption of a take. Reduced-motion settings disable the entrance. Existing consent and local-only media boundaries stay unchanged.
 
 ## Compared approaches
 
