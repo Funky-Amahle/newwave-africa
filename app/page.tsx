@@ -110,7 +110,7 @@ function HomeContent(){
           <div className={styles.filters}>
             <label>Your interest<select value={interest} onChange={event=>{setInterest(event.target.value);setShowAll(false)}}><option>All categories</option>{CATEGORIES.map(c=><option key={c}>{c}</option>)}</select><small>Prioritises a category without excluding other voices.</small></label>
             <label>Search the collection<input type="search" value={query} onChange={event=>{setQuery(event.target.value);setShowAll(false)}} placeholder="Try community, science or a country"/><small>Search titles, text, countries and themes.</small></label>
-            <label><span className={styles.rangeTitle}>Make room for variety <output>{diversity}%</output></span><input type="range" aria-label="Discovery diversity percentage" min="0" max="100" step="10" value={diversity} onChange={event=>setDiversity(Number(event.target.value))}/><small>Higher values favour less-represented categories.</small></label>
+            <label><span className={styles.rangeTitle}>Make room for variety <output>{diversity}%</output></span><input type="range" aria-label="Discovery diversity percentage" min="0" max="100" step="10" value={diversity} onChange={event=>setDiversity(Number(event.target.value))}/><small>Higher values favour less-represented categories. This setting also controls the fictional comparison in Discovery insights.</small></label>
           </div>
           <div className={styles.results}>
             <p role="status">{discovery.ranked.length} {discovery.ranked.length===1?'story':'stories'} / {feed.length} shown{savedOnly?' / Reading list':''}</p>
