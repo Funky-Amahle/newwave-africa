@@ -51,6 +51,8 @@ todo = not started; in progress = assigned or implemented with acceptance eviden
 
 | NW-28 | P1 | frontend-builder / quality-guardian | Correct Creator Studio visual section jump and uploaded-file download naming | NW-27; existing original visual editor | `#studio-visual` focuses the visual editor rather than the media sidebar; uploaded JPG/PNG/WebP downloads retain corresponding extension; original artwork SVG download and privacy unaffected; targeted regression and build verification | in progress (draft PR; live device QA pending) |
 
+| NW-29 | P0 | quality-guardian / frontend-builder | Turn Creator Studio visual browser QA into reproducible Chromium checks | NW-28 deployed; static Pages export | Playwright checks desktop visual jump, SVG and synthetic JPG/PNG/WebP actual downloads, phone selector and five-width overflow; screenshots on failure; CI results and manual QA gaps reported honestly | in progress (browser checks proposed on PR; physical-device QA pending) |
+
 ## Definition of done
 Story submission, category review, diverse discovery, honest metrics, passing build and reproducible demonstration.
 
