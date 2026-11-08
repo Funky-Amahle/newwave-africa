@@ -113,6 +113,10 @@ audio is playing; reduced-motion preferences disable both. Browser microphone
 permissions, error states, the three-minute recording limit and 8 MB cap remain.
 No provider credential, recording or transcript is persisted or sent automatically.
 
+## Navigation and route ownership — NW-26
+
+Primary navigation uses four stable Next.js App Router paths: `/`, `/discover/`, `/creator-studio/` and `/our-approach/`. A shared client component renders the original homepage discovery section and the new Discover page without duplicating ranking, reading lists or browser-local drafts. `/#discover` and `/#discovery-insights` remain valid homepage deep links. Next.js `Link` preserves the GitHub Pages `basePath`; `scripts/check_pages_routes.mjs` validates all four exported `index.html` documents and prefixed navigation. Active page state derives from the pathname. Browser Back/Forward and workspace hash restoration remain supported. No server dependency or new storage schema is introduced.
+
 ## Media and motion
 
 Original SVG background assets or local image blobs accompany the selected audio

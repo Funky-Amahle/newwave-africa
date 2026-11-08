@@ -27,11 +27,13 @@ test('progress counts only nonblank answers for the active format',()=>{
   assert.equal(notes['story:0'],' A story ');
 });
 test('homepage offers linkable views and Back/Forward state restoration',()=>{
-  const src=readFileSync(new URL('../app/page.tsx',import.meta.url),'utf8');
+  const src=readFileSync(new URL('../components/home-content.tsx',import.meta.url),'utf8');
   assert.match(src,/window\.history\.pushState/);
   assert.match(src,/addEventListener\('popstate'/);
   assert.match(src,/addEventListener\('hashchange'/);
   const shell=readFileSync(new URL('../components/site-shell.tsx',import.meta.url),'utf8');
+  assert.match(shell,/href="\/"/);
+  assert.match(shell,/href="\/discover\/"/);
   assert.match(shell,/href="\/creator-studio\/"/);
   assert.match(shell,/href="\/our-approach\/"/);
 });
@@ -51,4 +53,28 @@ test('guided journey links existing draft, review, consent and save controls',()
   }
   assert.match(src,/Save written draft locally/);
   assert.match(src,/nothing is automatically published/);
+});
+
+test('four ordered primary navigation routes keep direct entries and legacy discovery hashes',()=>{
+  const shell=readFileSync(new URL('../components/site-shell.tsx',import.meta.url),'utf8');
+  const discover=readFileSync(new URL('../app/discover/page.tsx',import.meta.url),'utf8');
+  const landing=readFileSync(new URL('../app/page.tsx',import.meta.url),'utf8');
+  const shared=readFileSync(new URL('../components/home-content.tsx',import.meta.url),'utf8');
+  const expected=['Home','Discover','Creator Studio','Our Approach'];
+  const targets=['/','/discover/','/creator-studio/','/our-approach/'];
+  const nav=shell.slice(shell.indexOf('<nav '),shell.indexOf('</nav>'));
+  let previous=-1;
+  for(let i=0;i<expected.length;i++){
+    const target='href="'+targets[i]+'"';
+    const p=nav.indexOf(target);
+    assert.ok(p>previous,'Expected navigation '+expected[i]+' after previous link');
+    previous=p;
+  }
+  assert.match(discover,/HomeContent mode="discover"/);
+  assert.match(landing,/HomeContent mode="home"/);
+  assert.match(shared,/id="discover"/);
+  assert.match(shared,/addEventListener\('hashchange'/);
+  assert.match(shared,/addEventListener\('popstate'/);
+  assert.equal(workspaceFromHash('#discover'),'discover');
+  assert.equal(workspaceFromHash('#discovery-insights'),'impact');
 });

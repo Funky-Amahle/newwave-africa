@@ -396,3 +396,11 @@
 }
 @media(prefers-reduced-motion:reduce) { .spotlightPagination button span { transition:none; transform:none!important; } }
 .experience[data-quiet='true'] .spotlightPagination button span { transition:none; transform:none!important; }
+
+
+/* NW-26: four primary routes remain readable at 320 CSS px and high zoom. */
+.nav { flex-wrap:wrap; align-items:center; }
+@media(max-width:540px) {
+  .header .nav { justify-content:flex-start; column-gap:18px; row-gap:0; }
+  .header .nav a { min-height:44px; display:inline-flex; align-items:center; }
+}

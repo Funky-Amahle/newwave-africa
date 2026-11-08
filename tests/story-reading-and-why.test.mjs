@@ -46,7 +46,7 @@ test('invalid diversity weights use the same default or clamping as ranker',()=>
 test('reader and cards distinguish short narration from complete original fictional story',()=>{
   const reader=readFileSync(new URL('../components/experience.tsx',import.meta.url),'utf8');
   const card=readFileSync(new URL('../components/story-card.tsx',import.meta.url),'utf8');
-  const home=readFileSync(new URL('../app/page.tsx',import.meta.url),'utf8');
+  const home=readFileSync(new URL('../components/home-content.tsx',import.meta.url),'utf8');
   const css=readFileSync(new URL('../components/experience.module.css',import.meta.url),'utf8');
   assert.match(card,/Short preview audio only/);
   assert.match(card,/Short fictional sample excerpt, not a full-length story/);
