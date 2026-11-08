@@ -482,3 +482,19 @@
 .siteLanguagePanel select:hover{border-color:var(--nw-forest);}
 @media(max-width:700px){.experience :global(.creator .formrow){grid-template-columns:minmax(0,1fr);}}
 @media(max-width:540px){.siteLanguagePanel{box-shadow:0 14px 42px #10251b55;}}
+
+
+/* Header utility bar: keep secondary controls compact at narrow / zoomed viewports.
+   Preserve the 44px touch targets, keyboard focus and existing translation handoff. */
+@media(max-width:600px) {
+  .utility { justify-content:flex-end; min-height:56px; gap:8px; padding:6px 18px; }
+  .utility>span { display:none; }
+  .utilityActions { max-width:100%; flex-wrap:wrap; justify-content:flex-end; gap:8px; }
+  .siteLanguage summary { min-height:44px; padding:8px 10px; gap:6px; }
+  .siteLanguage summary::after { margin-left:auto; }
+  .utilityActions>button { padding-inline:10px; }
+}
+/* At tiny CSS widths or strong zoom, leave readable current language and toggle. */
+@media(max-width:370px) {
+  .siteLanguageCaption { display:none; }
+}

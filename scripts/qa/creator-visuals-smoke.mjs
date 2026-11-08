@@ -21,6 +21,36 @@ try{
   await page.goto(base+'creator-studio/',{waitUntil:'networkidle',timeout:45000});
   await page.getByRole('heading',{name:'Creator studio',exact:true}).waitFor();
 
+  await run('Language and effects utility bar stays usable on narrow screens',async()=>{
+    for(const width of [320,375,540,768]){
+      await page.setViewportSize({width,height:812});
+      const utility=page.locator('div[class*="utilityActions"]');
+      const language=utility.locator('details');
+      const trigger=language.locator('summary');
+      const effects=utility.getByRole('button',{name:/effects/i});
+      await trigger.waitFor();
+      await effects.waitFor();
+      const before=await page.evaluate(()=>({
+        innerWidth:window.innerWidth,
+        scrollWidth:document.documentElement.scrollWidth
+      }));
+      assert.ok(before.scrollWidth<=before.innerWidth+2,'utility header overflows at '+width);
+      const triggerBox=await trigger.boundingBox();
+      const effectsBox=await effects.boundingBox();
+      for(const box of [triggerBox,effectsBox]){
+        assert.ok(box && box.x>=-1 && box.x+box.width<=width+1,
+          'utility controls escape viewport at '+width);
+      }
+      await trigger.click();
+      const panel=language.locator('div[class*="siteLanguagePanel"]');
+      const panelBox=await panel.boundingBox();
+      assert.ok(panelBox && panelBox.x>=-1 && panelBox.x+panelBox.width<=width+1,
+        'language disclosure escapes viewport at '+width);
+      await trigger.click();
+    }
+    await page.setViewportSize({width:1440,height:900});
+  });
+
   await run('Desktop Visuals shortcut scrolls to the actual visual editor',async()=>{
     const nav=page.getByRole('navigation',{name:'Jump between Creator Studio sections'});
     await nav.getByRole('link',{name:'Visuals',exact:true}).click();
@@ -108,7 +138,7 @@ try{
       console.log('  No horizontal overflow at '+width+'px');
     }
   });
-  console.log('Creator Studio Chromium checks passed: '+passed+'/6');
+  console.log('Creator Studio Chromium checks passed: '+passed+'/7');
 }finally{
   await browser.close();
 }
