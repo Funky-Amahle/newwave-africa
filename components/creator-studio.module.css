@@ -74,3 +74,11 @@
 @keyframes voice-review-bar{from{transform:scaleY(.42)}to{transform:scaleY(1.15)}}
 @media(max-width:700px){.modeCards{grid-template-columns:minmax(0,1fr)}.panel .modeCards button{min-height:85px}.selectedPlayer{flex-direction:column;align-items:stretch}.playbackBars{height:20px;justify-content:center}}
 @media(prefers-reduced-motion:reduce){.modeCards button,.playbackBars i{transition:none!important;animation:none!important}.panel .modeCards button:hover{transform:none}}
+
+
+/* NW-25: finite Base44-inspired mode entrance; interaction never depends on motion. */
+.captureModePanel{animation:studio-mode-arrive .24s cubic-bezier(.2,.8,.2,1) both}
+.modeCards button:active:not(:disabled){transform:scale(.985)}
+.modeCards button:disabled{opacity:.65;cursor:not-allowed}
+@keyframes studio-mode-arrive{from{opacity:.82;transform:translateY(5px)}to{opacity:1;transform:translateY(0)}}
+@media(prefers-reduced-motion:reduce){.captureModePanel{animation:none!important}.modeCards button:active{transform:none!important}}

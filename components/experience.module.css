@@ -368,3 +368,31 @@
   .readerPreferences>span { flex-basis:100%; }
   .readerText[data-reading-size='large'] { font-size:21px; }
 }
+
+
+/* NW-25: Base44-inspired story navigation, adapted to NewWave's honest
+   fictional-sample experience. No automatic movement without opt-in. */
+.spotlightNav { display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:8px 14px; width:100%; }
+.spotlightNav>span { font-size:11px; line-height:1.5; letter-spacing:0; }
+.spotlightArrows { display:flex; gap:6px; align-items:center; }
+.spotlightArrows button { border:1px solid var(--nw-line); border-radius:7px; min-height:44px; padding:10px 13px; background:transparent; color:var(--nw-ink); font-size:11px; }
+.spotlightArrows button:hover { background:#e8eee4; border-color:#a5b59d; }
+.spotlightPagination { display:flex; align-items:center; justify-content:center; flex-wrap:wrap; gap:3px; width:100%; margin-top:2px; }
+.spotlightPagination button { min-height:44px; min-width:34px; border:0; background:transparent; display:inline-flex; justify-content:center; align-items:center; padding:9px; border-radius:8px; }
+.spotlightPagination button span { display:block; width:8px; height:8px; border-radius:99px; background:#b6bcaf; transition:background-color .18s ease,transform .18s ease; }
+.spotlightPagination button[aria-current='true'] span { background:var(--nw-forest); transform:scale(1.45); }
+.spotlightPagination button:hover span { background:var(--nw-clay); }
+.spotlightAuto { margin:auto; background:transparent; color:var(--nw-forest); border:1px solid var(--nw-line); padding:10px 16px; border-radius:999px; min-height:44px; font-size:11px; }
+.spotlightAuto[aria-pressed='true'] { background:#e4eee1; border-color:var(--nw-forest); font-weight:700; }
+.spotlightAuto:disabled { color:var(--nw-muted); opacity:.8; cursor:not-allowed; }
+.spotlightBottom { flex-direction:column; align-items:stretch; gap:7px; }
+.spotlight :is(.spotlightArrows button,.spotlightAuto,.spotlightPagination button):focus-visible { outline:3px solid var(--nw-clay); outline-offset:2px; }
+@media(max-width:540px) {
+  .spotlightNav { align-items:flex-start; }
+  .spotlightNav>span { flex-basis:100%; }
+  .spotlightArrows { width:100%; }
+  .spotlightArrows button { flex:1; }
+  .spotlightAuto { margin:0; width:100%; }
+}
+@media(prefers-reduced-motion:reduce) { .spotlightPagination button span { transition:none; transform:none!important; } }
+.experience[data-quiet='true'] .spotlightPagination button span { transition:none; transform:none!important; }

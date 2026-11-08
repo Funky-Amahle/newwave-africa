@@ -43,6 +43,8 @@ todo = not started; in progress = assigned or implemented with acceptance eviden
 
 | NW-24 | P1 | product-designer / frontend-builder / quality-guardian | Voice Studio recording-mode visual overhaul | Existing MediaRecorder, local upload, explicit transcription consent | Two accessible record/upload mode cards, distinct recording/preview/empty states, single playback surface, recording timer, tasteful decorative motion with reduced-motion fallback, retained 3-minute/8MB limits and manual device QA | in progress (feature branch, no release) |
 
+| NW-25 | P1 | product-designer / frontend-builder / quality-guardian | Base44-inspired motion and response adaptation | NW-24; existing hero wave and fictional spotlight | Clear next/previous/pagination with active state; opt-in 8.5-second rotation pauses on engagement, background or offscreen; reduced effects preserved; no live public content imports; regression tests and real browser/mobile QA | in progress (feature branch PR; live-device QA pending) |
+
 ## Definition of done
 Story submission, category review, diverse discovery, honest metrics, passing build and reproducible demonstration.
 

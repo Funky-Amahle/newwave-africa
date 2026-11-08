@@ -36,6 +36,14 @@ test('two audio source modes feed one shared review player',()=>{
   assert.match(studio,/transcribeWithSessionKey/);
 });
 
+test('switching recording source cannot interrupt an active capture',()=>{
+  assert.match(recorder,/onCaptureBusyChange/);
+  assert.match(recorder,/state==='recording'\|\|state==='requesting'/);
+  assert.match(studio,/onCaptureBusyChange=\{setCaptureBusy\}/);
+  assert.equal((studio.match(/aria-controls=\{sourceId\} disabled=\{pending\|\|captureBusy\}/g)||[]).length,2);
+  assert.match(css,/studio-mode-arrive/);
+});
+
 test('motion is decorative, modest and disabled for reduced motion',()=>{
   assert.match(recCss,/@media\(prefers-reduced-motion:reduce\)/);
   assert.match(css,/@media\(prefers-reduced-motion:reduce\)/);
