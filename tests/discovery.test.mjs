@@ -63,7 +63,7 @@ test('new UI has native dialog/help, motion preferences, and no synthetic speech
 });
 test('all referenced CSS module classes exist',()=>{
   const css=readFileSync(new URL('../components/experience.module.css',import.meta.url),'utf8');
-  for(const file of ['../components/hero.tsx','../components/creator-studio.tsx','../components/experience.tsx','../app/page.tsx']){
+  for(const file of ['../components/hero.tsx','../components/creator-studio.tsx','../components/experience.tsx','../components/home-content.tsx']){
     const src=readFileSync(new URL(file,import.meta.url),'utf8');
     for(const [,name] of src.matchAll(/styles\.([A-Za-z]\w*)/g))assert.match(css,new RegExp('\\.'+name+'(?![\\w-])'),name);
   }
