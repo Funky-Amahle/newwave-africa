@@ -38,11 +38,11 @@ The **Creator Craft Toolkit** offers five editable planning canvases in Creator 
 | **Music & audio** | Song or episode structure, recording plan, collaborators, credits and sample rights |
 | **Games & interactive stories** | World, gameplay loop, player choices, accessibility and playtesting |
 
-Each canvas guides the creator with prompts and lets them **download an editable Markdown brief**. The toolkit does not generate creative content with AI or upload notes. **Toolkit notes are held only in page memory and disappear on refresh or navigation unless downloaded.**
+Each canvas offers a **Speak button beside every question**, with recording/upload, explicit transcription consent and editable review before words are appended. Closing a question panel clears its transient key and unadded transcript. Each canvas guides the creator with prompts and lets them **download an editable Markdown brief**. The toolkit does not generate creative content with AI or upload notes. **Toolkit notes are held only in page memory and disappear on refresh or navigation unless downloaded.**
 
 ### Creator Studio in the current MVP
 - Write an original story, preview it and save a **browser-local draft**.
-- Receive a category suggestion from **local keyword-based demo rules**; no live AI categorization is used in this deployed static app.
+- Add your credit, country and story language. Choose a category yourself or receive a suggestion from **local keyword-based demo rules**; no live AI categorization is used. Country and language also accept custom entries. Story-language metadata does not change the English-only transcription model.
 - Record or upload a voice answer, preview it and download it. Selected audio is sent to Deepgram **only with explicit consent**, using your own session key in the Pages demo or an access code on the configured server edition. Recordings are not attached to saved text drafts.
 - Confirm authorship or permission before saving a written draft.
 

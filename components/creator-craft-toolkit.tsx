@@ -1,6 +1,7 @@
 'use client';
 import {useState} from 'react';
 import {VoiceToText} from './voice-to-text';
+import {appendCreatorAnswer} from '../lib/creator-input';
 import {countAnsweredSections} from '../lib/craft-progress';
 
 const formats=[
@@ -15,7 +16,7 @@ export function CreatorCraftToolkit({onAudio}:{onAudio?:(audio:Blob|null)=>void}
   const [format,setFormat]=useState<FormatId>('story');
   const [notes,setNotes]=useState<Record<string,string>>({});
   const [status,setStatus]=useState('');
-  const [voiceOpen,setVoiceOpen]=useState(false);
+  const [voiceOpen,setVoiceOpen]=useState<string|null>(null);
   const active=formats.find(f=>f.id===format)!;
   const drafted=countAnsweredSections(format,active.sections,notes);
   const exportText=()=>['# '+active.label+' — creator-owned production brief','','Created with NewWave Africa Creator Craft Toolkit. Human-authored notes; no AI generation or upload.','',...active.sections.flatMap((section,index)=>['## '+(index+1)+'. '+section,notes[format+':'+index]?.trim()||'(To develop)',''])].join('\n');
@@ -26,11 +27,17 @@ export function CreatorCraftToolkit({onAudio}:{onAudio?:(audio:Blob|null)=>void}
     setStatus('Your editable Markdown brief was downloaded. Keep a backup of your notes.');
   }
   return <section className="craft-toolkit" aria-labelledby="craft-heading">
-    <div className="craft-heading"><div><h3 id="craft-heading">Shape the work. Keep your voice.</h3></div><p>Five free planning canvases for African storytellers and creative teams. Develop your ideas, plan production and download a shareable brief. These tools support your craft; you make the creative decisions. No account, AI generation or upload required.</p></div>
-    <div className="craft-formats" role="group" aria-label="Choose your creative practice">{formats.map(item=><button key={item.id} type="button" className={format===item.id?'selected':''} aria-pressed={format===item.id} onClick={()=>{setFormat(item.id);setStatus('');setVoiceOpen(false)}}>{item.label}</button>)}</div>
+    <div className="craft-heading"><div><h3 id="craft-heading">Shape the work. Keep your voice.</h3></div><p>Five free planning canvases for African storytellers and creative teams. Develop your ideas, plan production and download a shareable brief. These tools support your craft; you make the creative decisions. Type your answers, or press Speak on any question and talk it through. Review every word before it joins your notes. No account or AI generation required.</p></div>
+    <div className="craft-formats" role="group" aria-label="Choose your creative practice">{formats.map(item=><button key={item.id} type="button" className={format===item.id?'selected':''} aria-pressed={format===item.id} onClick={()=>{setFormat(item.id);setStatus('');setVoiceOpen(null)}}>{item.label}</button>)}</div>
     <div className="craft-sheet"><div className="craft-sheet-intro"><h4>{active.label}</h4><p>{active.audience} · A practical outline you can adapt, translate, and share on your terms.</p><p className="craft-progress" role="status">{drafted} of {active.sections.length} prompts drafted. Download your brief to keep your work.</p></div>
-    <details className="voice-planning" open={voiceOpen} onToggle={e=>setVoiceOpen(e.currentTarget.open)}><summary>Answer this canvas by voice</summary>{voiceOpen&&<VoiceToText fields={active.sections.map((label,index)=>({id:format+':'+index,label}))} onAudio={onAudio} onInsert={(id,text)=>{if((notes[id]?.length||0)+text.length+2>5000)return 'This answer would exceed 5,000 characters. Shorten the transcript first.';setNotes(previous=>({...previous,[id]:[previous[id],text].filter(Boolean).join('\n\n')}))}}/>}</details>
-    <div className="craft-fields">{active.sections.map((section,index)=><label key={format+':'+index}>{String(index+1).padStart(2,'0')} / {section}<textarea rows={2} value={notes[format+':'+index]||''} onChange={e=>setNotes(previous=>({...previous,[format+':'+index]:e.target.value}))} placeholder="Write your own notes here..." /></label>)}</div>
+    <div className="craft-fields">{active.sections.map((section,index)=>{
+      const id=format+':'+index,fieldId='craft-answer-'+format+'-'+index,panelId='craft-voice-'+format+'-'+index;
+      return <div className="craft-question" key={id}>
+        <div className="craft-question-heading"><label htmlFor={fieldId}><span className="craft-question-number">{String(index+1).padStart(2,'0')}</span>{section}</label><button type="button" className="craft-speak" aria-label={(voiceOpen===id?'Close voice input for ':'Speak answer to ')+section} aria-expanded={voiceOpen===id} aria-controls={panelId} onClick={()=>setVoiceOpen(voiceOpen===id?null:id)}><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden="true"><rect x="9" y="3" width="6" height="12" rx="3"/><path d="M6 10v2a6 6 0 0 0 12 0v-2M12 18v3m-3 0h6"/></svg>{voiceOpen===id?'Close':'Speak'}</button></div>
+        <textarea id={fieldId} rows={3} maxLength={5000} value={notes[id]||''} onChange={e=>setNotes(previous=>({...previous,[id]:e.target.value}))} placeholder="Type here — or press Speak and talk it through."/>
+        <div id={panelId} hidden={voiceOpen!==id}>{voiceOpen===id&&<><p className="craft-voice-note">Answering: {section}. Closing this panel or choosing another question clears its session key and any unadded transcript. Copy words you want to keep first.</p><VoiceToText key={id} fields={[{id,label:section}]} onAudio={onAudio} onInsert={(_,text)=>{try{const next=appendCreatorAnswer(notes[id]||'',text);setNotes(previous=>({...previous,[id]:next}))}catch(error){return (error as Error).message}}}/></>}</div>
+      </div>;
+    })}</div>
     <div className="craft-actions"><button type="button" className="primary" onClick={download}>Download editable brief ↓</button><p>Notes remain in this page's memory until you refresh or leave. Download to keep them. Your work stays yours.</p></div>{status&&<p role="status" className="notice">{status}</p>}</div>
   </section>;
 }
