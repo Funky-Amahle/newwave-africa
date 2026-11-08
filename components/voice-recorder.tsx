@@ -11,11 +11,12 @@ type Props={
   onDiscard?:()=>void;
   /** The transcription studio owns a single shared player; standalone use keeps its own preview. */
   previewMode?:'inline'|'shared';
+  disabled?:boolean;
 };
 const pad=(n:number)=>String(n).padStart(2,'0');
 const clock=(seconds:number)=>pad(Math.floor(seconds/60))+':'+pad(seconds%60);
 
-export function VoiceRecorder({onRecorded,onDiscard,previewMode='inline'}:Props){
+export function VoiceRecorder({onRecorded,onDiscard,previewMode='inline',disabled=false}:Props){
   const titleId=useId();
   const [supported,setSupported]=useState(false);
   const [state,setState]=useState<RecorderState>('idle');
@@ -54,7 +55,7 @@ export function VoiceRecorder({onRecorded,onDiscard,previewMode='inline'}:Props)
   },[]);
 
   async function start(){
-    if(state==='recording'||state==='requesting')return;
+    if(disabled||state==='recording'||state==='requesting')return;
     if(captureOwner){setError('Finish the other recording first.');return}
     captureOwner=owner.current;
     const ticket=++revision.current;
@@ -161,7 +162,7 @@ export function VoiceRecorder({onRecorded,onDiscard,previewMode='inline'}:Props)
           ? <button type="button" className={styles.stopButton} onClick={()=>recorder.current?.stop()}>
               <span className={styles.stopIcon} aria-hidden="true"/>Stop recording
             </button>
-          : <button type="button" className={styles.recordButton} onClick={start} disabled={!supported||state==='requesting'}>
+          : <button type="button" className={styles.recordButton} onClick={start} disabled={disabled||!supported||state==='requesting'}>
               <span className={styles.recordIcon} aria-hidden="true"/>{state==='requesting'?'Waiting for microphone…':ready?'Record another take':'Start recording'}
             </button>}
       </div>
