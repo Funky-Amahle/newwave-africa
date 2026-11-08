@@ -25,6 +25,8 @@ todo = not started; in progress = assigned; blocked = unresolved dependency; don
 
 | NW-13 | P1 | system-architect / backend-builder / quality-guardian | Plan Deepgram speech-to-text while retaining GitHub Pages | approved backend account/endpoint deferred | Pages-only tools remain usable without secrets; reviewed backend/CORS/consent/limits/verification roadmap documented; no live transcription claimed | in progress (plan only) |
 
+| NW-14 | P1 | frontend-builder / quality-guardian | Enable Pages-only session-key transcription demo | NW-13 | No bundled/stored/shared key; explicit consent; bounded direct Deepgram stream; cancel, review and append; accurate docs and provider verification limits | in progress |
+
 ## Definition of done
 Story submission, category review, diverse discovery, honest metrics, passing build and reproducible demonstration.
 

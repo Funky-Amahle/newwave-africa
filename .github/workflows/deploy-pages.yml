@@ -30,8 +30,8 @@ jobs:
         run: node --experimental-strip-types --test tests/creator-fusion.test.mjs
       - name: Validate shared narration loading and playback ownership
         run: node --experimental-strip-types --test tests/narration.test.mjs
-      - name: Validate protected transcription endpoint contracts (offline)
-        run: node --experimental-strip-types --test tests/transcription.test.mjs
+      - name: Validate protected and session-key transcription contracts (offline)
+        run: node --experimental-strip-types --test tests/transcription.test.mjs tests/session-transcription.test.mjs
       - name: Validate Deepgram narration segmentation (offline)
         run: python3 -m unittest discover -s tests -p 'test_deepgram_narration.py'
       - name: Validate all eight bundled Haley story recordings
