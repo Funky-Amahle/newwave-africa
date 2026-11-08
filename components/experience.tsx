@@ -7,6 +7,7 @@ import styles from './experience.module.css';
 import {StoryArtwork} from './story-artwork';
 import {TRANSLATION_LANGUAGES,sampleGoogleTranslateUrl,blankGoogleTranslateUrl} from '../lib/translation';
 import {SiteLanguageSelector} from './site-language-selector';
+import {getFlagshipStory,estimatedReadingMinutes} from '../lib/flagship-story';
 
 const MotionContext = createContext(true);
 export const useQuietMotion = () => useContext(MotionContext);
@@ -44,18 +45,18 @@ export function SectionHeading({title,description}:{title:string;description?:st
 }
 
 export function Spotlight({stories,onRead}:{stories:Story[];onRead:(story:Story)=>void}) {
-  const [index,setIndex]=useState(0);
+  const [index,setIndex]=useState(2);
   const quiet=useQuietMotion();
   const story=stories[index%stories.length];
   if(!story)return null;
   return <section className={styles.spotlight} aria-label="Featured sample stories">
-    <div className={styles.spotlightTop}><span>THE READING TABLE</span><span>Fictional sample</span></div>
+    <div className={styles.spotlightTop}><span>THE READING TABLE</span><span>{getFlagshipStory(story)?'Featured fictional long read':'Fictional sample'}</span></div>
     <div className={styles.printArt}><StoryArtwork key={story.id} category={story.category} quiet={quiet} featured/></div>
     <motion.div key={story.id} className={styles.spotlightCopy} initial={false}
       animate={quiet?{opacity:1}:{opacity:[.4,1]}} transition={{duration:quiet?0:.25}}>
       <p className={styles.kicker}>{story.category}</p><h2>{story.title}</h2>
       <p>{story.excerpt}</p><span className={styles.meta}>{story.country} / {story.language}</span>
-      <button type="button" className={styles.lightButton} onClick={()=>onRead(story)}>Read this story <Arrow/></button>
+      <button type="button" className={styles.lightButton} onClick={()=>onRead(story)}>{getFlagshipStory(story)?'Read the full story':'Read this story'} <Arrow/></button>
     </motion.div>
     <div className={styles.spotlightBottom}><span aria-live="polite">{index+1} / {stories.length} perspectives</span>
       <button type="button" onClick={()=>setIndex(v=>(v+1)%stories.length)} aria-label="Show next featured sample story">Next perspective <span aria-hidden="true">&rarr;</span></button>
@@ -99,10 +100,12 @@ export function StoryReader({story,saved,onSave,onClose}:{story:Story;saved:bool
   const translationHeadingId=useId();
   const [targetLanguage,setTargetLanguage]=useState('sw');
   const [copyStatus,setCopyStatus]=useState('');
+  const flagship=getFlagshipStory(story);
+  const textToRead=flagship?flagship.paragraphs.join('\n\n'):story.excerpt;
   const sampleTranslation=sampleGoogleTranslateUrl(story,targetLanguage);
   async function copyForTranslation(){
     try {
-      await navigator.clipboard.writeText(story.title+'\n\n'+story.excerpt);
+      await navigator.clipboard.writeText(story.title+'\n\n'+textToRead);
       setCopyStatus('Copied locally. Paste into Google Translate only if you choose to share these words.');
     } catch {
       setCopyStatus('Clipboard unavailable. Select and copy the text manually if you wish.');
@@ -117,11 +120,25 @@ export function StoryReader({story,saved,onSave,onClose}:{story:Story;saved:bool
   },[]);
   return <dialog ref={dialog} className={styles.reader} aria-labelledby={titleId} onCancel={event=>{event.preventDefault();onClose()}} onClick={event=>{if(event.target===event.currentTarget)onClose()}}>
     <article><div className={styles.readerToolbar}><span>{story.sample?'Fictional sample / not reporting':'Your browser-local draft'}</span><button type="button" autoFocus onClick={onClose}>Close <span aria-hidden="true">&times;</span></button></div>
-      <p className={styles.kicker}>{story.category}</p><h2 id={titleId}>{story.title}</h2><p className={styles.meta}>By {story.author} / {story.country} / {story.language}</p>
-      <div className={styles.readerText}>{story.excerpt.split(/\n\s*\n/).map((p,i)=><p key={i}>{p}</p>)}</div>
+      <p className={styles.kicker}>{story.category}</p><h2 id={titleId}>{story.title}</h2>
+      <p className={styles.meta}>By {story.author} / {story.country} / {story.language}</p>
+      {flagship&&<>
+        <div className={styles.readerHeroArt}><StoryArtwork category={story.category} quiet featured/></div>
+        <p className={styles.readerDeck}>{flagship.deck}</p>
+        <div className={styles.readerReadingMeta}>
+          <span>{estimatedReadingMinutes(flagship.paragraphs)} min read</span>
+          <span>Original fictional story</span>
+          <span>Written sample, not full-length narration</span>
+        </div>
+      </>}
+      <div className={styles.readerText}>{textToRead.split(/\n\s*\n/).map((p,i)=><p key={i}>{p}</p>)}</div>
+      {flagship&&<aside className={styles.readerEditorialNote} aria-label="About this fictional story">
+        <strong>About this story</strong><p>{flagship.editorialNote}</p>
+        <p>Existing audio on the story card narrates the original short preview only, not this full written story. Do not infer that real people or places were interviewed.</p>
+      </aside>}
       <section className={styles.translationPanel} aria-labelledby={translationHeadingId}>
         <h3 id={translationHeadingId}>Read in another language</h3>
-        <p className={styles.translationHelp}>{story.sample?'Choose a language to open this fictional sample in Google Translate. Only the title and excerpt are shared when you select the link.':'Your browser-local draft is not sent automatically. Copy it locally and paste into Google Translate only if you decide to share it.'} Machine translation may lose cultural nuance; always check with a fluent speaker before reusing it.</p>
+        <p className={styles.translationHelp}>{flagship?'Google Translate opens the short fictional preview, not this complete long read. The full story remains in NewWave Africa.':story.sample?'Choose a language to open this fictional sample in Google Translate. Only the title and excerpt are shared when you select the link.':'Your browser-local draft is not sent automatically. Copy it locally and paste into Google Translate only if you decide to share it.'} Machine translation may lose cultural nuance; always check with a fluent speaker before reusing it.</p>
         <div className={styles.translationControls}>
           <label htmlFor={languageId}>Target language
             <select id={languageId} value={targetLanguage} onChange={event=>{setTargetLanguage(event.target.value);setCopyStatus('')}}>
