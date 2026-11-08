@@ -117,6 +117,10 @@ No provider credential, recording or transcript is persisted or sent automatical
 
 Primary navigation uses four stable Next.js App Router paths: `/`, `/discover/`, `/creator-studio/` and `/our-approach/`. A shared client component renders the original homepage discovery section and the new Discover page without duplicating ranking, reading lists or browser-local drafts. `/#discover` and `/#discovery-insights` remain valid homepage deep links. Next.js `Link` preserves the GitHub Pages `basePath`; `scripts/check_pages_routes.mjs` validates all four exported `index.html` documents and prefixed navigation. Active page state derives from the pathname. Browser Back/Forward and workspace hash restoration remain supported. No server dependency or new storage schema is introduced.
 
+## Creator Studio quick navigation — NW-27
+
+Creator Studio remains a single page with its existing five planning canvases, draft form, recording and optional media tools. A sticky in-flow navigation component offers six same-document anchors (plan, write, record, save, narration and visuals). The mobile selector navigates to the same IDs and focuses the selected destination for keyboard and assistive-technology orientation. The top link targets the page heading. Native fragments preserve browser history; reduced-motion CSS already changes browser smooth scrolling to instant. The introductory four-step overview is visually compacted on small screens without deleting any fields or changing storage. No new external data or network dependency is introduced. Real-device screen-reader, zoom and scrolling checks remain pending.
+
 ## Media and motion
 
 Original SVG background assets or local image blobs accompany the selected audio
