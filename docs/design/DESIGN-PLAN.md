@@ -24,7 +24,7 @@
 
 | DESIGN-19 | P1 | Bring supplied creator controls into the combined app | Inline per-question Speak controls, editorial question rows, readable forest/cream pills, story metadata card; local-only save and English transcription limitation retained | in progress |
 
-| DESIGN-21 | P1 | Creator narration voice choice | Native labeled selector, accent/presentation labels, local export, clear distinction from transcription and recorded samples | in progress |
+| DESIGN-20 | P1 | Living story-card artwork | Screenshot-targeted artwork motion only; readable content stays stationary; offscreen and reduced effects pause motion | in progress |
 
 ## Evidence and audit references
 
