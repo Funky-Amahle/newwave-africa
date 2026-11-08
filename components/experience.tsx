@@ -86,7 +86,7 @@ export function ExperienceHelp(){return <section className={styles.help} aria-la
   <div><h2 id="help-heading">A little clarity<br/>goes a long way.</h2></div><div className={styles.accordion}>
     <details><summary>How does discovery work?</summary><p>Your selected interest changes the ranking, not a hard category filter. Search narrows the results. The diversity slider gives more weight to less-represented categories. This is a local demonstration, not a trained AI recommender.</p></details>
     <details><summary>Where are my saved stories?</summary><p>Reading-list bookmarks and saved story drafts stay in this browser, with no account or public publishing. Clearing browser data removes them. Storage may be unavailable in restricted browsing modes.</p></details>
-    <details><summary>Why is narration sometimes unavailable?</summary><p>Only published, reviewed recordings can play. We do not substitute a robotic browser voice. Your recordings stay in this tab unless you explicitly send selected audio to Deepgram for transcription. Review the transcript before adding it; recordings and visuals are not attached to saved text drafts.</p></details>
+    <details><summary>Why is narration sometimes unavailable?</summary><p>Only published, reviewed recordings can play. We do not substitute a robotic browser voice. Your recordings stay in this tab unless you explicitly send selected audio to Deepgram for transcription. On Pages, the demo uses your own session key and quota; no shared key is supplied. Review the transcript before adding it; recordings and visuals are not attached to saved text drafts.</p></details>
   </div></section>}
 
 export function StoryReader({story,saved,onSave,onClose}:{story:Story;saved:boolean;onSave:()=>void;onClose:()=>void}) {

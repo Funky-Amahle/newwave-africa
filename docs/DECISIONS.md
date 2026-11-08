@@ -57,3 +57,10 @@ Our Approach describes human authorship, seven creator audiences/five practices,
 **Status:** Owner direction recorded; roadmap proposed in NW-13.
 
 The owner reaffirmed GitHub Pages and asked for a plan rather than a backend deployment. Keep the existing static recording/upload/playback/writing/download tools. Do not enable Deepgram transcription or put credentials in the public build. Demo recording content does not remove the credential boundary. The approved future direction remains Deepgram behind a separately approved secure HTTPS endpoint, with exact-origin CORS, access and spend limits, explicit audio consent and reviewed insertion. No backend host is selected by this decision. See docs/PAGES-SPEECH-TO-TEXT-PLAN.md.
+
+
+## ADR-008 — Explicit session-key demo on Pages
+
+**Status:** Owner accepted the session-key alternative after requesting a public demo with a restricted key. Implemented on NW-14 branch; not deployed.
+
+Keep the provider key out of source and artifacts. The Pages demo instead lets the operator enter their own restricted key in the transcription panel, held only in that component’s memory. It is cleared on explicit clear/unmount, never stored or supplied to visitors. Selected audio and protocol authentication go directly to the fixed Deepgram Nova WebSocket endpoint after consent; use the existing review/edit/append flow. Deepgram’s REST API requires a browser proxy, whereas its streaming endpoint supports direct browser connections. The optional server edition retains its access-code-protected REST flow. A shared key service still requires the planned backend. Client limits are usability safeguards, not enforceable account spend controls. Real provider/browser validation is separate from offline transport tests.

@@ -43,21 +43,21 @@ Each canvas guides the creator with prompts and lets them **download an editable
 ### Creator Studio in the current MVP
 - Write an original story, preview it and save a **browser-local draft**.
 - Receive a category suggestion from **local keyword-based demo rules**; no live AI categorization is used in this deployed static app.
-- Record or upload a voice answer, preview it and download it. Selected audio is sent to Deepgram **only with explicit consent on the configured server edition**. Recordings are not attached to saved text drafts.
+- Record or upload a voice answer, preview it and download it. Selected audio is sent to Deepgram **only with explicit consent**, using your own session key in the Pages demo or an access code on the configured server edition. Recordings are not attached to saved text drafts.
 - Confirm authorship or permission before saving a written draft.
 
 There are **no accounts, public publishing, shared creator profiles, persistent server storage or live audience metrics**. LocalStorage data stays on that browser/device.
 
 ### Speech-to-text roadmap
 
-For now, keep the app on GitHub Pages with typing, local recording, uploads, playback and downloads. Deepgram transcription is planned and remains unavailable until a separate secure backend is approved and connected. Demo audio still requires a private provider key on that backend. See [the phased Pages speech-to-text plan](docs/PAGES-SPEECH-TO-TEXT-PLAN.md).
+The GitHub Pages demo lets you transcribe a selected recording with **your own restricted Deepgram API key entered for the current panel session**. The key is not shipped in the site, saved in browser storage or shared with visitors; requests use your Deepgram quota. Confirm audio consent, transcribe, review/edit and explicitly add the words. Clear the key when finished. A shared service with an owner-managed key remains a planned backend upgrade. See [session demo and backend roadmap](docs/PAGES-SPEECH-TO-TEXT-PLAN.md).
 
 ### Prepared voice and visual upgrade
 
 - Choose a planning question or story field, review an editable English transcript, then explicitly append it to your own writing.
 - Upload a permitted JPG/PNG/WebP image or select one of three original wave backgrounds. Preview with actual selected audio and download assets separately.
 - The landing wave respects reduced effects, system motion preferences and visibility.
-- GitHub Pages retains typing, recording and visual tools; it **cannot run transcription**. The secret-backed Next.js server edition is prepared separately, not hosted by this change. See [server deployment](server-deploy/README.md) for private pilot setup and verification.
+- GitHub Pages retains typing, recording and visual tools and offers direct session-key demo transcription. It cannot host the protected transcription API. The secret-backed Next.js server edition is prepared separately, not hosted by this change. See [server deployment](server-deploy/README.md) for private pilot setup and verification.
 
 ## Quick start
 
@@ -107,7 +107,7 @@ For two separate ~5-minute videos (professional pitch and technical walkthrough)
 - **Creator agency:** obtain permission for stories, recordings, images, music and other assets.
 - **Cultural specificity:** invite local language expertise and avoid treating Africa as one homogeneous culture.
 - **Transparency:** fictional examples, local-only storage, rule-based classification and illustrative metrics must be clearly labeled.
-- **Privacy:** written drafts and visuals remain in the browser. Only explicitly consented audio is sent to Deepgram on the configured server edition; download backups before clearing data or leaving the page.
+- **Privacy:** written drafts and visuals remain in the browser. Only explicitly consented audio is sent to Deepgram, using the Pages session-key demo or the configured server edition; download backups before clearing data or leaving the page.
 - **Accessibility:** prioritize keyboard controls, captions/transcripts, responsive layouts and reduced motion; manual device testing remains necessary.
 
 ## Project workflow

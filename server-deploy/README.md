@@ -1,8 +1,9 @@
 # Next.js server deployment — NW-09
 
 The server edition is prepared, not deployed. GitHub Pages continues serving the
-static edition with typing, local recording and visual previews. It cannot run
-POST APIs. [Next.js export limitation](https://nextjs.org/docs/app/guides/backend-for-frontend).
+static edition with typing, local recording and visual previews. Its explicit
+session-key demo connects directly to Deepgram over WebSocket; it does not host
+this protected API. Pages cannot run POST APIs. [Next.js export limitation](https://nextjs.org/docs/app/guides/backend-for-frontend).
 
 Use a Node 22 host for the full app, or the included multi-stage Dockerfile:
 
