@@ -138,3 +138,7 @@ hosting changes. A public service additionally needs individual authentication,
 shared quotas and host/provider spending limits. Moderation, consented persistent
 publishing, shared media storage and migration of browser-local drafts remain
 future work.
+
+## Creator narration generation (NW-30)
+
+Creator Studio optionally sends written story text directly to Deepgram Flux batch TTS after separate explicit consent, using a creator-entered memory-only key. This is distinct from audio transcription and changes the previous audio-only data boundary. Bounded sequential PCM responses become a local WAV, with playback and download. No provider key is hosted by GitHub Pages. Changing story/voice or leaving clears the generation panel. A shared owner-funded service still requires a separate secure backend. See CREATOR-AUDIO-QA.md for limits, verification and untested live-provider behavior.

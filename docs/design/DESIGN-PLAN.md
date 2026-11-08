@@ -26,6 +26,8 @@
 
 | DESIGN-20 | P1 | Living story-card artwork | Screenshot-targeted artwork motion only; readable content stays stationary; offscreen and reduced effects pause motion | in progress |
 
+| DESIGN-22 | P1 | Hear your authored story | Accessible generation states, consent and session key, native audio and download | in progress |
+
 ## Evidence and audit references
 
 Use [DESIGN-QUALITY-GATE.md](DESIGN-QUALITY-GATE.md) for responsive, focus, state and motion QA. Start tasks with [TASK-BRIEF.md](../templates/TASK-BRIEF.md) and transfer evidence using [AGENT-HANDOFF.md](../AGENT-HANDOFF.md).
