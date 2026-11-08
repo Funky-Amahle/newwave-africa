@@ -28,6 +28,8 @@ jobs:
         run: node --experimental-strip-types --test tests/discovery.test.mjs
       - name: Validate featured fictional story and reader isolation (offline)
         run: node --experimental-strip-types --test tests/flagship-story.test.mjs
+      - name: Validate reader clarity and why-this-story explanations (offline)
+        run: node --experimental-strip-types --test tests/story-reading-and-why.test.mjs
       - name: Validate story and homepage translation handoffs (offline)
         run: node --experimental-strip-types --test tests/translation.test.mjs tests/homepage-language.test.mjs
       - name: Validate complementary creator links and prompt progress
