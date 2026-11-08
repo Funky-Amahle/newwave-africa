@@ -49,6 +49,8 @@ todo = not started; in progress = assigned or implemented with acceptance eviden
 
 | NW-27 | P1 | frontend-builder / product-designer / quality-guardian | Shorten navigation effort in Creator Studio | Existing six section anchors and local-only creator tools | Sticky shortcut navigation with desktop links, mobile section picker, top return, compact mobile step overview, focusable targets and reduced-motion-safe browser scrolling; preserve media and draft state; route/build tests and manual device QA | in progress (draft PR; real-browser checks pending) |
 
+| NW-28 | P1 | frontend-builder / quality-guardian | Correct Creator Studio visual section jump and uploaded-file download naming | NW-27; existing original visual editor | `#studio-visual` focuses the visual editor rather than the media sidebar; uploaded JPG/PNG/WebP downloads retain corresponding extension; original artwork SVG download and privacy unaffected; targeted regression and build verification | in progress (draft PR; live device QA pending) |
+
 ## Definition of done
 Story submission, category review, diverse discovery, honest metrics, passing build and reproducible demonstration.
 
