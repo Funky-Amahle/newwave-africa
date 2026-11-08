@@ -70,6 +70,38 @@ jobs:
           GITHUB_PAGES: 'false'
       - name: Check standalone server startup without provider secrets
         run: node scripts/check_server_start.mjs
+  browser-qa:
+    # Headless Chromium exercises rendered, hydrated UI against the exact static Pages basePath.
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: npm ci --no-audit --no-fund
+      - name: Build GitHub Pages export for browser QA
+        run: npm run build
+        env:
+          GITHUB_PAGES: 'true'
+      - name: Install temporary Playwright browser test runner
+        run: |
+          npm install --no-save --package-lock=false playwright
+          npx playwright install --with-deps chromium
+      - name: Run Creator Studio visual navigation and download tests
+        run: |
+          mkdir -p .qa-site
+          ln -s "$GITHUB_WORKSPACE/out" .qa-site/newwave-africa
+          python3 -m http.server 4173 --bind 127.0.0.1 --directory .qa-site >/tmp/newwave-http.log 2>&1 &
+          server_pid=$!
+          trap 'kill "$server_pid" 2>/dev/null || true' EXIT
+          node scripts/qa/creator-visuals-smoke.mjs
+      - name: Upload browser screenshots on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: creator-studio-browser-qa-failure
+          path: browser-qa-artifacts/
+          if-no-files-found: ignore
   deploy:
     if: github.event_name != 'pull_request'
     environment:
