@@ -13,7 +13,9 @@ export function workspaceFromHash(fragment:string):Workspace|null {
     case '#creator-studio':
     case '#studio-plan':
     case '#studio-visual':
-    case '#studio-draft': return 'create';
+    case '#studio-draft':
+    case '#studio-voice-answer':
+    case '#studio-rights': return 'create';
     case '#discovery-insights': return 'impact';
     default: return null;
   }
