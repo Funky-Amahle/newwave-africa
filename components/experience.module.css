@@ -330,3 +330,20 @@
   .siteLanguage summary strong { max-width:75px; overflow:hidden; text-overflow:ellipsis; }
   .siteLanguagePanel { right:-76px; width:min(350px,calc(100vw - 24px)); }
 }
+
+/* NW-21: featured story reading. All imagery is the app's original abstract SVG artwork. */
+.readerHeroArt { height:clamp(160px,26vw,245px); overflow:hidden; border-radius:6px; margin:22px 0; }
+.readerDeck { font:400 clamp(19px,2.8vw,25px)/1.55 var(--nw-serif); margin:22px 0 18px; color:var(--nw-forest); }
+.readerReadingMeta { display:flex; flex-wrap:wrap; gap:6px 16px; padding:12px 0; border-top:1px solid var(--nw-line); border-bottom:1px solid var(--nw-line); color:var(--nw-muted); font-size:11px; line-height:1.6; }
+.readerText { max-width:61ch; margin-inline:auto; }
+.readerText p { margin:0 0 1.25em; }
+.readerText p:first-child::first-letter { font-size:1.65em; line-height:.9; color:var(--nw-clay); }
+.readerEditorialNote { max-width:61ch; margin:0 auto 26px; padding:18px 20px; border-left:3px solid var(--nw-clay); background:var(--nw-paper); }
+.readerEditorialNote strong { display:block; font-size:13px; margin:0 0 7px; }
+.readerEditorialNote p { color:var(--nw-muted); font-size:12px; line-height:1.7; margin:0 0 9px; }
+.readerEditorialNote p:last-child { margin:0; }
+@media(max-width:540px) {
+  .readerHeroArt { height:155px; }
+  .readerDeck { font-size:20px; }
+  .readerReadingMeta { gap:5px 12px; }
+}
