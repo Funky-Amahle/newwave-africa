@@ -11,7 +11,7 @@ test('workspace views have stable shareable fragments',()=>{
   for(const view of ['discover','create','impact'])assert.equal(workspaceFromHash(workspaceHash(view)),view);
 });
 test('studio tool links select the creator workspace on direct entry',()=>{
-  for(const hash of ['#studio-plan','#studio-visual','#studio-draft'])assert.equal(workspaceFromHash(hash),'create');
+  for(const hash of ['#studio-plan','#studio-visual','#studio-draft','#studio-voice-answer','#studio-rights'])assert.equal(workspaceFromHash(hash),'create');
 });
 test('unrelated fragments are not treated as workspace links',()=>{
   for(const hash of ['','#top','#workspace','#unknown','https://example.invalid/#creator-studio'])assert.equal(workspaceFromHash(hash),null);
@@ -40,4 +40,15 @@ test('creator progress uses a truthful status and retains local notes messaging'
   assert.match(src,/countAnsweredSections\(/);
   assert.match(src,/role="status">\{drafted\} of \{active\.sections\.length\} prompts drafted/);
   assert.match(src,/Notes remain in this page's memory until you refresh or leave/);
+});
+
+
+test('guided journey links existing draft, review, consent and save controls',()=>{
+  const src=readFileSync(new URL('../components/creator-studio.tsx',import.meta.url),'utf8');
+  for(const id of ['studio-plan','studio-draft','studio-voice-answer','studio-rights']){
+    assert.match(src,new RegExp('href="#'+id+'"'));
+    assert.match(src,new RegExp('id="'+id+'"'));
+  }
+  assert.match(src,/Save written draft locally/);
+  assert.match(src,/nothing is automatically published/);
 });

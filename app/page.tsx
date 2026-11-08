@@ -4,6 +4,7 @@ import {useRouter} from 'next/navigation';
 import {useSiteState} from '../components/site-state';
 import {Hero} from '../components/hero';
 import {StoryCard} from '../components/story-card';
+import {DiscoveryScenario} from '../components/discovery-scenario';
 import sampleStories from '../lib/sample-stories.json';
 import {CATEGORIES,SAVED_KEY,parseSaved,toggleSaved,getDiscovery} from '../lib/discovery';
 import type {Story} from '../lib/discovery';
@@ -131,6 +132,7 @@ function HomeContent(){
             <div><span>DIVERSITY-AWARE ORDER</span><strong>{discovery.diverseCoverage} / {CATEGORIES.length}</strong><p>Categories in the same {discovery.windowSize}-story window</p></div>
           </div>
           <p className={styles.interestNote}>Same collection. Same window. Different weighting. Diversity is set to {diversity}%. These counts do not measure fairness, audience reach or real-world impact.</p>
+          <DiscoveryScenario diversity={diversity} onDiversityChange={setDiversity}/>
           <h3>Available story categories</h3><div className="bars" role="list" aria-label="Story counts by category">{CATEGORIES.map(c=><div role="listitem" key={c}><div className="bar-label"><span>{c}</span><b>{discovery.counts[c]}</b></div><div className="bar" aria-hidden="true"><span style={{width:(100*discovery.counts[c]/Math.max(1,...Object.values(discovery.counts)))+'%'}}/></div></div>)}</div>
         </>}
       </section>
