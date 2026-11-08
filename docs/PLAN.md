@@ -31,6 +31,8 @@ todo = not started; in progress = assigned; blocked = unresolved dependency; don
 
 | NW-16 | P1 | frontend-builder / quality-guardian | Animate discovery card artwork | Continuous gentle wave, orbit and disc motion; existing visibility and reduced-motion controls retained; static export build and review | in progress |
 
+| NW-18 | P0 | ai-discovery-engine / product-designer / quality-guardian / release-manager | Judging-readiness demonstration | Fixed deliberately imbalanced fictional dataset shows baseline versus diversity order; creator path links existing safe tools; CI checks and a pending real-device checklist; script describes current features accurately. Review PR before merge/deploy. | in progress (feature PR; not released) |
+
 ## Definition of done
 Story submission, category review, diverse discovery, honest metrics, passing build and reproducible demonstration.
 

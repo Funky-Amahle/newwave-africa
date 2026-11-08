@@ -2,6 +2,7 @@ import assert from 'node:assert/strict';
 import {test} from 'node:test';
 import {readFileSync} from 'node:fs';
 import {CATEGORIES,parseStories,prependDraft,parseSaved,toggleSaved,getDiscovery} from '../lib/discovery.ts';
+import {DISCOVERY_SCENARIO_STORIES,SCENARIO_CATEGORY_COUNT} from '../lib/discovery-scenario.ts';
 const story=(id,category=CATEGORIES[0],title=id)=>({id,title,category,excerpt:'An original demonstration story with enough detail.',country:'South Africa',author:'Demo author',language:'English',tags:['community'],date:'2026-11-06'});
 const options={query:'',interest:'All categories',diversity:60,savedOnly:false,saved:[]};
 
@@ -83,4 +84,18 @@ test('saving at the draft limit never evicts an older story',()=>{
 test('saving rejects duplicate and reserved draft IDs',()=>{
   assert.throws(()=>prependDraft(JSON.stringify([story('same')]),story('same')),/validate/);
   assert.throws(()=>prependDraft('[]',story('s1')),/validate/);
+});
+
+
+test('uneven fictional scenario visibly demonstrates the deterministic ranking tradeoff',()=>{
+  assert.equal(DISCOVERY_SCENARIO_STORIES.length,12);
+  assert.equal(SCENARIO_CATEGORY_COUNT,5);
+  assert.ok(DISCOVERY_SCENARIO_STORIES.every(s=>s.sample===true));
+  const compare=(diversity)=>getDiscovery(DISCOVERY_SCENARIO_STORIES,{...options,diversity});
+  const zero=compare(0),illustrative=compare(60);
+  assert.deepEqual(zero.ranked.map(s=>s.id),zero.baseline.map(s=>s.id));
+  assert.equal(illustrative.windowSize,8);
+  assert.equal(illustrative.baselineCoverage,1);
+  assert.equal(illustrative.diverseCoverage,5);
+  assert.deepEqual(illustrative.ranked.map(s=>s.id).sort(),illustrative.baseline.map(s=>s.id).sort());
 });

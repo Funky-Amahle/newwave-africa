@@ -75,6 +75,6 @@ export function getDiscovery(stories: Story[], options: DiscoveryOptions) {
   // Compare the same population and window, independent of "show more" presentation state.
   const windowSize = Math.min(8, candidates.length);
   const distinct = (items: Story[]) => new Set(items.map(s => s.category)).size;
-  return {ranked, counts, windowSize, baselineCoverage: distinct(baseline.slice(0,windowSize)),
+  return {ranked, baseline, counts, windowSize, baselineCoverage: distinct(baseline.slice(0,windowSize)),
     diverseCoverage: distinct(ranked.slice(0,windowSize))};
 }
