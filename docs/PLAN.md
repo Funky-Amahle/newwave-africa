@@ -29,6 +29,8 @@ todo = not started; in progress = assigned; blocked = unresolved dependency; don
 
 | NW-15 | P1 | product-designer / frontend-builder / quality-guardian | Add screenshot-guided question speech controls and story metadata | Per-question reviewed voice insertion, five practice pills, full-width prompts, credit/country/category/language controls, preserved local drafts and consent; responsive and keyboard evidence | in progress |
 
+| NW-16 | P1 | frontend-builder / quality-guardian | Animate discovery card artwork | Continuous gentle wave, orbit and disc motion; existing visibility and reduced-motion controls retained; static export build and review | in progress |
+
 ## Definition of done
 Story submission, category review, diverse discovery, honest metrics, passing build and reproducible demonstration.
 
