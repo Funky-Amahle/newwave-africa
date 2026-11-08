@@ -34,6 +34,8 @@ jobs:
         run: node --experimental-strip-types --test tests/translation.test.mjs tests/homepage-language.test.mjs
       - name: Validate complementary creator links and prompt progress
         run: node --experimental-strip-types --test tests/creator-fusion.test.mjs tests/creator-input.test.mjs tests/creator-voices.test.mjs
+      - name: Validate Base44-inspired carousel and animation safety (offline)
+        run: node --experimental-strip-types --test tests/base44-motion-fusion.test.mjs
       - name: Validate recording studio modes and reduced-motion behavior (offline)
         run: node --experimental-strip-types --test tests/recording-studio.test.mjs
       - name: Validate shared narration loading and playback ownership
