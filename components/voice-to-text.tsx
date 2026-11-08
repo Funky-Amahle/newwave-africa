@@ -10,6 +10,7 @@ export function VoiceToText({fields,onInsert,onAudio}:{fields:Field[];onInsert:(
   const [target,setTarget]=useState(fields[0]?.id||'');
   const [sourceMode,setSourceMode]=useState<'record'|'upload'>('record');
   const [audioOrigin,setAudioOrigin]=useState<'recorded'|'uploaded'|null>(null);
+  const [captureBusy,setCaptureBusy]=useState(false);
   const [playing,setPlaying]=useState(false);
   const [audio,setAudio]=useState<Blob|null>(null);const [recorderKey,setRecorderKey]=useState(0);const [audioName,setAudioName]=useState('');const [previewUrl,setPreviewUrl]=useState('');const [available,setAvailable]=useState<boolean|null>(null);
   const [code,setCode]=useState('');const [consent,setConsent]=useState(false);const [pending,setPending]=useState(false);
@@ -47,13 +48,13 @@ export function VoiceToText({fields,onInsert,onAudio}:{fields:Field[];onInsert:(
     <p>Choose a question, record or upload a short answer, then turn your voice into editable text. You review every word and decide what to add.</p>
     <label>Which question are you answering?<select value={target} disabled={pending} onChange={e=>{abort.current?.abort();setPending(false);setTarget(e.target.value);setTranscript('');setConsent(false);setMessage('')}}>{fields.map(field=><option key={field.id} value={field.id}>{field.label}</option>)}</select></label>
     <div className={styles.modeCards} role="group" aria-label="Choose how to add audio">
-      <button type="button" aria-pressed={sourceMode==='record'} aria-controls={sourceId} disabled={pending}
+      <button type="button" aria-pressed={sourceMode==='record'} aria-controls={sourceId} disabled={pending||captureBusy}
         onClick={()=>setSourceMode('record')}>
         <span className={styles.modeIcon} aria-hidden="true">●</span>
         <span className={styles.modeCopy}><strong>Record a new take</strong><small>Use your microphone · up to 3 min</small></span>
         <span className={styles.modeChoice}>{sourceMode==='record'?'Selected':'Choose'}</span>
       </button>
-      <button type="button" aria-pressed={sourceMode==='upload'} aria-controls={sourceId} disabled={pending}
+      <button type="button" aria-pressed={sourceMode==='upload'} aria-controls={sourceId} disabled={pending||captureBusy}
         onClick={()=>setSourceMode('upload')}>
         <span className={styles.modeIcon} aria-hidden="true">↑</span>
         <span className={styles.modeCopy}><strong>Upload an audio file</strong><small>Use an existing recording · max 8 MB</small></span>
@@ -62,7 +63,7 @@ export function VoiceToText({fields,onInsert,onAudio}:{fields:Field[];onInsert:(
     </div>
     <div id={sourceId} className={styles.captureModePanel}>
       {sourceMode==='record'
-        ? <VoiceRecorder key={recorderKey} previewMode="shared" disabled={pending}
+        ? <VoiceRecorder key={recorderKey} previewMode="shared" disabled={pending} onCaptureBusyChange={setCaptureBusy}
             onRecorded={blob=>{selectAudio(blob);setAudioName('Recorded answer');setAudioOrigin('recorded')}}
             onDiscard={()=>{selectAudio(null);setAudioName('');setAudioOrigin(null)}}/>
         : <div className={styles.uploadWell}>
