@@ -5,6 +5,7 @@ import {motion,MotionConfig,useReducedMotion} from 'motion/react';
 import type {Story} from '../lib/discovery';
 import styles from './experience.module.css';
 import {StoryArtwork} from './story-artwork';
+import {TRANSLATION_LANGUAGES,sampleGoogleTranslateUrl,blankGoogleTranslateUrl} from '../lib/translation';
 
 const MotionContext = createContext(true);
 export const useQuietMotion = () => useContext(MotionContext);
@@ -92,6 +93,19 @@ export function ExperienceHelp(){return <section className={styles.help} aria-la
 export function StoryReader({story,saved,onSave,onClose}:{story:Story;saved:boolean;onSave:()=>void;onClose:()=>void}) {
   const dialog=useRef<HTMLDialogElement|null>(null);
   const titleId=useId();
+  const languageId=useId();
+  const translationHeadingId=useId();
+  const [targetLanguage,setTargetLanguage]=useState('sw');
+  const [copyStatus,setCopyStatus]=useState('');
+  const sampleTranslation=sampleGoogleTranslateUrl(story,targetLanguage);
+  async function copyForTranslation(){
+    try {
+      await navigator.clipboard.writeText(story.title+'\\n\\n'+story.excerpt);
+      setCopyStatus('Copied locally. Paste into Google Translate only if you choose to share these words.');
+    } catch {
+      setCopyStatus('Clipboard unavailable. Select and copy the text manually if you wish.');
+    }
+  }
   useEffect(()=>{
     const element=dialog.current;
     const previous=document.activeElement instanceof HTMLElement?document.activeElement:null;
@@ -103,6 +117,24 @@ export function StoryReader({story,saved,onSave,onClose}:{story:Story;saved:bool
     <article><div className={styles.readerToolbar}><span>{story.sample?'Fictional sample / not reporting':'Your browser-local draft'}</span><button type="button" autoFocus onClick={onClose}>Close <span aria-hidden="true">&times;</span></button></div>
       <p className={styles.kicker}>{story.category}</p><h2 id={titleId}>{story.title}</h2><p className={styles.meta}>By {story.author} / {story.country} / {story.language}</p>
       <div className={styles.readerText}>{story.excerpt.split(/\n\s*\n/).map((p,i)=><p key={i}>{p}</p>)}</div>
+      <section className={styles.translationPanel} aria-labelledby={translationHeadingId}>
+        <h3 id={translationHeadingId}>Read in another language</h3>
+        <p className={styles.translationHelp}>{story.sample?'Choose a language to open this fictional sample in Google Translate. Only the title and excerpt are shared when you select the link.':'Your browser-local draft is not sent automatically. Copy it locally and paste into Google Translate only if you decide to share it.'} Machine translation may lose cultural nuance; always check with a fluent speaker before reusing it.</p>
+        <div className={styles.translationControls}>
+          <label htmlFor={languageId}>Target language
+            <select id={languageId} value={targetLanguage} onChange={event=>{setTargetLanguage(event.target.value);setCopyStatus('')}}>
+              {TRANSLATION_LANGUAGES.map(language=><option key={language.code} value={language.code}>{language.label}</option>)}
+            </select>
+          </label>
+          {sampleTranslation
+            ? <a href={sampleTranslation} target="_blank" rel="noopener noreferrer">Open sample in Google Translate <span aria-hidden="true">↗</span></a>
+            : <>
+                <button type="button" onClick={copyForTranslation}>Copy story text</button>
+                <a href={blankGoogleTranslateUrl(targetLanguage)} target="_blank" rel="noopener noreferrer">Open Google Translate <span aria-hidden="true">↗</span></a>
+              </>}
+        </div>
+        {copyStatus&&<p className={styles.translationStatus} role="status">{copyStatus}</p>}
+      </section>
       <button type="button" className={styles.outlineButton} aria-pressed={saved} onClick={onSave}><SaveIcon saved={saved}/>{saved?'Saved in reading list':'Save to reading list'}</button>
     </article>
   </dialog>;
