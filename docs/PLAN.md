@@ -37,6 +37,8 @@ todo = not started; in progress = assigned or implemented with acceptance eviden
 | NW-19 | P1 | frontend-builder / african-context-reviewer / quality-guardian | Optional language translation handoff in story reader | Static Pages; no translation API credential | Original text and attribution preserved; provider and machine-output limitations explicit; only fictional samples may appear in external URLs; browser-local drafts require manual copy and opt-in sharing; keyboard/mobile and external-link QA; PR approval before merge/deploy | in progress (PR #40 merged/deployed; external provider and device QA pending) |
 | NW-20 | P1 | frontend-builder / african-context-reviewer / quality-guardian | Homepage language selector with Google Websites handoff | NW-19; static Pages | Visible shared header control; original English retained; no automatic translation or private draft transfer; user-controlled copy of public URL; language selection and browser/device QA | in progress (review PR; not deployed) |
 
+| NW-21 | P0 | frontend-builder / product-designer / african-context-reviewer / quality-guardian | Full-length fictional flagship and editorial reader | NW-18; preserved existing preview recordings | Featured story opens with accessible long-form text, distinct fictional/cultural disclosure, reading time, responsive artwork; existing audio and translated links explicitly remain short-preview-only; local drafts unchanged; automated tests plus real mobile/keyboard review | in progress (feature PR; not released) |
+
 ## Definition of done
 Story submission, category review, diverse discovery, honest metrics, passing build and reproducible demonstration.
 
