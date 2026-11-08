@@ -9,6 +9,7 @@ type RecorderState='idle'|'requesting'|'recording'|'preview';
 type Props={
   onRecorded?:(blob:Blob)=>void;
   onDiscard?:()=>void;
+  onCaptureBusyChange?:(busy:boolean)=>void;
   /** The transcription studio owns a single shared player; standalone use keeps its own preview. */
   previewMode?:'inline'|'shared';
   disabled?:boolean;
@@ -16,7 +17,7 @@ type Props={
 const pad=(n:number)=>String(n).padStart(2,'0');
 const clock=(seconds:number)=>pad(Math.floor(seconds/60))+':'+pad(seconds%60);
 
-export function VoiceRecorder({onRecorded,onDiscard,previewMode='inline',disabled=false}:Props){
+export function VoiceRecorder({onRecorded,onDiscard,onCaptureBusyChange,previewMode='inline',disabled=false}:Props){
   const titleId=useId();
   const [supported,setSupported]=useState(false);
   const [state,setState]=useState<RecorderState>('idle');
@@ -31,8 +32,11 @@ export function VoiceRecorder({onRecorded,onDiscard,previewMode='inline',disable
   const timer=useRef<ReturnType<typeof setInterval>|null>(null);
   const currentUrl=useRef('');
   const chunks=useRef<Blob[]>([]);
-  const callbacks=useRef({onRecorded,onDiscard});
-  callbacks.current={onRecorded,onDiscard};
+  const callbacks=useRef({onRecorded,onDiscard,onCaptureBusyChange});
+  callbacks.current={onRecorded,onDiscard,onCaptureBusyChange};
+  useEffect(()=>{
+    callbacks.current.onCaptureBusyChange?.(state==='recording'||state==='requesting');
+  },[state]);
 
   function cleanup(){
     stream.current?.getTracks().forEach(track=>track.stop());
@@ -47,6 +51,7 @@ export function VoiceRecorder({onRecorded,onDiscard,previewMode='inline',disable
     setSupported(!!navigator.mediaDevices?.getUserMedia && typeof MediaRecorder!=='undefined');
     return ()=>{
       mounted.current=false;
+      callbacks.current.onCaptureBusyChange?.(false);
       revision.current++;
       if(recorder.current?.state==='recording')recorder.current.stop();
       cleanup();
