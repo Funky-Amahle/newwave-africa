@@ -99,6 +99,20 @@ tie-breaks, not trained recommendations or observed audience behaviors.
 Explanations are deliberately qualitative, not fabricated model attributions.
 This introduces no analytics, stored preferences, backend or network calls.
 
+## Voice Studio mode cards — NW-24
+
+The existing MediaRecorder and local file-input behavior are presented as separate
+Record and Upload modes. Selection uses the same bounded client Blob flow; the
+VoiceToText parent owns one selected-audio preview, downloadable asset and
+consent-clearing state. The recorder's original inline preview remains available
+for standalone use, but its shared-preview mode avoids duplicate audio controls.
+
+The animated bars are **decorative only** (not a microphone volume analyzer).
+Record motion runs only during active capture; playback motion only while HTML
+audio is playing; reduced-motion preferences disable both. Browser microphone
+permissions, error states, the three-minute recording limit and 8 MB cap remain.
+No provider credential, recording or transcript is persisted or sent automatically.
+
 ## Media and motion
 
 Original SVG background assets or local image blobs accompany the selected audio

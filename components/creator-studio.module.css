@@ -34,3 +34,43 @@
 .headingRow{display:flex;align-items:baseline;justify-content:space-between;gap:16px}
 .headingRow span{font-size:12px;color:var(--nw-muted)}
 @media(max-width:600px){.row{grid-template-columns:minmax(0,1fr)}.swatches{gap:8px}.swatch img{height:50px}.panel .swatch span{font-size:11px;padding:8px 2px}.stage{aspect-ratio:4/3}.headingRow{display:block}}
+
+
+/* NW-23: distinct source modes and one media review surface. */
+.modeCards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin:23px 0 12px}
+.panel .modeCards button{min-width:0;min-height:104px;display:flex;align-items:center;justify-content:flex-start;text-align:left;gap:13px;border:1px solid var(--nw-line);background:#f7f5ed;color:var(--nw-ink);border-radius:14px;padding:18px;transition:background .2s,border-color .2s,transform .2s}
+.panel .modeCards button:hover:not(:disabled){background:#eef2ea;border-color:#a4b7a6;transform:translateY(-2px)}
+.panel .modeCards button[aria-pressed='true']{background:#e9f0e6;color:var(--nw-forest);border:2px solid var(--nw-forest);padding:17px}
+.modeIcon{display:grid;place-items:center;flex:0 0 42px;width:42px;height:42px;border-radius:12px;background:#e3e6d9;color:var(--nw-forest);font-size:21px}
+.modeCards button[aria-pressed='true'] .modeIcon{background:var(--nw-forest);color:var(--nw-paper)}
+.modeCopy{display:grid;gap:4px;min-width:0}
+.modeCopy strong{font-size:14px;line-height:1.3}
+.modeCopy small{font-size:11px;line-height:1.5;font-weight:400;color:var(--nw-muted)}
+.modeChoice{font-size:10px;font-weight:700;margin-left:auto;color:var(--nw-muted)}
+.modeCards button[aria-pressed='true'] .modeChoice{color:var(--nw-forest)}
+.captureModePanel{min-width:0;border:1px solid var(--nw-line);border-radius:16px;padding:clamp(16px,3vw,24px);background:#fffdf8}
+.uploadWell{display:grid;gap:12px;min-width:0}
+.uploadEyebrow,.selectedEyebrow{font-size:10px;letter-spacing:.12em;font-weight:700;color:var(--nw-clay)}
+.uploadWell h4,.selectedHeading h4{font:400 clamp(21px,3vw,28px)/1.15 var(--nw-serif);margin:0}
+.uploadWell p,.selectedHeading p{margin:0;font-size:12px;line-height:1.65;color:var(--nw-muted)}
+.panel .uploadWell label{display:grid;gap:10px;font-weight:700}
+.panel .uploadWell input[type='file']{min-height:62px;border:1px dashed #96ab9b;border-radius:9px;background:#f2f6ef;padding:15px;font-size:12px;max-width:100%}
+.panel .uploadWell .uploadHint{font-size:11px}
+.selectedMedia{margin:20px 0 24px;padding:clamp(16px,3vw,22px);border:1px solid #c9d6c8;border-radius:16px;background:linear-gradient(140deg,#f0f5ec,#fffdf8)}
+.selectedHeading{display:flex;justify-content:space-between;align-items:start;gap:12px;flex-wrap:wrap;margin-bottom:16px}
+.selectedHeading>div{display:grid;gap:8px;min-width:0}
+.selectedHeading h4{overflow-wrap:anywhere}
+.localOnly{border:1px solid #aebfae;border-radius:99px;padding:7px 11px;font-size:10px;font-weight:700;color:var(--nw-forest)}
+.selectedPlayer{display:flex;align-items:center;gap:14px;background:#fff;border:1px solid #e0e4d8;border-radius:12px;padding:12px;min-width:0}
+.selectedPlayer audio{flex:1;min-width:0;width:100%}
+.playbackBars{height:38px;min-width:44px;display:flex;align-items:center;gap:3px;color:var(--nw-forest)}
+.playbackBars i{display:block;flex:0 0 3px;border-radius:3px;background:currentColor;transform-origin:center}
+.selectedPlayer[data-playing='true'] .playbackBars i{animation:voice-review-bar .8s ease-in-out infinite alternate}
+.selectedActions{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
+.panel .selectedActions button,.panel .selectedActions .download{border-radius:9px;padding:10px 15px;min-height:44px}
+.panel .selectedActions .download{background:var(--nw-forest);color:var(--nw-paper)}
+.panel .selectedActions .download:hover{background:#285540}
+.panel .selectedNote{font-size:11px;line-height:1.6;margin:12px 0 0}
+@keyframes voice-review-bar{from{transform:scaleY(.42)}to{transform:scaleY(1.15)}}
+@media(max-width:700px){.modeCards{grid-template-columns:minmax(0,1fr)}.panel .modeCards button{min-height:85px}.selectedPlayer{flex-direction:column;align-items:stretch}.playbackBars{height:20px;justify-content:center}}
+@media(prefers-reduced-motion:reduce){.modeCards button,.playbackBars i{transition:none!important;animation:none!important}.panel .modeCards button:hover{transform:none}}

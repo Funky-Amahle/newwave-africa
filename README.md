@@ -132,3 +132,8 @@ The repository's [AGENTS.md](AGENTS.md) sets the contribution and approval rules
 - Produce and review both hackathon videos with actual recorded footage.
 
 **Repository:** https://github.com/Funky-Amahle/newwave-africa
+
+
+### Voice Studio recording modes (NW-24, pending review)
+
+Creator Studio offers distinct **Record a new take** and **Upload an audio file** modes. The selected recording or upload has one shared local preview, with audio download and clear actions. The record panel shows elapsed time and gentle decorative waveform animation, while preview animation runs only during playback. Animations are not live sound measurements and respect reduced-motion settings. Recording stops after three minutes; audio selection is bounded to 8 MB. No selected audio is sent to Deepgram without explicit permission, a session credential and the separate transcription action. User hardware/browser QA remains pending.

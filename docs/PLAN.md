@@ -41,6 +41,8 @@ todo = not started; in progress = assigned or implemented with acceptance eviden
 
 | NW-22 | P0 | frontend-builder / product-designer / quality-guardian | Reader clarity and why-this-story explanations | NW-21; existing local ranking | Flagship text-size toggle; explicit short preview audio labeling; accessible per-card explanation accurately reflects search, interest, category counts, diversity, alphabetical tie-breaking and local demo scope; no secret/user analytics introduced; tests and real-device review | in progress (feature branch; PR review and browser QA outstanding) |
 
+| NW-24 | P1 | product-designer / frontend-builder / quality-guardian | Voice Studio recording-mode visual overhaul | Existing MediaRecorder, local upload, explicit transcription consent | Two accessible record/upload mode cards, distinct recording/preview/empty states, single playback surface, recording timer, tasteful decorative motion with reduced-motion fallback, retained 3-minute/8MB limits and manual device QA | in progress (feature branch, no release) |
+
 ## Definition of done
 Story submission, category review, diverse discovery, honest metrics, passing build and reproducible demonstration.
 
