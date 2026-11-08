@@ -26,6 +26,8 @@ See [the Pages consolidation record](docs/design/PAGES-CONSOLIDATION.md) and [th
 
 The eight starter stories are **fictional demonstration content**, not verified reporting or real creator submissions. The diversity algorithm is illustrative, not a validated recommender or proof of fair outcomes.
 
+**Story reading and explainability (NW-22, pending review):** The flagship story reader has standard/larger text controls, and the eight bundled recordings are consistently described as short-excerpt narration. Each discovery card includes an expandable “Why am I seeing this story?” explanation of the actual local search, chosen interest, category diversity and count-based ranking inputs, plus alphabetical tie-breaking. These explanations are deterministic and do not represent model-generated recommendations or browsing analytics.
+
 **Featured fictional long read (NW-21, pending review):** The South African Culture & Heritage sample `s3` includes a complete, original, explicitly fictional written story with an editorial reading view and ~3-minute reading estimate. Existing audio on the card and external Google Translate link still cover **the short original excerpt only**, not this full narrative. No interview, real storyteller or verified cultural testimony is implied. Browser-local drafts remain unchanged.
 
 **Optional translation handoff (NW-19 and NW-20):** The shared header offers an English-first language selector and a link to Google Translate's external Websites feature. Users manually copy the public page URL to the external translator; translations are not embedded in the app, and the original page stays available. The Website feature is subject to browser and region availability. 

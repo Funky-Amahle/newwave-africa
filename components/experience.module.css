@@ -347,3 +347,24 @@
   .readerDeck { font-size:20px; }
   .readerReadingMeta { gap:5px 12px; }
 }
+
+
+/* NW-22: readable controls and honest, accessible story-placement disclosures. */
+.readerPreferences { display:flex; align-items:center; flex-wrap:wrap; gap:8px; margin:19px 0 8px; }
+.readerPreferences>span { font-size:12px; font-weight:700; margin-right:7px; }
+.readerPreferences button { background:transparent; color:var(--nw-forest); border:1px solid var(--nw-line); border-radius:4px; font-size:12px; min-height:44px; padding:10px 14px; }
+.readerPreferences button[aria-pressed='true'] { background:var(--nw-forest); color:var(--nw-paper); border-color:var(--nw-forest); }
+.readerPreferences button:focus-visible { outline:2px solid var(--nw-clay); outline-offset:3px; }
+.readerText[data-reading-size='large'] { font-size:clamp(21px,3.5vw,24px); line-height:1.75; max-width:54ch; }
+.whyStory { margin-top:auto; border-top:1px solid var(--nw-line); padding:0 20px 14px; }
+.whyStory summary { display:flex; align-items:center; gap:8px; cursor:pointer; min-height:44px; font-size:12px; font-weight:700; color:var(--nw-forest); list-style:none; }
+.whyStory summary::-webkit-details-marker { display:none; }
+.whyStory summary::after { content:'+'; font-weight:700; font-size:17px; margin-left:auto; }
+.whyStory[open] summary::after { content:'−'; }
+.whyStory summary:focus-visible { outline:2px solid var(--nw-clay); outline-offset:3px; }
+.whyStoryBody { padding:0 0 4px; }
+.whyStoryBody p { font-size:12px; color:var(--nw-muted); line-height:1.65; margin:7px 0; }
+@media(max-width:540px) {
+  .readerPreferences>span { flex-basis:100%; }
+  .readerText[data-reading-size='large'] { font-size:21px; }
+}

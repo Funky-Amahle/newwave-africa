@@ -6,7 +6,7 @@ import {Hero} from '../components/hero';
 import {StoryCard} from '../components/story-card';
 import {DiscoveryScenario} from '../components/discovery-scenario';
 import sampleStories from '../lib/sample-stories.json';
-import {CATEGORIES,SAVED_KEY,parseSaved,toggleSaved,getDiscovery} from '../lib/discovery';
+import {CATEGORIES,SAVED_KEY,parseSaved,toggleSaved,getDiscovery,explainStoryPlacement} from '../lib/discovery';
 import type {Story} from '../lib/discovery';
 import {Reveal,SectionHeading,Spotlight,DiscoveryRoutes,StudioInvitation,ExperienceHelp,StoryReader,Arrow,SaveIcon,useQuietMotion} from '../components/experience';
 import styles from '../components/experience.module.css';
@@ -121,6 +121,12 @@ function HomeContent(){
           <div className={styles.storyGrid}>{feed.map((story,index)=><div key={story.id} className={styles.storyFrame}>
             <StoryCard story={story} index={index}/>
             <div className={styles.cardActions}><button type="button" aria-label={'Read '+story.title} onClick={()=>setReader(story)}>Read story <Arrow/></button><button type="button" aria-pressed={saved.includes(story.id)} aria-label={'Save '+story.title+' to reading list'} onClick={()=>bookmark(story)}><SaveIcon saved={saved.includes(story.id)}/>{saved.includes(story.id)?'Saved':'Save'}</button></div>
+            <details className={styles.whyStory}>
+              <summary aria-label={'Why am I seeing '+story.title+'?'}>Why am I seeing this story?</summary>
+              <div className={styles.whyStoryBody}>
+                {explainStoryPlacement(story,{query,interest,diversity,savedOnly,saved},discovery.counts).map((reason,i)=><p key={i}>{reason}</p>)}
+              </div>
+            </details>
           </div>)}</div>
           {feed.length===0&&<div className={styles.empty}><h3>{savedOnly?'A little space for your favourites.':'No stories here just yet.'}</h3><p>{savedOnly?'Save a story from the collection, or clear your search to see saved items.':'Try a different search or return to the complete collection.'}</p><button type="button" className={styles.solidButton} onClick={resetFilters}>Explore all stories <Arrow/></button></div>}
           {discovery.ranked.length>6&&<div className={styles.more}><button type="button" className={styles.outlineButton} onClick={()=>setShowAll(v=>!v)}>{showAll?'Show fewer stories':'Explore all '+discovery.ranked.length+' stories'} <Arrow/></button></div>}

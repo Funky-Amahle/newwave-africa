@@ -39,6 +39,8 @@ todo = not started; in progress = assigned or implemented with acceptance eviden
 
 | NW-21 | P0 | frontend-builder / product-designer / african-context-reviewer / quality-guardian | Full-length fictional flagship and editorial reader | NW-18; preserved existing preview recordings | Featured story opens with accessible long-form text, distinct fictional/cultural disclosure, reading time, responsive artwork; existing audio and translated links explicitly remain short-preview-only; local drafts unchanged; automated tests plus real mobile/keyboard review | in progress (feature PR; not released) |
 
+| NW-22 | P0 | frontend-builder / product-designer / quality-guardian | Reader clarity and why-this-story explanations | NW-21; existing local ranking | Flagship text-size toggle; explicit short preview audio labeling; accessible per-card explanation accurately reflects search, interest, category counts, diversity, alphabetical tie-breaking and local demo scope; no secret/user analytics introduced; tests and real-device review | in progress (feature branch; PR review and browser QA outstanding) |
+
 ## Definition of done
 Story submission, category review, diverse discovery, honest metrics, passing build and reproducible demonstration.
 
