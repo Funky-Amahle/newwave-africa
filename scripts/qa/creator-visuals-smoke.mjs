@@ -30,7 +30,7 @@ try{
       if(!section)return false;
       const rect=section.getBoundingClientRect();
       return rect.top<window.innerHeight*.9 && rect.bottom>0;
-    },{timeout:4500});
+    },null,{timeout:4500});
     const visual=page.locator('#studio-visual');
     await visual.getByRole('heading',{name:'Give your voice a setting'}).waitFor();
     assert.equal(await page.locator('#studio-visual').count(),1);
@@ -72,8 +72,6 @@ try{
       const [download]=await Promise.all([page.waitForEvent('download'),link.click()]);
       assert.equal(download.suggestedFilename(),filename);
       assert.equal(await download.failure(),null);
-      const src=await visual.locator('.unused-noop').count(); // Avoid depending on hashed CSS selectors.
-      assert.equal(src,0);
       console.log('  '+ext+' file downloaded from a browser-local blob');
     }
     await page.screenshot({path:output+'/uploaded-webp-preview.png',animations:'disabled'});
