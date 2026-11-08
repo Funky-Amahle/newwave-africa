@@ -39,7 +39,8 @@ export function StoryCard({story,index}:{story:StoryPreview;index:number}){
 
   const {status,error}=playback;
   const buttonText=!checked?'Checking narration...':!clip?'Narration unavailable':status==='loading'?'Loading narration...':status==='speaking'?'Pause':status==='paused'?'Resume':'Listen';
-  const caption=error || (!checked?'Checking for a recorded story.':clip?'Deepgram-generated recording. No browser voice fallback.':'Narration unavailable. You can still read this story.');
+  const clipDescription=story.sample&&story.id==='s3'?'Short preview audio only. The full fictional story is available to read.':'Short fictional sample excerpt, not a full-length story.';
+  const caption=error || (!checked?'Checking for a recorded story.':clip?clipDescription+' Deepgram-generated recording. No browser voice fallback.':'Narration unavailable. You can still read this story.');
 
   return <motion.article initial={reduced?false:{opacity:0,y:18}} whileInView={reduced?undefined:{opacity:1,y:0}} viewport={{once:true,amount:.12}} transition={{duration:.4,delay:Math.min(index,4)*.045}} className="story">
     <div className="story-index"><span>{story.country}</span><span>{story.sample?'Fictional sample':'Your draft'}</span></div>
