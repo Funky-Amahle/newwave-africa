@@ -78,3 +78,34 @@ export function getDiscovery(stories: Story[], options: DiscoveryOptions) {
   return {ranked, baseline, counts, windowSize, baselineCoverage: distinct(baseline.slice(0,windowSize)),
     diverseCoverage: distinct(ranked.slice(0,windowSize))};
 }
+
+
+/** Describe the exact local ranking inputs; never imply behavioral profiling or model inference. */
+export function explainStoryPlacement(story: Story, options: DiscoveryOptions, counts: Record<string,number>): string[] {
+  const reasons: string[] = [];
+  if (options.query.trim()) {
+    reasons.push('This story matches your search in its title, text, country, category or tags. Search filters which stories can appear.');
+  } else {
+    reasons.push('This story is part of the collection available in your browser.');
+  }
+  if (options.savedOnly) reasons.push('Reading list is active: only stories you saved in this browser are shown.');
+
+  if (options.interest === 'All categories') {
+    reasons.push('All categories is selected, so each eligible story starts with equal relevance.');
+  } else if (story.category === options.interest) {
+    reasons.push('Its category matches your selected interest, increasing its relevance score.');
+  } else {
+    reasons.push('Your preferred category is ' + options.interest + ', but other categories stay eligible to help you discover different perspectives.');
+  }
+
+  // Exactly the same default/clamping as getDiscovery.
+  const weight = Number.isFinite(options.diversity) ? Math.min(100,Math.max(0,options.diversity)) : 60;
+  if (weight > 0) {
+    const count = counts[story.category] || 0;
+    reasons.push('Diversity is set to ' + Math.round(weight) + '%. ' + story.category + ' has ' + count + ' ' + (count===1?'story':'stories') + ' in the full browser collection. Fewer stories in a category receive a larger diversity component.');
+  } else {
+    reasons.push('Diversity is set to 0%, so category sizes do not change the order.');
+  }
+  reasons.push('This is a deterministic local ranking, with alphabetical title tie-breaks. It does not use your browsing history, a trained AI model or measured audience preferences.');
+  return reasons;
+}
