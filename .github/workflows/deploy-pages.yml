@@ -26,6 +26,8 @@ jobs:
         run: node --test tests/brand.test.mjs
       - name: Validate discovery and editorial UI contracts
         run: node --experimental-strip-types --test tests/discovery.test.mjs
+      - name: Validate story and homepage translation handoffs (offline)
+        run: node --experimental-strip-types --test tests/translation.test.mjs tests/homepage-language.test.mjs
       - name: Validate complementary creator links and prompt progress
         run: node --experimental-strip-types --test tests/creator-fusion.test.mjs tests/creator-input.test.mjs tests/creator-voices.test.mjs
       - name: Validate shared narration loading and playback ownership
