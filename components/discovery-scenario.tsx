@@ -19,7 +19,7 @@ export function DiscoveryScenario({diversity,onDiversityChange}:{diversity:numbe
         <span>Demo diversity weight <output htmlFor="uneven-demo-weight">{diversity}%</output></span>
         <input id="uneven-demo-weight" type="range" min="0" max="100" step="10"
           value={diversity} onChange={event=>onDiversityChange(Number(event.target.value))}/>
-        <small>0% follows the relevance-only baseline; higher values favor less-represented categories.</small>
+        <small>0% follows the relevance-only baseline; higher values favour less-represented categories. This is the same setting as Discover stories, so changes here also affect its ranking.</small>
       </label>
     </div>
     <div className={styles.results}>

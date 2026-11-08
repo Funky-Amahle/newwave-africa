@@ -12,13 +12,33 @@ in saved text drafts. Existing sample narration loads reviewed bundled MP3s.
 ## Two build targets
 
 - GitHub Pages: `GITHUB_PAGES=true` creates static files at `/newwave-africa`.
-  Recording, typing, visual selection and downloads work without an API. Deepgram
-  transcription explicitly remains unavailable here; no browser key is used.
+  Recording, typing, visual selection and downloads work without an API or key.
+  Optional direct Deepgram transcription uses an **operator-entered restricted
+  session key** and explicit audio consent. The browser sends only selected
+  audio to Deepgram over its fixed WebSocket endpoint. The operator reviews and
+  explicitly inserts the transcript. No shared key is bundled, and the key is
+  not persisted to browser storage. This is a demo using the operator's own
+  quota, not a protected shared-key service or secret vault.
 - Next.js server: normal `next build` produces a standalone package, including
   `pages/api/transcribe.ts`. Runtime secrets enable the private transcription
   pilot. The included Dockerfile packages this target; no host is provisioned.
 
-## Consented transcription path — NW-09
+## Consented transcription paths — NW-14 and NW-09
+
+### Pages session-key demo — NW-14
+
+Selected audio -> operator-entered restricted Deepgram session key and explicit
+consent -> bounded direct WebSocket connection to Deepgram -> editable transcript
+review -> explicit append to the selected answer. The client enforces an 8 MB
+selected-audio cap, 75-second deadline, 1 MB response cap, and 5,000-character
+transcript cap; these are not account-level spending or usage limits. The key is
+held only in panel memory, and is still observable by scripts with page access.
+An independent local-origin real-provider test used one fictional sample;
+public-origin testing, device microphones, diverse formats and accents remain
+unverified. See `docs/SESSION-TRANSCRIPTION-QA.md` and
+`docs/PAGES-SPEECH-TO-TEXT-PLAN.md`.
+
+### Prepared protected server pilot — NW-09
 
 Selected audio -> explicit permission/Deepgram consent and pilot access code ->
 same-origin POST -> bounded audio and authentication checks -> fixed Deepgram
@@ -41,7 +61,8 @@ reduced-motion, intersection and page-visibility controls.
 
 ## Release boundary and future work
 
-Prepared code is not a live server deployment. See `server-deploy/README.md` for
+The Pages session-key demo does not deploy `/api/transcribe`. Prepared
+server code is not a live server deployment. See `server-deploy/README.md` for
 runtime settings and verification. Owner approval is required before merge or
 hosting changes. A public service additionally needs individual authentication,
 shared quotas and host/provider spending limits. Moderation, consented persistent
