@@ -26,6 +26,8 @@ See [the Pages consolidation record](docs/design/PAGES-CONSOLIDATION.md) and [th
 
 The eight starter stories are **fictional demonstration content**, not verified reporting or real creator submissions. The diversity algorithm is illustrative, not a validated recommender or proof of fair outcomes.
 
+**Optional translation handoff (NW-19):** In the story reader, choose from a curated selection of African languages and explicitly open a fictional sample's title/excerpt in Google Translate. A personal browser-local draft is **never embedded in an external URL**; users can copy its text locally and manually choose whether to share it with the external service. The original stays in the reader, machine translations are unreviewed and should be checked for nuance, and translation does **not** run inside the app. No Google Cloud key, billing account, backend, unsupported widget, or new stored data is required.
+
 ### Create and craft
 
 The **Creator Craft Toolkit** offers five editable planning canvases in Creator Studio:

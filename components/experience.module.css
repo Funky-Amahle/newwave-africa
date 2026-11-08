@@ -152,6 +152,16 @@
 .readerToolbar button { min-height:44px; padding:8px; border:1px solid var(--nw-line); border-radius:3px; background:none; color:var(--nw-ink); font-size:12px; white-space:nowrap; }
 .reader h2 { font:400 clamp(30px,4vw,48px)/1.1 var(--nw-serif); letter-spacing:-.04em; margin:0 0 20px; }
 .readerText { font:400 19px/1.8 var(--nw-serif); margin:30px 0; white-space:pre-wrap; overflow-wrap:anywhere; }
+.translationPanel { border-top:1px solid var(--nw-line); border-bottom:1px solid var(--nw-line); padding:22px 0; margin:0 0 28px; }
+.translationPanel h3 { font:400 25px/1.2 var(--nw-serif); letter-spacing:-.025em; margin:0 0 10px; }
+.translationHelp { font-size:12px; line-height:1.8; color:var(--nw-muted); margin:0 0 16px; }
+.translationControls { display:flex; gap:12px; align-items:end; flex-wrap:wrap; }
+.translationControls label { display:flex; flex-direction:column; gap:7px; min-width:170px; flex:1 1 170px; font-size:12px; }
+.translationControls select { width:100%; min-height:44px; background:var(--nw-paper); color:var(--nw-ink); border:1px solid var(--nw-line); border-radius:4px; padding:10px; }
+.translationControls a,.translationControls button { min-height:44px; padding:11px 15px; border:1px solid var(--nw-forest); border-radius:4px; color:var(--nw-forest); background:transparent; display:inline-flex; align-items:center; justify-content:center; font-size:12px; font-weight:700; text-decoration:none; }
+.translationControls a:hover,.translationControls button:hover { background:#e6ebdf; }
+.translationControls :is(a,button,select):focus-visible { outline:2px solid var(--nw-clay); outline-offset:2px; }
+.translationStatus { font-size:12px; line-height:1.6; color:var(--nw-muted); margin:12px 0 0; }
 .srOnly { position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0; }
 @media (hover:hover) and (prefers-reduced-motion:no-preference) {
   .routeCard svg,.solidButton svg,.lightButton svg { transition:transform .2s var(--nw-ease); }

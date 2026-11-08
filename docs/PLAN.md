@@ -34,6 +34,7 @@ todo = not started; in progress = assigned or implemented with acceptance eviden
 | NW-16 | P1 | frontend-builder / quality-guardian | Animate discovery card artwork | Continuous gentle wave, orbit and disc motion; existing visibility and reduced-motion controls retained; static export build and review | in progress |
 
 | NW-18 | P0 | ai-discovery-engine / product-designer / quality-guardian / release-manager | Judging-readiness demonstration | Fixed deliberately imbalanced fictional dataset shows baseline versus diversity order; creator path links existing safe tools; CI checks and a pending real-device checklist; script describes current features accurately. Review PR before merge/deploy. | in progress (PR #38 merged/deployed; real-device acceptance and final demo video pending) |
+| NW-19 | P1 | frontend-builder / african-context-reviewer / quality-guardian | Optional language translation handoff in story reader | Static Pages; no translation API credential | Original text and attribution preserved; provider and machine-output limitations explicit; only fictional samples may appear in external URLs; browser-local drafts require manual copy and opt-in sharing; keyboard/mobile and external-link QA; PR approval before merge/deploy | in progress (feature PR; not released) |
 
 ## Definition of done
 Story submission, category review, diverse discovery, honest metrics, passing build and reproducible demonstration.
