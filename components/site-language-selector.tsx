@@ -25,7 +25,7 @@ export function SiteLanguageSelector(){
   }
 
   return <details className={styles.siteLanguage}>
-    <summary>Language <strong>{selectedLabel}</strong></summary>
+    <summary><span className={styles.siteLanguageCaption}>Language</span><strong>{selectedLabel}</strong></summary>
     <div className={styles.siteLanguagePanel}>
       <label htmlFor={selectId}>Translate public website to</label>
       <select id={selectId} value={language} onChange={event=>{setLanguage(event.target.value);setCopyStatus('')}}>
