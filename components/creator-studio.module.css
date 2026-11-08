@@ -82,3 +82,32 @@
 .modeCards button:disabled{opacity:.65;cursor:not-allowed}
 @keyframes studio-mode-arrive{from{opacity:.82;transform:translateY(5px)}to{opacity:1;transform:translateY(0)}}
 @media(prefers-reduced-motion:reduce){.captureModePanel{animation:none!important}.modeCards button:active{transform:none!important}}
+
+
+/* DESIGN-SELECT: bounded, searchable voice selector; no OS-sized popup. */
+.voicePicker{position:relative;min-width:0;margin-top:10px}
+.voicePickerLabel{display:block;font-size:13px;font-weight:700;margin-bottom:8px}
+.panel .voicePickerTrigger{width:100%;min-height:56px;padding:10px 14px;display:flex;justify-content:space-between;align-items:center;text-align:left;gap:12px;border:1px solid #a8aaa0;border-radius:10px;background:var(--nw-surface);color:var(--nw-ink);font-size:14px}
+.panel .voicePickerTrigger:hover{border-color:var(--nw-forest);background:#f7f8f3}
+.panel .voicePickerTrigger[aria-expanded='true']{border-color:var(--nw-forest);box-shadow:0 0 0 1px var(--nw-forest)}
+.voicePickerValue{display:flex;flex-wrap:wrap;align-items:baseline;gap:5px 11px;min-width:0}
+.voicePickerValue strong{font-size:15px;font-weight:700}
+.voicePickerValue small{font-size:12px;color:var(--nw-muted);font-weight:400}
+.voicePickerChevron{font-size:22px;line-height:1;flex:none;transition:transform .15s ease}
+.voicePickerTrigger[aria-expanded='true'] .voicePickerChevron{transform:rotate(180deg)}
+.voicePickerPopover{position:relative;z-index:5;margin-top:8px;padding:14px;border:1px solid #b9c3b4;border-radius:12px;background:var(--nw-surface);box-shadow:0 12px 24px #102a1e17;max-width:100%;min-width:0}
+.panel .voicePickerPopover label{font-size:12px;line-height:1.4}
+.panel .voicePickerPopover>label{display:block;font-weight:700;margin-bottom:7px}
+.panel .voicePickerPopover input[type='search']{display:block;width:100%;min-width:0;min-height:44px;border-radius:8px;padding:10px 12px;background:#fff;border:1px solid #a7ada0;font-size:14px}
+.panel .voicePickerCount{font-size:11px;line-height:1.4;margin:10px 0;color:var(--nw-muted)}
+.voiceOptionList{display:grid;gap:3px;max-height:min(310px,40dvh);overflow-y:auto;overscroll-behavior:contain;border-top:1px solid var(--nw-line);padding-top:7px}
+.panel .voiceOption{cursor:pointer;display:flex;flex-direction:row;align-items:center;gap:12px;padding:10px 12px;min-height:50px;border:1px solid transparent;border-radius:8px;font-size:13px;font-weight:400;line-height:1.4}
+.panel .voiceOption:hover,.panel .voiceOption:focus-within{background:#eef2e9;border-color:#ccd6c7}
+.panel .voiceOptionSelected{background:#e7eee3;border-color:#a6b8a4}
+.voiceOption input[type='radio']{width:18px;min-width:18px;height:18px;flex:none;margin:0;accent-color:var(--nw-forest)}
+.voiceOption span{display:flex;align-items:baseline;flex-wrap:wrap;gap:4px 8px;min-width:0}
+.voiceOption strong{font-size:13px;font-weight:700}
+.voiceOption small{font-size:12px;color:var(--nw-muted)}
+.panel .voicePickerEmpty{font-size:12px;margin:12px 4px 2px}
+@media(max-width:540px){.voicePickerPopover{padding:10px}.voiceOptionList{max-height:min(270px,36dvh)}.panel .voiceOption{padding:10px 8px}.voicePickerValue{display:grid;gap:2px}}
+@media(prefers-reduced-motion:reduce){.voicePickerChevron{transition:none!important}}

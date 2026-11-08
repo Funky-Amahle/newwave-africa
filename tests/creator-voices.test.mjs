@@ -1,3 +1,4 @@
+import {readFileSync} from 'node:fs';
 import assert from 'node:assert/strict';
 import {test} from 'node:test';
 import {CREATOR_VOICES,DEFAULT_CREATOR_VOICE,narrationBrief} from '../lib/creator-voices.ts';
@@ -20,4 +21,26 @@ test('brief binds the selected model to the exact authored text',()=>{
 test('brief rejects unknown models and empty drafts',()=>{
   assert.throws(()=>narrationBrief('aura-madeup','title','Story'),/listed Deepgram/);
   assert.throws(()=>narrationBrief(DEFAULT_CREATOR_VOICE,'title','  '),/Write your story/);
+});
+
+
+test('voice selection uses a bounded searchable radio group with keyboard dismissal',()=>{
+  const picker=readFileSync(new URL('../components/creator-voice-picker.tsx',import.meta.url),'utf8');
+  const css=readFileSync(new URL('../components/creator-studio.module.css',import.meta.url),'utf8');
+  assert.match(picker,/type="search"/);
+  assert.match(picker,/role="radiogroup"/);
+  assert.match(picker,/type="radio"/);
+  assert.match(picker,/event\.key==='Escape'/);
+  assert.match(picker,/onOutsideClick/);
+  assert.match(picker,/setSearch\(''\)/);
+  assert.match(picker,/onChange\(item\.id\)/);
+  assert.match(css,/\.voiceOptionList\{[^}]*max-height:/);
+  assert.match(css,/\.voiceOptionList\{[^}]*overflow-y:auto/);
+});
+test('native selectors keep a consistent mobile-safe interaction surface',()=>{
+  const css=readFileSync(new URL('../components/experience.module.css',import.meta.url),'utf8');
+  assert.match(css,/\.siteLanguagePanel \{ position:fixed; top:58px; left:12px; right:12px/);
+  assert.match(css,/\.experience :global\(\.creator select\)/);
+  assert.match(css,/\.experience :global\(\.creator \.formrow\)/);
+  assert.match(css,/appearance:none/);
 });
