@@ -260,3 +260,22 @@
 @media(max-width:1000px) { .principleGrid { grid-template-columns:1fr 1fr; } }
 @media(max-width:700px) { .approachIntro,.approachColumns,.approachBoundaries dl { grid-template-columns:minmax(0,1fr); }.approachIntro h1 { max-width:20ch; }.approachColumns { padding-block:32px 48px; }.approachPrinciples,.approachBoundaries { padding-block:48px; } }
 @media(max-width:420px) { .principleGrid { grid-template-columns:minmax(0,1fr); } }
+
+/* NW-15: screenshot-guided, question-specific creator controls. */
+.studioWork :global(.craft-formats button) { border-radius:999px; padding:12px 18px; color:var(--nw-forest); border-color:#a6afa5; background:transparent; }
+.studioWork :global(.craft-formats button.selected) { background:var(--nw-forest); color:var(--nw-surface); border-color:var(--nw-forest); }
+.studioWork :global(.craft-fields) { grid-template-columns:minmax(0,1fr); gap:0; }
+.studioWork :global(.craft-question) { min-width:0; border-top:1px solid var(--nw-line); padding:24px 0 28px; }
+.studioWork :global(.craft-question-heading) { display:flex; justify-content:space-between; align-items:center; gap:12px; margin-bottom:14px; }
+.studioWork :global(.craft-question-heading label) { display:flex; flex-direction:row; align-items:baseline; gap:12px; font-size:16px; font-weight:500; line-height:1.5; }
+.studioWork :global(.craft-question-number) { font-size:12px; font-variant-numeric:tabular-nums; color:var(--nw-muted); }
+.studioWork :global(.craft-speak) { flex-shrink:0; display:inline-flex; align-items:center; gap:8px; min-height:44px; padding:8px 14px; border:1px solid #a6afa5; border-radius:999px; color:var(--nw-forest); background:transparent; font-size:13px; }
+.studioWork :global(.craft-speak:hover),.studioWork :global(.craft-speak[aria-expanded='true']) { background:#e5ebdf; border-color:var(--nw-forest); }
+.studioWork :global(.craft-question textarea) { min-height:130px; font-size:15px; line-height:1.7; padding:16px; }
+.studioWork :global(.craft-voice-note) { font-size:13px; line-height:1.7; color:var(--nw-muted); margin:20px 0 0; }
+.creatorFrame :global(.metadata-choice) { display:grid; align-content:start; gap:14px; min-width:0; }
+.creatorFrame :global(.creator select) { width:100%; min-height:48px; }
+.creatorFrame :global(.creator>.note) { margin:0; }
+@media(max-width:480px) { .studioWork :global(.craft-question-heading) { align-items:flex-start; }.studioWork :global(.craft-question-heading label) { font-size:15px; gap:8px; }.studioWork :global(.craft-speak) { padding:8px 10px; gap:5px; } }
+
+.studioWork :is(input,textarea)::placeholder { color:var(--nw-muted); opacity:1; }

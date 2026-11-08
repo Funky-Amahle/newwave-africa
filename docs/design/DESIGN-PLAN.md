@@ -22,6 +22,8 @@
 
 | DESIGN-18 | P1 | Dedicated Creator Studio and Our Approach pages | Shared responsive shell, route links, accurate creator/privacy/discovery content, static refresh paths and documented QA | in progress |
 
+| DESIGN-19 | P1 | Bring supplied creator controls into the combined app | Inline per-question Speak controls, editorial question rows, readable forest/cream pills, story metadata card; local-only save and English transcription limitation retained | in progress |
+
 ## Evidence and audit references
 
 Use [DESIGN-QUALITY-GATE.md](DESIGN-QUALITY-GATE.md) for responsive, focus, state and motion QA. Start tasks with [TASK-BRIEF.md](../templates/TASK-BRIEF.md) and transfer evidence using [AGENT-HANDOFF.md](../AGENT-HANDOFF.md).

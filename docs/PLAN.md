@@ -27,6 +27,8 @@ todo = not started; in progress = assigned; blocked = unresolved dependency; don
 
 | NW-14 | P1 | frontend-builder / quality-guardian | Enable Pages-only session-key transcription demo | NW-13 | No bundled/stored/shared key; explicit consent; bounded direct Deepgram stream; cancel, review and append; accurate docs and provider verification limits | in progress |
 
+| NW-15 | P1 | product-designer / frontend-builder / quality-guardian | Add screenshot-guided question speech controls and story metadata | Per-question reviewed voice insertion, five practice pills, full-width prompts, credit/country/category/language controls, preserved local drafts and consent; responsive and keyboard evidence | in progress |
+
 ## Definition of done
 Story submission, category review, diverse discovery, honest metrics, passing build and reproducible demonstration.
 
