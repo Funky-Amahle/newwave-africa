@@ -88,8 +88,14 @@ try{
     await page.locator('#studio-section-jump').selectOption('studio-visual');
     await page.waitForFunction(()=>location.hash==='#studio-visual');
     await page.waitForFunction(()=>document.activeElement?.id==='studio-visual');
-    const y=await page.locator('#studio-visual').evaluate(e=>e.getBoundingClientRect().top);
-    assert.ok(y<700,'Visuals should be scrolled into the phone viewport, got y='+y);
+    // Native anchor navigation uses CSS smooth scrolling; wait for the animation
+    // to finish before measuring the viewport (focus/hash update occurs first).
+    await page.waitForFunction(()=>{
+      const el=document.getElementById('studio-visual');
+      if(!el)return false;
+      const rect=el.getBoundingClientRect();
+      return rect.top<window.innerHeight-80 && rect.bottom>0;
+    },null,{timeout:12000});
     await page.screenshot({path:output+'/mobile-visuals.png',animations:'disabled'});
   });
 
