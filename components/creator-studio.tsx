@@ -2,6 +2,8 @@
 import {useState} from 'react';
 import type {FormEvent} from 'react';
 import {CreatorCraftToolkit} from './creator-craft-toolkit';
+import {CreatorVoicePicker} from './creator-voice-picker';
+import {DEFAULT_CREATOR_VOICE} from '../lib/creator-voices';
 import {StoryVisuals} from './story-visuals';
 import {VoiceToText} from './voice-to-text';
 import {SectionHeading,Arrow} from './experience';
@@ -12,6 +14,7 @@ import styles from './experience.module.css';
 
 /** Shared creator composition: the Base44 visual layout with the local-first tools. */
 export function useCreatorDraft(onSaved:(stories:Story[])=>void){
+  const [narrationVoice,setNarrationVoice]=useState<string>(DEFAULT_CREATOR_VOICE);
   const [title,setTitle]=useState('');
   const [content,setContent]=useState('');
   const [storyAudio,setStoryAudio]=useState<Blob|null>(null);
@@ -37,14 +40,14 @@ export function useCreatorDraft(onSaved:(stories:Story[])=>void){
     }catch(error){setMessage(error instanceof SyntaxError?'Saved draft data could not be read safely. It has not been overwritten. Copy your new text somewhere safe.':error instanceof Error?error.message:'Unable to save in browser storage. Copy your text somewhere safe before leaving this page.')}
     finally{setBusy(false)}
   }
-  return {title,setTitle,content,setContent,storyAudio,setStoryAudio,author,setAuthor,country,setCountry,category,setCategory,language,setLanguage,rightsConfirmed,setRightsConfirmed,busy,message,publish};
+  return {narrationVoice,setNarrationVoice,title,setTitle,content,setContent,storyAudio,setStoryAudio,author,setAuthor,country,setCountry,category,setCategory,language,setLanguage,rightsConfirmed,setRightsConfirmed,busy,message,publish};
 }
 
 export function CreatorStudio({draft}:{draft:ReturnType<typeof useCreatorDraft>}){
-  const {title,setTitle,content,setContent,storyAudio,setStoryAudio,author,setAuthor,country,setCountry,category,setCategory,language,setLanguage,rightsConfirmed,setRightsConfirmed,busy,message,publish}=draft;
+  const {narrationVoice,setNarrationVoice,title,setTitle,content,setContent,storyAudio,setStoryAudio,author,setAuthor,country,setCountry,category,setCategory,language,setLanguage,rightsConfirmed,setRightsConfirmed,busy,message,publish}=draft;
   return <section className={styles.studio} aria-label="Creator studio">
           <SectionHeading title="Your words. Your next chapter" description="Build a story from what you know. Use a planning canvas, speak an answer, or bring a visual into the process. You make the creative decisions; nothing is automatically published."/>
-          <nav className={styles.studioWayfinding} aria-label="Creator studio tools"><a href="#studio-plan">Plan your work <Arrow/></a><a href="#studio-visual">Choose a visual <Arrow/></a><a href="#studio-draft">Save a written draft <Arrow/></a></nav>
+          <nav className={styles.studioWayfinding} aria-label="Creator studio tools"><a href="#studio-plan">Plan your work <Arrow/></a><a href="#studio-narration">Choose a voice <Arrow/></a><a href="#studio-visual">Choose a visual <Arrow/></a><a href="#studio-draft">Save a written draft <Arrow/></a></nav>
           <div className={styles.studioColumns}>
           <div className={styles.studioWork} id="studio-plan" tabIndex={-1}>
           <CreatorCraftToolkit onAudio={setStoryAudio}/>
@@ -62,7 +65,7 @@ export function CreatorStudio({draft}:{draft:ReturnType<typeof useCreatorDraft>}
             <button className="primary" type="submit" disabled={busy}>{busy?'Saving...':'Save written draft locally'}</button>{message&&<p className="notice" role="status">{message}</p>}
           </form></div></div>
           </div>
-          <aside className={styles.studioMedia} id="studio-visual" tabIndex={-1} aria-label="Voice and visual companion"><StoryVisuals audio={storyAudio}/><p className={styles.studioPrivacy}>A setting for your voice. Choose original artwork or an image you have permission to use. Media stays in this tab; download each asset to keep it.</p></aside>
+          <aside className={styles.studioMedia} id="studio-visual" tabIndex={-1} aria-label="Voice and visual companion"><CreatorVoicePicker voice={narrationVoice} onChange={setNarrationVoice} title={title} content={content}/><StoryVisuals audio={storyAudio}/><p className={styles.studioPrivacy}>A setting for your voice. Choose original artwork or an image you have permission to use. Media stays in this tab; download each asset to keep it.</p></aside>
           </div>
 
   </section>;
