@@ -100,6 +100,7 @@ export function StoryReader({story,saved,onSave,onClose}:{story:Story;saved:bool
   const translationHeadingId=useId();
   const [targetLanguage,setTargetLanguage]=useState('sw');
   const [copyStatus,setCopyStatus]=useState('');
+  const [readingSize,setReadingSize]=useState<'regular'|'large'>('regular');
   const flagship=getFlagshipStory(story);
   const textToRead=flagship?flagship.paragraphs.join('\n\n'):story.excerpt;
   const sampleTranslation=sampleGoogleTranslateUrl(story,targetLanguage);
@@ -122,6 +123,11 @@ export function StoryReader({story,saved,onSave,onClose}:{story:Story;saved:bool
     <article><div className={styles.readerToolbar}><span>{story.sample?'Fictional sample / not reporting':'Your browser-local draft'}</span><button type="button" autoFocus onClick={onClose}>Close <span aria-hidden="true">&times;</span></button></div>
       <p className={styles.kicker}>{story.category}</p><h2 id={titleId}>{story.title}</h2>
       <p className={styles.meta}>By {story.author} / {story.country} / {story.language}</p>
+      {flagship&&<div className={styles.readerPreferences} role="group" aria-label="Story text size">
+        <span>Reading comfort</span>
+        <button type="button" aria-pressed={readingSize==='regular'} onClick={()=>setReadingSize('regular')}>Standard text</button>
+        <button type="button" aria-pressed={readingSize==='large'} onClick={()=>setReadingSize('large')}>Larger text</button>
+      </div>}
       {flagship&&<>
         <div className={styles.readerHeroArt}><StoryArtwork category={story.category} quiet featured/></div>
         <p className={styles.readerDeck}>{flagship.deck}</p>
@@ -131,7 +137,7 @@ export function StoryReader({story,saved,onSave,onClose}:{story:Story;saved:bool
           <span>Written sample, not full-length narration</span>
         </div>
       </>}
-      <div className={styles.readerText}>{textToRead.split(/\n\s*\n/).map((p,i)=><p key={i}>{p}</p>)}</div>
+      <div className={styles.readerText} data-reading-size={flagship?readingSize:'regular'}>{textToRead.split(/\n\s*\n/).map((p,i)=><p key={i}>{p}</p>)}</div>
       {flagship&&<aside className={styles.readerEditorialNote} aria-label="About this fictional story">
         <strong>About this story</strong><p>{flagship.editorialNote}</p>
         <p>Existing audio on the story card narrates the original short preview only, not this full written story. Do not infer that real people or places were interviewed.</p>
