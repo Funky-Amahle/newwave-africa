@@ -100,7 +100,7 @@ export function StoryReader({story,saved,onSave,onClose}:{story:Story;saved:bool
   const sampleTranslation=sampleGoogleTranslateUrl(story,targetLanguage);
   async function copyForTranslation(){
     try {
-      await navigator.clipboard.writeText(story.title+'\\n\\n'+story.excerpt);
+      await navigator.clipboard.writeText(story.title+'\n\n'+story.excerpt);
       setCopyStatus('Copied locally. Paste into Google Translate only if you choose to share these words.');
     } catch {
       setCopyStatus('Clipboard unavailable. Select and copy the text manually if you wish.');
