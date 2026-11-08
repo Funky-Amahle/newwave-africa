@@ -79,7 +79,7 @@ try{
 
   await run('Removing an upload restores original SVG selection',async()=>{
     await visual.getByRole('button',{name:'Remove uploaded visual'}).click();
-    assert.equal(await visual.getByRole('link',{name:'Download visual'}).getAttribute('download'),'newwave-clay.svg');
+    assert.equal(await visual.getByRole('link',{name:'Download visual'}).getAttribute('download'),'newwave-forest.svg');
   });
 
   await run('375px mobile picker focuses Visuals and preserves hash navigation',async()=>{
