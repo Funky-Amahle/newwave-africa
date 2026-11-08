@@ -45,6 +45,8 @@ todo = not started; in progress = assigned or implemented with acceptance eviden
 
 | NW-25 | P1 | product-designer / frontend-builder / quality-guardian | Base44-inspired motion and response adaptation | NW-24; existing hero wave and fictional spotlight | Clear next/previous/pagination with active state; opt-in 8.5-second rotation pauses on engagement, background or offscreen; reduced effects preserved; no live public content imports; regression tests and real browser/mobile QA | in progress (feature branch PR; live-device QA pending) |
 
+| NW-26 | P0 | frontend-builder / quality-guardian / release-manager | Four-route primary navigation | Existing shared discovery workspace and static Pages export | Ordered Home, Discover, Creator Studio, Our Approach header; dedicated /discover/ route; old /#discover deep links still work; four direct-entry export docs, base path, backward/forward, keyboard and mobile QA | in progress (feature PR; real-browser QA pending) |
+
 ## Definition of done
 Story submission, category review, diverse discovery, honest metrics, passing build and reproducible demonstration.
 
