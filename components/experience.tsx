@@ -1,7 +1,7 @@
 'use client';
 import {createContext,useContext,useEffect,useId,useRef,useState} from 'react';
 import type {ReactNode} from 'react';
-import {motion,MotionConfig,useReducedMotion} from 'motion/react';
+import {AnimatePresence,motion,MotionConfig,useReducedMotion} from 'motion/react';
 import type {Story} from '../lib/discovery';
 import styles from './experience.module.css';
 import {StoryArtwork} from './story-artwork';
@@ -45,22 +45,91 @@ export function SectionHeading({title,description}:{title:string;description?:st
 }
 
 export function Spotlight({stories,onRead}:{stories:Story[];onRead:(story:Story)=>void}) {
+  // Base44-inspired carousel controls, adapted to a fictional collection.
+  // Auto-rotation is opt-in and pauses when a reader engages with the feature.
   const [index,setIndex]=useState(2);
+  const [rotating,setRotating]=useState(false);
+  const [visible,setVisible]=useState(false);
+  const [pageVisible,setPageVisible]=useState(false);
+  const [hovered,setHovered]=useState(false);
+  const [focused,setFocused]=useState(false);
+  const [announcement,setAnnouncement]=useState('');
+  const spotlightRef=useRef<HTMLElement|null>(null);
   const quiet=useQuietMotion();
+
+  useEffect(()=>{
+    const element=spotlightRef.current;
+    const update=()=>setPageVisible(!document.hidden);
+    update();
+    document.addEventListener('visibilitychange',update);
+    if(!element)return()=>document.removeEventListener('visibilitychange',update);
+    if(typeof IntersectionObserver==='undefined')setVisible(true);
+    else {
+      const observer=new IntersectionObserver(([entry])=>setVisible(entry.isIntersecting),{threshold:.3});
+      observer.observe(element);
+      return()=>{observer.disconnect();document.removeEventListener('visibilitychange',update)};
+    }
+    return()=>document.removeEventListener('visibilitychange',update);
+  },[]);
+  useEffect(()=>{if(quiet)setRotating(false)},[quiet]);
+  useEffect(()=>{
+    if(!rotating||quiet||!visible||!pageVisible||hovered||focused||stories.length<2)return;
+    const timer=window.setTimeout(()=>setIndex(current=>(current+1)%stories.length),8500);
+    return()=>window.clearTimeout(timer);
+  },[rotating,quiet,visible,pageVisible,hovered,focused,stories.length,index]);
+
+  function showStory(next:number){
+    if(!stories.length)return;
+    const selected=(next+stories.length)%stories.length;
+    setIndex(selected);
+    setRotating(false);
+    setAnnouncement('Showing fictional story '+(selected+1)+' of '+stories.length+': '+stories[selected].title);
+  }
+
   const story=stories[index%stories.length];
   if(!story)return null;
-  return <section className={styles.spotlight} aria-label="Featured sample stories">
+  return <section ref={spotlightRef} className={styles.spotlight} aria-label="Featured sample stories"
+    onMouseEnter={()=>setHovered(true)} onMouseLeave={()=>setHovered(false)}
+    onFocusCapture={()=>setFocused(true)}
+    onBlurCapture={event=>{
+      const next=event.relatedTarget;
+      if(!(next instanceof Node)||!event.currentTarget.contains(next))setFocused(false);
+    }}>
     <div className={styles.spotlightTop}><span>THE READING TABLE</span><span>{getFlagshipStory(story)?'Featured fictional long read':'Fictional sample'}</span></div>
     <div className={styles.printArt}><StoryArtwork key={story.id} category={story.category} quiet={quiet} featured/></div>
-    <motion.div key={story.id} className={styles.spotlightCopy} initial={false}
-      animate={quiet?{opacity:1}:{opacity:[.4,1]}} transition={{duration:quiet?0:.25}}>
-      <p className={styles.kicker}>{story.category}</p><h2>{story.title}</h2>
-      <p>{story.excerpt}</p><span className={styles.meta}>{story.country} / {story.language}</span>
-      <button type="button" className={styles.lightButton} onClick={()=>onRead(story)}>{getFlagshipStory(story)?'Read the full story':'Read this story'} <Arrow/></button>
-    </motion.div>
-    <div className={styles.spotlightBottom}><span aria-live="polite">{index+1} / {stories.length} perspectives</span>
-      <button type="button" onClick={()=>setIndex(v=>(v+1)%stories.length)} aria-label="Show next featured sample story">Next perspective <span aria-hidden="true">&rarr;</span></button>
+    <AnimatePresence initial={false} mode="wait">
+      <motion.div key={story.id} className={styles.spotlightCopy}
+        initial={quiet?false:{opacity:0,y:9}} animate={{opacity:1,y:0}}
+        exit={quiet?undefined:{opacity:0,y:-7}}
+        transition={{duration:quiet?0:.26,ease:'easeOut'}}>
+        <p className={styles.kicker}>{story.category}</p><h2>{story.title}</h2>
+        <p>{story.excerpt}</p><span className={styles.meta}>{story.country} / {story.language}</span>
+        <button type="button" className={styles.lightButton} onClick={()=>{setRotating(false);onRead(story)}}>
+          {getFlagshipStory(story)?'Read the full story':'Read this story'} <Arrow/>
+        </button>
+      </motion.div>
+    </AnimatePresence>
+    <div className={styles.spotlightBottom}>
+      <div className={styles.spotlightNav}>
+        <span>{index+1} / {stories.length} fictional perspectives</span>
+        <div className={styles.spotlightArrows}>
+          <button type="button" onClick={()=>showStory(index-1)} aria-label="Previous featured fictional story">Previous</button>
+          <button type="button" onClick={()=>showStory(index+1)} aria-label="Next featured fictional story">Next <span aria-hidden="true">→</span></button>
+        </div>
+      </div>
+      <div className={styles.spotlightPagination} role="group" aria-label="Choose a featured fictional story">
+        {stories.map((item,i)=><button type="button" key={item.id}
+          aria-label={'Show '+item.title+' ('+(i+1)+' of '+stories.length+')'}
+          aria-current={i===index?'true':undefined}
+          onClick={()=>showStory(i)}><span aria-hidden="true"/></button>)}
+      </div>
+      <button type="button" className={styles.spotlightAuto} aria-pressed={rotating}
+        disabled={quiet||stories.length<2}
+        onClick={()=>{setRotating(value=>!value);setAnnouncement(rotating?'Story rotation paused.':'Story rotation enabled.')}}>
+        {quiet?'Motion paused':rotating?'Pause rotation':'Play rotation'}
+      </button>
     </div>
+    <span className={styles.srOnly} role="status">{announcement}</span>
   </section>;
 }
 
