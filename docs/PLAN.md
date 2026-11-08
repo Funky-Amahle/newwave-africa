@@ -47,6 +47,8 @@ todo = not started; in progress = assigned or implemented with acceptance eviden
 
 | NW-26 | P0 | frontend-builder / quality-guardian / release-manager | Four-route primary navigation | Existing shared discovery workspace and static Pages export | Ordered Home, Discover, Creator Studio, Our Approach header; dedicated /discover/ route; old /#discover deep links still work; four direct-entry export docs, base path, backward/forward, keyboard and mobile QA | in progress (feature PR; real-browser QA pending) |
 
+| NW-27 | P1 | frontend-builder / product-designer / quality-guardian | Shorten navigation effort in Creator Studio | Existing six section anchors and local-only creator tools | Sticky shortcut navigation with desktop links, mobile section picker, top return, compact mobile step overview, focusable targets and reduced-motion-safe browser scrolling; preserve media and draft state; route/build tests and manual device QA | in progress (draft PR; real-browser checks pending) |
+
 ## Definition of done
 Story submission, category review, diverse discovery, honest metrics, passing build and reproducible demonstration.
 
