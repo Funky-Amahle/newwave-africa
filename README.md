@@ -95,7 +95,7 @@ The app runs without an API key. An `.env.example` file may be present, but the 
 - **Local keyword rules** for demo category suggestions; illustrative relevance/scarcity ranking
 - **GitHub Pages** static export, with `/newwave-africa` base path and a GitHub Actions build/deployment workflow
 
-Recordings must be reviewed and published separately under `public/narration/` before they can be heard. Deepgram generation artifacts are not automatically deployed. See [the site-audio guide](docs/video/DEEPGRAM-SITE.md). Recording formats and microphone support vary by browser/device; passing CI does not establish audible playback or microphone functionality.
+Discovery sample recordings must be reviewed and published separately under `public/narration/`. Creator Studio can separately generate a private WAV from up to 5,000 characters of English story text using the selected Deepgram voice, explicit consent and a session-only key. It supports playback and download; changing text/voice clears the recording and key. Deepgram generation artifacts are not automatically deployed. See [the site-audio guide](docs/video/DEEPGRAM-SITE.md). Recording formats and microphone support vary by browser/device; passing CI does not establish audible playback or microphone functionality.
 
 ## Five-minute demonstration
 
@@ -115,7 +115,7 @@ For two separate ~5-minute videos (professional pitch and technical walkthrough)
 - **Creator agency:** obtain permission for stories, recordings, images, music and other assets.
 - **Cultural specificity:** invite local language expertise and avoid treating Africa as one homogeneous culture.
 - **Transparency:** fictional examples, local-only storage, rule-based classification and illustrative metrics must be clearly labeled.
-- **Privacy:** written drafts and visuals remain in the browser. Only explicitly consented audio is sent to Deepgram, using the Pages session-key demo or the configured server edition; download backups before clearing data or leaving the page.
+- **Privacy:** written drafts are saved locally and visuals remain in the browser. Explicitly consented audio for transcription or text for narration is sent to Deepgram, using the Pages session-key demo or the configured server edition; download backups before clearing data or leaving the page.
 - **Accessibility:** prioritize keyboard controls, captions/transcripts, responsive layouts and reduced motion; manual device testing remains necessary.
 
 ## Project workflow

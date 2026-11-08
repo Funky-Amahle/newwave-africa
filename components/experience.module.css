@@ -238,7 +238,7 @@
 .studioWork .creatorFrame { border-radius:12px; padding:clamp(20px,2.5vw,32px); }
 .studioMedia>section { margin:0; max-width:none; }
 .studioPrivacy { font-size:13px; line-height:1.75; color:var(--nw-muted); padding:0 20px; }
-@media(min-width:1001px) { .studioMedia { position:sticky; top:24px; } }
+/* Voice and visual tools scroll normally so taller panels remain reachable. */
 @media(max-width:1000px) { .studioColumns { grid-template-columns:minmax(0,1fr); gap:32px; }.studioMedia { grid-row:2; }.studioWork :global(.craft-heading) { display:flex; } }
 @media(max-width:700px) { .studioWork :global(.craft-heading) { display:block; }.studioWayfinding { gap:8px 20px; }.studioWayfinding a { font-size:12px; }.studioColumns { margin-top:24px; } }
 

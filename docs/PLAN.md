@@ -53,6 +53,8 @@ todo = not started; in progress = assigned or implemented with acceptance eviden
 
 | NW-29 | P0 | quality-guardian / frontend-builder | Turn Creator Studio visual browser QA into reproducible Chromium checks | NW-28 deployed; static Pages export | Playwright checks desktop visual jump, SVG and synthetic JPG/PNG/WebP actual downloads, phone selector and five-width overflow; screenshots on failure; CI results and manual QA gaps reported honestly | in progress (browser checks proposed on PR; physical-device QA pending) |
 
+| NW-30 | P1 | frontend-builder / quality-guardian | Generate Creator Studio narration | NW-17; session key | Explicit text consent, selected voice, full-story WAV playback/download, cancellation and cleanup | in progress |
+
 ## Definition of done
 Story submission, category review, diverse discovery, honest metrics, passing build and reproducible demonstration.
 

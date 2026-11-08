@@ -1,4 +1,5 @@
 'use client';
+import {CreatorAudio} from './creator-audio';
 import {useState} from 'react';
 import {CREATOR_VOICES,narrationBrief} from '../lib/creator-voices';
 import styles from './creator-studio.module.css';
@@ -17,18 +18,19 @@ export function CreatorVoicePicker({voice,onChange,title,content}:{voice:string;
   }
   return <section id="studio-narration" tabIndex={-1} className={styles.panel} aria-labelledby="narration-heading">
     <h3 id="narration-heading">Choose your narration voice</h3>
-    <p>Find a voice to carry your words. Choose from 36 Deepgram English voices, then keep your choice with your story in a narration brief.</p>
+    <p>Find a voice to carry your words. Choose from 36 Deepgram English voices, then generate a recording or keep your choice in a narration brief.</p>
     <label htmlFor="creator-narration-voice">Narration voice</label>
     <select id="creator-narration-voice" value={voice} aria-describedby="narration-help" onChange={event=>{onChange(event.target.value);setMessage('');}}>
       {CREATOR_VOICES.map(item=><option key={item.id} value={item.id}>{item.name} — {item.accent} {item.presentation}</option>)}
     </select>
-    <p id="narration-help">Your selection stays while you explore this app, until you refresh. The brief downloads your current written story and voice choice; it does not generate audio or change the sample recordings.</p>
+    <p id="narration-help">Your selection stays while you explore this app, until you refresh. The brief downloads your current written story and voice choice. Use “Hear your story” below to generate audio. Existing sample recordings stay unchanged.</p>
     <div className={styles.actions}>
       <a className={styles.download} href="https://talk.deepgram.com/" target="_blank" rel="noopener noreferrer">Audition voices on Deepgram (new tab)</a>
       <button type="button" onClick={download} disabled={!content.trim()}>Download narration brief</button>
     </div>
     {!content.trim()&&<p>Write in “Your story” to enable the brief download.</p>}
     <p>The audition opens Deepgram’s separate demo. Your draft and voice selection are not sent there.</p>
+    <CreatorAudio key={voice+content} voice={voice} content={content}/>
     {message&&<p className={styles.message} role="status">{message}</p>}
   </section>;
 }
