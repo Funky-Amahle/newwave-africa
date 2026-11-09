@@ -89,7 +89,7 @@ jobs:
           GITHUB_PAGES: 'true'
       - name: Install temporary Playwright browser test runner
         run: |
-          npm install --no-save --package-lock=false playwright
+          npm install --no-save --package-lock=false playwright axe-core
           npx playwright install --with-deps chromium
       - name: Run Creator Studio visual navigation and download tests
         run: |
@@ -99,11 +99,12 @@ jobs:
           server_pid=$!
           trap 'kill "$server_pid" 2>/dev/null || true' EXIT
           node scripts/qa/creator-visuals-smoke.mjs
+          node scripts/qa/accessibility-smoke.mjs
       - name: Upload browser screenshots on failure
         if: failure()
         uses: actions/upload-artifact@v4
         with:
-          name: creator-studio-browser-qa-failure
+          name: creator-studio-browser-and-accessibility-qa-failure
           path: browser-qa-artifacts/
           if-no-files-found: ignore
   deploy:
