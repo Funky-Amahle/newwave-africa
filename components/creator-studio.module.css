@@ -111,3 +111,9 @@
 .panel .voicePickerEmpty{font-size:12px;margin:12px 4px 2px}
 @media(max-width:540px){.voicePickerPopover{padding:10px}.voiceOptionList{max-height:min(270px,36dvh)}.panel .voiceOption{padding:10px 8px}.voicePickerValue{display:grid;gap:2px}}
 @media(prefers-reduced-motion:reduce){.voicePickerChevron{transition:none!important}}
+
+/* Addis uses the same bounded, readable voice-picker treatment as Deepgram. */
+.addisLanguageSelect{display:block;appearance:none;width:100%;min-height:48px;padding:10px 14px;margin:8px 0 18px;border:1px solid #a8aaa0;border-radius:10px;background:var(--nw-surface);color:var(--nw-ink);font-size:14px;line-height:1.5}
+.addisLanguageSelect:hover:not(:disabled),.addisLanguageSelect:focus-visible{border-color:var(--nw-forest)}
+.addisLanguageSelect:focus-visible{outline:3px solid var(--nw-clay);outline-offset:2px}
+.addisLanguageSelect:disabled{color:var(--nw-muted);cursor:not-allowed}

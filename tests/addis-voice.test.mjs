@@ -103,3 +103,24 @@ test('Creator Studio preserves Deepgram as default and Addis uses server-only cr
  assert.match(adapter,/process\.env\.ADDIS_API_KEY/);
  assert.doesNotMatch(addis,/process\.env\.ADDIS_API_KEY/);
 });
+
+test('Addis matches the Deepgram narrator structure and interaction semantics',()=>{
+ const addis=readFileSync(new URL('../components/addis-creator-audio.tsx',import.meta.url),'utf8');
+ const deepgram=readFileSync(new URL('../components/creator-voice-picker.tsx',import.meta.url),'utf8');
+ const style=readFileSync(new URL('../components/creator-studio.module.css',import.meta.url),'utf8');
+ for(const className of ['panel','voicePicker','voicePickerTrigger','voicePickerPopover','voiceOptionList','voiceOption','review','actions','check','download']){
+   if(className!=='review'&&className!=='actions'&&className!=='check'&&className!=='download')assert.match(deepgram,new RegExp('styles\\.'+className));
+   assert.match(addis,new RegExp('styles\\.'+className));
+ }
+ assert.match(addis,/Choose your narration voice/);
+ assert.match(addis,/Hear your story/);
+ assert.match(addis,/aria-expanded=\{open\}/);
+ assert.match(addis,/onKeyDown/);
+ assert.match(addis,/Escape/);
+ assert.match(addis,/role="radiogroup"/);
+ assert.match(addis,/minlength|1,000 characters/i);
+ assert.match(addis,/Addis API key/);
+ assert.match(addis,/NEXT_PUBLIC_STATIC_SITE/);
+ assert.match(style,/\.addisLanguageSelect/);
+ assert.doesNotMatch(addis,/ADDIS_API_KEY|localStorage|sessionStorage/);
+});
