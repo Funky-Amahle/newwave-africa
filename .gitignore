@@ -5,3 +5,8 @@ node_modules
 .env.*.local
 *.tsbuildinfo
 .DS_Store
+
+# Phase 2 research: never commit identifiable participant notes, consent or recorded sessions
+private-research/
+phase2-study-private*.csv
+phase2-consent-*.pdf
