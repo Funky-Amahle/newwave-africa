@@ -65,7 +65,7 @@ export function createAddisVoiceHandler(fetcher:typeof fetch=fetch){
     const signal=AbortSignal.any([request.signal,AbortSignal.timeout(50_000)]);
     let input:Payload;
     try{input=JSON.parse(new TextDecoder().decode(await limited(request.body,8192,signal))) as Payload;}
-    catch{return reply(400,{error:'Invalid or oversized request.'});}
+    catch(error){return reply(error instanceof Error&&error.message==='too-large'?413:400,{error:'Invalid or oversized request.'});}
     if(!object(input))return reply(400,{error:'Invalid request.'});
     const action=input.action,language=input.language;
     if(action!=='voices'&&action!=='estimate'&&action!=='generate')return reply(400,{error:'Unsupported Addis action.'});
