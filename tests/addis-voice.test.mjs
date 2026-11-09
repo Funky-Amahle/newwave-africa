@@ -174,7 +174,9 @@ test('signed quote is required and binds text, voice, amount and secret',async()
  assert.equal(typeof quote,'string');
  assert.equal((await handle(req({...input,text:'different story',quote}),settings)).status,409);
  assert.equal((await handle(req({...input,voiceId:'sw-old',quote}),settings)).status,409);
- assert.equal((await handle(req({...input,quote:quote.slice(0,-1)+'x'}),settings)).status,409);
+ const dot=quote.indexOf('.');
+ const tampered=quote.slice(0,dot+1)+(quote[dot+1]==='A'?'B':'A')+quote.slice(dot+2);
+ assert.equal((await handle(req({...input,quote:tampered}),settings)).status,409);
  assert.equal((await handle(req({...input,quote}),{...settings,quoteSecret:'another-secret-with-more-than-thirty-two-characters'})).status,409);
  assert.equal(generated,0);
 });
