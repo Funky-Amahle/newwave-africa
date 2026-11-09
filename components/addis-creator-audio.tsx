@@ -1,7 +1,8 @@
 'use client';
 
 import {useEffect,useId,useRef,useState} from 'react';
-import {ADDIS_LANGUAGES,ADDIS_MAX_TEXT} from '../lib/addis-languages';
+import {ADDIS_MAX_TEXT} from '../lib/addis-languages';
+import {AddisLanguagePicker} from './addis-language-picker';
 import {claimNarration,releaseNarration} from '../lib/narration';
 import styles from './creator-studio.module.css';
 
@@ -117,17 +118,13 @@ export function AddisCreatorAudio({content}:{content:string}){
     <h3 id={pickerId+'-heading'}>Choose your narration voice</h3>
     <p>Addis AI · African-language narration. Choose the language of your written story, then select a voice. Addis does not translate your text, and Deepgram remains the default provider.</p>
     {staticSite||available===false
-      ? <p role="status" id={pickerId+'-availability'} className={styles.message}>Addis narration needs a privately hosted NewWave server. GitHub Pages cannot safely hold an Addis API key. The controls below show the same workflow as Deepgram but are unavailable here.</p>
+      ? <p role="status" id={pickerId+'-availability'} className={styles.message}>Addis narration needs a privately hosted NewWave server. GitHub Pages cannot safely hold an Addis API key. You can browse the seven languages below, but narration generation is unavailable here. Deepgram is still available.</p>
       : available===null?<p role="status" id={pickerId+'-availability'}>Checking Addis pilot availability…</p>
       : <p id={pickerId+'-availability'}>Private pilot available. Use the separate pilot access code below, not your Addis API key.</p>}
 
-    <label htmlFor={pickerId+'-language'} className={styles.voicePickerLabel}>Narration language</label>
-    <select id={pickerId+'-language'} className={styles.addisLanguageSelect} disabled={busy||available!==true}
-      value={language} onChange={event=>{
-        resetOutput();setLanguage(event.target.value);setVoices([]);setVoice('');setOpen(false);setSearch('');
-      }}>
-      {ADDIS_LANGUAGES.map(item=><option key={item.code} value={item.code}>{item.name}</option>)}
-    </select>
+    <AddisLanguagePicker value={language} disabled={busy} onChange={next=>{
+      resetOutput();setLanguage(next);setVoices([]);setVoice('');setOpen(false);setSearch('');
+    }}/>
     <div className={styles.voicePicker} ref={pickerRef}>
       <span id={pickerId+'-label'} className={styles.voicePickerLabel}>Narration voice</span>
       <button ref={triggerRef} type="button" className={styles.voicePickerTrigger}
