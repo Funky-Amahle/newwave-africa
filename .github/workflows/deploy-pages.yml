@@ -26,6 +26,8 @@ jobs:
         run: node --test tests/brand.test.mjs
       - name: Validate discovery and editorial UI contracts
         run: node --experimental-strip-types --test tests/discovery.test.mjs
+      - name: Reproduce pinned discovery validation benchmark (synthetic-only)
+        run: node --experimental-strip-types newwave_discovery_benchmark.mjs --out /tmp/newwave-validation-evidence
       - name: Validate featured fictional story and reader isolation (offline)
         run: node --experimental-strip-types --test tests/flagship-story.test.mjs
       - name: Validate reader clarity and why-this-story explanations (offline)
