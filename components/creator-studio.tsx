@@ -3,6 +3,7 @@ import {useState} from 'react';
 import type {FormEvent} from 'react';
 import {CreatorCraftToolkit} from './creator-craft-toolkit';
 import {CreatorVoicePicker} from './creator-voice-picker';
+import {AddisCreatorAudio} from './addis-creator-audio';
 import {DEFAULT_CREATOR_VOICE} from '../lib/creator-voices';
 import {StoryVisuals} from './story-visuals';
 import {VoiceToText} from './voice-to-text';
@@ -44,6 +45,7 @@ export function useCreatorDraft(onSaved:(stories:Story[])=>void){
 }
 
 export function CreatorStudio({draft}:{draft:ReturnType<typeof useCreatorDraft>}){
+  const [narrationProvider,setNarrationProvider]=useState<'deepgram'|'addis'>('deepgram');
   const {narrationVoice,setNarrationVoice,title,setTitle,content,setContent,storyAudio,setStoryAudio,author,setAuthor,country,setCountry,category,setCategory,language,setLanguage,rightsConfirmed,setRightsConfirmed,busy,message,publish}=draft;
   return <section className={styles.studio} aria-label="Creator studio">
           <SectionHeading title="Your words. Your next chapter" description="Build a story from what you know. Use a planning canvas, speak an answer, or bring a visual into the process. You make the creative decisions; nothing is automatically published."/>
@@ -71,11 +73,23 @@ export function CreatorStudio({draft}:{draft:ReturnType<typeof useCreatorDraft>}
             <div className="draft-preview"><span className="draft-label">Draft preview</span><h3>{title.trim()||'Your story begins here'}</h3><p>{content.trim()?content.trim().slice(0,220)+(content.trim().length>220?'...':''):'Your words will appear here as you write.'}</p><small>{author.trim()||'Anonymous creator'} / {country}</small></div>
             <div id="studio-voice-answer" tabIndex={-1}><VoiceToText fields={[{id:'title',label:'What is your story called?'},{id:'author',label:'Who is telling this story?'},{id:'country',label:'Where does your story come from?'},{id:'content',label:'What happened, and why does it matter to you?'}]} onAudio={setStoryAudio} onInsert={(id,text)=>{const values:Record<string,string>={title,author,country,content};const limits:Record<string,number>={title:180,author:180,country:120,content:5000};const next=[values[id],text].filter(Boolean).join(id==='content'?'\n\n':' ');if(next.length>limits[id])return 'This answer is too long for the selected field. Shorten the transcript first.';if(id==='title')setTitle(next);else if(id==='author')setAuthor(next);else if(id==='country')setCountry(next);else setContent(next)}}/></div>
             <label id="studio-rights" tabIndex={-1} className="rights-check"><input type="checkbox" checked={rightsConfirmed} onChange={e=>setRightsConfirmed(e.target.checked)} required/><span>This is my original story or I have permission to use it. I understand this saves a draft only in this browser.</span></label>
-            <p className="note">There are no accounts or public publishing. Category suggestions use local keyword rules, not AI. Written drafts are saved locally; visuals are not sent. Audio you submit for transcription and story text you explicitly submit for narration are sent to Deepgram. Download recordings and visuals separately; they are not included in the saved text draft.</p>
+            <p className="note">There are no accounts or public publishing. Category suggestions use local keyword rules, not AI. Written drafts are saved locally; visuals are not sent. Audio submitted for transcription uses Deepgram. Written text is sent to the selected narration provider only after separate consent; Addis AI requires a private server pilot. Download recordings and visuals separately; they are not included in the saved text draft.</p>
             <button className="primary" type="submit" disabled={busy}>{busy?'Saving...':'Save written draft locally'}</button>{message&&<p className="notice" role="status">{message}</p>}
           </form></div></div>
           </div>
-          <aside className={styles.studioMedia} aria-label="Voice and visual companion"><CreatorVoicePicker voice={narrationVoice} onChange={setNarrationVoice} title={title} content={content}/><StoryVisuals audio={storyAudio}/><p className={styles.studioPrivacy}>A setting for your voice. Choose original artwork or an image you have permission to use. Media stays in this tab; download each asset to keep it.</p></aside>
+          <aside className={styles.studioMedia} aria-label="Voice and visual companion">
+            <div className={styles.voiceProviderChoice} role="group" aria-label="Narration provider">
+              <p>Choose a narration provider</p>
+              <div>
+                <button type="button" aria-pressed={narrationProvider==='deepgram'} onClick={()=>setNarrationProvider('deepgram')}>Deepgram · English</button>
+                <button type="button" aria-pressed={narrationProvider==='addis'} onClick={()=>setNarrationProvider('addis')}>Addis AI · African languages</button>
+              </div>
+              <small>Deepgram is the default. Provider selection does not submit your writing.</small>
+            </div>
+            {narrationProvider==='deepgram'
+              ? <CreatorVoicePicker voice={narrationVoice} onChange={setNarrationVoice} title={title} content={content}/>
+              : <AddisCreatorAudio content={content}/>}
+            <StoryVisuals audio={storyAudio}/><p className={styles.studioPrivacy}>A setting for your voice. Choose original artwork or an image you have permission to use. Media stays in this tab; download each asset to keep it.</p></aside>
           </div>
 
   </section>;
