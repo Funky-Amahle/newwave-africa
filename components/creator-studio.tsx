@@ -4,6 +4,7 @@ import type {FormEvent} from 'react';
 import {CreatorCraftToolkit} from './creator-craft-toolkit';
 import {CreatorVoicePicker} from './creator-voice-picker';
 import {AddisCreatorAudio} from './addis-creator-audio';
+import {ElevenLabsCreatorAudio} from './elevenlabs-creator-audio';
 import {DEFAULT_CREATOR_VOICE} from '../lib/creator-voices';
 import {StoryVisuals} from './story-visuals';
 import {VoiceToText} from './voice-to-text';
@@ -45,7 +46,7 @@ export function useCreatorDraft(onSaved:(stories:Story[])=>void){
 }
 
 export function CreatorStudio({draft}:{draft:ReturnType<typeof useCreatorDraft>}){
-  const [narrationProvider,setNarrationProvider]=useState<'deepgram'|'addis'>('deepgram');
+  const [narrationProvider,setNarrationProvider]=useState<'deepgram'|'addis'|'elevenlabs'>('deepgram');
   const {narrationVoice,setNarrationVoice,title,setTitle,content,setContent,storyAudio,setStoryAudio,author,setAuthor,country,setCountry,category,setCategory,language,setLanguage,rightsConfirmed,setRightsConfirmed,busy,message,publish}=draft;
   return <section className={styles.studio} aria-label="Creator studio">
           <SectionHeading title="Your words. Your next chapter" description="Build a story from what you know. Use a planning canvas, speak an answer, or bring a visual into the process. You make the creative decisions; nothing is automatically published."/>
@@ -83,12 +84,14 @@ export function CreatorStudio({draft}:{draft:ReturnType<typeof useCreatorDraft>}
               <div>
                 <button type="button" aria-pressed={narrationProvider==='deepgram'} onClick={()=>setNarrationProvider('deepgram')}>Deepgram · English</button>
                 <button type="button" aria-pressed={narrationProvider==='addis'} onClick={()=>setNarrationProvider('addis')}>Addis AI · African languages</button>
+                <button type="button" aria-pressed={narrationProvider==='elevenlabs'} onClick={()=>setNarrationProvider('elevenlabs')}>ElevenLabs · Multilingual</button>
               </div>
               <small>Deepgram is the default. Provider selection does not submit your writing.</small>
             </div>
             {narrationProvider==='deepgram'
               ? <CreatorVoicePicker voice={narrationVoice} onChange={setNarrationVoice} title={title} content={content}/>
-              : <AddisCreatorAudio content={content}/>}
+              : narrationProvider==='addis'?<AddisCreatorAudio content={content}/>
+              : <ElevenLabsCreatorAudio key={content+'\u0000'+language} title={title} content={content} storyLanguage={language}/>}
             <StoryVisuals audio={storyAudio}/><p className={styles.studioPrivacy}>A setting for your voice. Choose original artwork or an image you have permission to use. Media stays in this tab; download each asset to keep it.</p></aside>
           </div>
 

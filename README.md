@@ -95,6 +95,8 @@ The app runs without an API key. An `.env.example` file may be present, but the 
 
 **Owner voice cloning setup:** the official ElevenLabs SDK is available through a lazy server-only client. See [the setup guide](docs/ELEVENLABS-VOICE-SETUP.md) for private onboarding and the recording needed to create the owner's voice clone. This is an operator setup; voice cloning is not exposed in Creator Studio or hosted on GitHub Pages.
 
+**Multilingual narration (NW-33, review pending):** Creator Studio adds sixteen ElevenLabs language choices, five preset voices and eleven downloadable language samples. Afrikaans and isiZulu are included. Generation uses each creator's own restricted, session-only ElevenLabs key and explicit text consent; it produces a local MP3. Text must already be in the chosen language. See [multilingual narration and verification limits](docs/MULTILINGUAL-NARRATION.md). The owner clone remains separate.
+
 - **Next.js 15 App Router**, React 19, TypeScript and Tailwind CSS v4
 - **Motion for React** for interface transitions, respecting reduced-motion preferences
 - **HTML audio playback** for reviewed recordings; no Web Speech synthesis or browser-voice picker
@@ -123,7 +125,7 @@ For two separate ~5-minute videos (professional pitch and technical walkthrough)
 - **Creator agency:** obtain permission for stories, recordings, images, music and other assets.
 - **Cultural specificity:** invite local language expertise and avoid treating Africa as one homogeneous culture.
 - **Transparency:** fictional examples, local-only storage, rule-based classification and illustrative metrics must be clearly labeled.
-- **Privacy:** written drafts are saved locally and visuals remain in the browser. Explicitly consented audio for transcription or text for narration is sent to Deepgram, using the Pages session-key demo or the configured server edition; download backups before clearing data or leaving the page.
+- **Privacy:** written drafts are saved locally and visuals remain in the browser. Explicitly consented audio for transcription goes to Deepgram; narration text goes to the selected provider. Deepgram and ElevenLabs use creator-owned session keys on Pages, while Addis requires its private server pilot. Download backups before clearing data or leaving the page.
 - **Accessibility:** prioritize keyboard controls, captions/transcripts, responsive layouts and reduced motion; manual device testing remains necessary.
 
 ## Project workflow

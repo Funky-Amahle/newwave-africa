@@ -38,6 +38,8 @@ jobs:
         run: node --experimental-strip-types --test tests/translation.test.mjs tests/homepage-language.test.mjs
       - name: Validate complementary creator links and prompt progress
         run: node --experimental-strip-types --test tests/creator-fusion.test.mjs tests/creator-input.test.mjs tests/creator-voices.test.mjs tests/creator-audio.test.mjs
+      - name: Validate multilingual session-key narration (offline)
+        run: node --experimental-strip-types --test tests/elevenlabs-audio.test.mjs
       - name: Validate Creator Studio compact wayfinding and section targets (offline)
         run: node --test tests/creator-scroll-navigation.test.mjs
       - name: Validate Base44-inspired carousel and animation safety (offline)
