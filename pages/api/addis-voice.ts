@@ -17,6 +17,8 @@ export default async function addisVoice(req:NextApiRequest,res:NextApiResponse)
     key:process.env.ADDIS_API_KEY,
     accessCode:process.env.ADDIS_PILOT_ACCESS_CODE,
     origin:process.env.APP_ORIGIN,
+    quoteSecret:process.env.ADDIS_QUOTE_SECRET,
+    maxCostEtb:process.env.ADDIS_MAX_COST_ETB===undefined?undefined:Number(process.env.ADDIS_MAX_COST_ETB),
   });
   res.setHeader('Cache-Control','no-store');
   res.status(response.status).json(await response.json());
