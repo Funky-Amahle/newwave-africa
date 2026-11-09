@@ -137,3 +137,15 @@ The repository's [AGENTS.md](AGENTS.md) sets the contribution and approval rules
 ### Voice Studio recording modes (NW-24, pending review)
 
 Creator Studio offers distinct **Record a new take** and **Upload an audio file** modes. The selected recording or upload has one shared local preview, with audio download and clear actions. The record panel shows elapsed time and gentle decorative waveform animation, while preview animation runs only during playback. Animations are not live sound measurements and respect reduced-motion settings. Recording stops after three minutes; audio selection is bounded to 8 MB. No selected audio is sent to Deepgram without explicit permission, a session credential and the separate transcription action. User hardware/browser QA remains pending.
+
+## Evidence-led validation baseline (9 November 2026)
+
+The [read-only validation brief](docs/validation/2026-11-09/EVIDENCE-LED-VALIDATION-BRIEF.md), [reader/creator study protocol](docs/validation/2026-11-09/READER-CREATOR-STUDY-PROTOCOL.md) and [commit-specific release checklist](docs/validation/2026-11-09/RELEASE-VERIFICATION-CHECKLIST.md) explain what is **tested**, what is **illustrative**, and what still requires independent human or physical-device verification. The public source contains **no participant responses or API keys**.
+
+Run the reproducible, synthetic-only benchmark from the repository root using Node 22:
+
+```sh
+node --experimental-strip-types newwave_discovery_benchmark.mjs --out /tmp/newwave-validation-evidence
+```
+
+The benchmark pins the discovery source and fixture hashes from production commit `0c88a1f35a0eab19c26a52411331d64eb6d21555`. A source change intentionally requires reviewing and updating this baseline; never use its results as real-reader relevance or fairness evidence. Its stored [CSV](docs/validation/2026-11-09/synthetic_weight_sweep.csv) contains invented test cases only. No new product features or public Addis service are enabled by this validation work.
