@@ -7,8 +7,8 @@ import {claimNarration,releaseNarration} from '../lib/narration';
 import styles from './creator-studio.module.css';
 
 type Voice={id:string;name:string;style:string};
-type Estimate={estimatedCost:number;currency:string;canGenerate:boolean};
-type Result={error?:string;available?:boolean;voices?:Voice[];audioUrl?:string;estimatedCost?:number;currency?:string;canGenerate?:boolean};
+type Estimate={estimatedCost:number;currency:string;canGenerate:boolean;quote:string|null};
+type Result={error?:string;available?:boolean;voices?:Voice[];audioUrl?:string;estimatedCost?:number;currency?:string;canGenerate?:boolean;quote?:string|null};
 
 export function AddisCreatorAudio({content}:{content:string}){
   const [available,setAvailable]=useState<boolean|null>(null);
@@ -80,14 +80,14 @@ export function AddisCreatorAudio({content}:{content:string}){
   async function request(action:'voices'|'estimate'|'generate'){
     if(!canSubmit)return;
     if(action!=='voices'&&(!consent||!selected||!withinLimit))return;
-    if(action==='generate'&&!estimate?.canGenerate)return;
+    if(action==='generate'&&(!estimate?.canGenerate||!estimate.quote))return;
     const controller=new AbortController();abort.current=controller;setBusy(true);setMessage('');
     if(action!=='voices')setAudioUrl('');
     try{
       const response=await fetch('/api/addis-voice',{
         method:'POST',
         headers:{'content-type':'application/json','authorization':'Bearer '+code.trim()},
-        body:JSON.stringify({action,language,voiceId:voice,text,consent,requestId:crypto.randomUUID()}),
+        body:JSON.stringify({action,language,voiceId:voice,text,consent,quote:action==='generate'?estimate?.quote:undefined}),
         signal:controller.signal,cache:'no-store',credentials:'same-origin',redirect:'error'
       });
       const data=await response.json() as Result;
@@ -99,9 +99,9 @@ export function AddisCreatorAudio({content}:{content:string}){
         setOpen(false);setSearch('');setEstimate(null);
         setMessage(next.length?next.length+' available voices loaded. Choose one below.':'No Addis voices are available for this language.');
       }else if(action==='estimate'){
-        if(typeof data.estimatedCost!=='number'||typeof data.currency!=='string'||typeof data.canGenerate!=='boolean')
+        if(typeof data.estimatedCost!=='number'||typeof data.currency!=='string'||typeof data.canGenerate!=='boolean'||(data.canGenerate&&typeof data.quote!=='string'))
           throw new Error('The provider estimate was incomplete.');
-        setEstimate({estimatedCost:data.estimatedCost,currency:data.currency,canGenerate:data.canGenerate});
+        setEstimate({estimatedCost:data.estimatedCost,currency:data.currency,canGenerate:data.canGenerate,quote:data.quote||null});
         setMessage(data.canGenerate?'Review the estimated cost and approve generation below.':'Insufficient provider balance. Audio was not requested.');
       }else if(data.audioUrl){
         setAudioUrl(data.audioUrl);setEstimate(null);

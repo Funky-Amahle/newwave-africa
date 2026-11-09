@@ -2,13 +2,13 @@ import {test} from 'node:test';
 import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
 import {createAddisVoiceHandler,ADDIS_MAX_TEXT} from '../server/addis-voice.ts';
-const settings={key:'test-provider-key',accessCode:'addis-pilot-code-at-least-24-characters',origin:'https://newwave.example'};
+const settings={key:'test-provider-key',accessCode:'addis-pilot-code-at-least-24-characters',origin:'https://newwave.example',quoteSecret:'unit-test-signing-secret-with-more-than-32-characters',maxCostEtb:2};
 const validHeaders={'origin':settings.origin,'authorization':'Bearer '+settings.accessCode,'content-type':'application/json'};
 const catalog={data:{voices:[{id:'sw-rashid',name:'Rashid',style:'Narration',language:'sw',is_available:true},{id:'sw-old',name:'Old',language:'sw',is_available:false},{id:'am-hamen',name:'Hamen',language:'am',is_available:true}]}};
 const estimate={data:{estimated_cost:1.25,currency:'ETB',can_generate:true}};
 const generate={data:{id:'clip_123',audio_url:'https://cdn.addisassistant.com/clip/123.mp3'}};
 const req=(body,headers={})=>new Request('https://newwave.example/api/addis-voice',{method:'POST',headers:{...validHeaders,...headers},body:JSON.stringify(body)});
-const input={action:'generate',language:'sw',voiceId:'sw-rashid',text:'Habari kutoka kwetu',consent:true,requestId:'generated-uuid-0001'};
+const input={action:'generate',language:'sw',voiceId:'sw-rashid',text:'Habari kutoka kwetu',consent:true};
 test('missing configuration, unauthorized origin, code or consent never contacts Addis',async()=>{
  let calls=0;const handle=createAddisVoiceHandler(async()=>{calls++;return Response.json(catalog);});
  assert.equal((await handle(req({action:'voices',language:'sw'}),{})).status,503);
@@ -17,7 +17,7 @@ test('missing configuration, unauthorized origin, code or consent never contacts
  assert.equal((await handle(req({...input,consent:false}),settings)).status,400);
  assert.equal((await handle(req({...input,language:'xx'}),settings)).status,400);
  assert.equal((await handle(req({...input,text:'x'.repeat(ADDIS_MAX_TEXT+1)}),settings)).status,400);
- assert.equal((await handle(req({...input,requestId:'bad'}),settings)).status,400);
+ assert.equal((await handle(req(input),settings)).status,409);
  assert.equal(calls,0);
 });
 test('GET exposes only availability; no credential or model details',async()=>{
@@ -56,14 +56,19 @@ test('generation occurs only after valid catalog and positive estimate',async()=
  const handle=createAddisVoiceHandler(async(url,options)=>{
    calls.push(url);
    if(url.endsWith('/estimate'))return Response.json(estimate);
-   if(url.endsWith('/generations')){const b=JSON.parse(options.body);assert.equal(b.client_request_id,input.requestId);return Response.json(generate);}
+   if(url.endsWith('/generations')){const b=JSON.parse(options.body);assert.match(b.client_request_id,/^[a-f0-9-]{36}$/);return Response.json(generate);}
    return Response.json(catalog);
  });
- const response=await handle(req(input),settings);
+ const quotation=await handle(req({...input,action:'estimate'}),settings);
+ assert.equal(quotation.status,200);
+ const quote=(await quotation.json()).quote;
+ assert.equal(typeof quote,'string');
+ const response=await handle(req({...input,quote}),settings);
  assert.equal(response.status,200);
  assert.deepEqual(await response.json(),{audioUrl:'https://cdn.addisassistant.com/clip/123.mp3',clipId:'clip_123'});
- assert.equal(calls.length,3);
- assert.equal(calls[2],'https://api.addisassistant.com/api/v1/voice/generations');
+ assert.equal(calls.length,5);
+ assert.equal(calls[4],'https://api.addisassistant.com/api/v1/voice/generations');
+ assert.equal((await handle(req({...input,quote}),settings)).status,409);
 });
 test('no billing when wallet rejects estimate; provider errors never leak secrets',async()=>{
  let generated=0;
@@ -72,13 +77,16 @@ test('no billing when wallet rejects estimate; provider errors never leak secret
    if(url.endsWith('/estimate'))return Response.json({data:{...estimate.data,can_generate:false}});
    return Response.json(catalog);
  });
- assert.equal((await insufficient(req(input),settings)).status,402);
+ const quoteResponse=await insufficient(req({...input,action:'estimate'}),settings);
+ assert.equal(quoteResponse.status,200);
+ assert.equal((await quoteResponse.json()).quote,null);
+ assert.equal((await insufficient(req(input),settings)).status,409);
  assert.equal(generated,0);
  const bad=createAddisVoiceHandler(async(url)=>{
    if(url.endsWith('/estimate'))return new Response('provider confidential test key',{status:403});
    return Response.json(catalog);
  });
- const r=await bad(req(input),settings);assert.equal(r.status,502);
+ const r=await bad(req({...input,action:'estimate'}),settings);assert.equal(r.status,502);
  assert.doesNotMatch(await r.text(),/provider confidential|test-provider-key/);
 });
 test('invalid JSON, unsupported content types, and excessive payloads fail closed',async()=>{
@@ -153,4 +161,45 @@ test('Addis screenshot language dropdown includes reference ordering, semantics 
  assert.match(css,/\.addisLanguageOptionSelected/);
  assert.match(css,/prefers-reduced-motion:reduce/);
  assert.doesNotMatch(picker,/fetch\(|localStorage|sessionStorage/);
+});
+
+test('signed quote is required and binds text, voice, amount and secret',async()=>{
+ let generated=0;
+ const handle=createAddisVoiceHandler(async(url)=>{
+   if(url.endsWith('/generations')){generated++;return Response.json(generate);}
+   if(url.endsWith('/estimate'))return Response.json(estimate);
+   return Response.json(catalog);
+ });
+ const quote=(await (await handle(req({...input,action:'estimate'}),settings)).json()).quote;
+ assert.equal(typeof quote,'string');
+ assert.equal((await handle(req({...input,text:'different story',quote}),settings)).status,409);
+ assert.equal((await handle(req({...input,voiceId:'sw-old',quote}),settings)).status,409);
+ const dot=quote.indexOf('.');
+ const tampered=quote.slice(0,dot+1)+(quote[dot+1]==='A'?'B':'A')+quote.slice(dot+2);
+ assert.equal((await handle(req({...input,quote:tampered}),settings)).status,409);
+ assert.equal((await handle(req({...input,quote}),{...settings,quoteSecret:'another-secret-with-more-than-thirty-two-characters'})).status,409);
+ assert.equal(generated,0);
+});
+test('estimate and generation reject increases above the approved cost or pilot ceiling',async()=>{
+ let total=0,generated=0;
+ const handle=createAddisVoiceHandler(async(url)=>{
+   if(url.endsWith('/generations')){generated++;return Response.json(generate);}
+   if(url.endsWith('/estimate'))return Response.json({data:{estimated_cost:++total===1?1.25:1.5,currency:'ETB',can_generate:true}});
+   return Response.json(catalog);
+ });
+ const quote=(await (await handle(req({...input,action:'estimate'}),settings)).json()).quote;
+ const r=await handle(req({...input,quote}),settings);
+ assert.equal(r.status,409);assert.equal(generated,0);
+ const capped=createAddisVoiceHandler(async(url)=>{
+   if(url.endsWith('/generations')){generated++;return Response.json(generate);}
+   if(url.endsWith('/estimate'))return Response.json({data:{estimated_cost:2.5,currency:'ETB',can_generate:true}});
+   return Response.json(catalog);
+ });
+ assert.equal((await capped(req({...input,action:'estimate'}),settings)).status,422);
+ assert.equal(generated,0);
+});
+test('bad configuration fails closed, including signing secret and cost cap',async()=>{
+ const handler=createAddisVoiceHandler(async()=>{throw Error('should not reach Addis')});
+ assert.deepEqual(await (await handler(new Request('https://newwave.example/api/addis-voice'),{...settings,quoteSecret:''})).json(),{available:false});
+ assert.equal((await handler(req({...input,action:'estimate'}),{...settings,maxCostEtb:100})).status,503);
 });
