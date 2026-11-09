@@ -112,8 +112,22 @@
 @media(max-width:540px){.voicePickerPopover{padding:10px}.voiceOptionList{max-height:min(270px,36dvh)}.panel .voiceOption{padding:10px 8px}.voicePickerValue{display:grid;gap:2px}}
 @media(prefers-reduced-motion:reduce){.voicePickerChevron{transition:none!important}}
 
-/* Addis uses the same bounded, readable voice-picker treatment as Deepgram. */
-.addisLanguageSelect{display:block;appearance:none;width:100%;min-height:48px;padding:10px 14px;margin:8px 0 18px;border:1px solid #a8aaa0;border-radius:10px;background:var(--nw-surface);color:var(--nw-ink);font-size:14px;line-height:1.5}
-.addisLanguageSelect:hover:not(:disabled),.addisLanguageSelect:focus-visible{border-color:var(--nw-forest)}
-.addisLanguageSelect:focus-visible{outline:3px solid var(--nw-clay);outline-offset:2px}
-.addisLanguageSelect:disabled{color:var(--nw-muted);cursor:not-allowed}
+/* Addis language menu recreates the reference's dark list and bright selection
+   while retaining a bounded, keyboard-friendly 44px+ interaction surface. */
+.addisLanguagePicker{position:relative;min-width:0;margin:15px 0 20px}
+.addisLanguageTrigger{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:52px;width:100%;padding:10px 16px;border:1px solid #555b64;border-radius:10px;background:#1b1d21;color:#f6f7fa;text-align:left;font-size:15px;font-weight:600;cursor:pointer}
+.panel .addisLanguageTrigger:hover:not(:disabled){background:#25282f;border-color:#7d8592;color:#fff}
+.panel .addisLanguageTrigger[aria-expanded='true']{border-color:#2383f4;box-shadow:0 0 0 2px #2788fb40;color:#fff}
+.panel .addisLanguageTrigger:focus-visible{outline:3px solid #187af2;outline-offset:3px}
+.addisLanguageChevron{font-size:22px;line-height:1;flex:none;transition:transform .15s ease}
+.addisLanguageTrigger[aria-expanded='true'] .addisLanguageChevron{transform:rotate(180deg)}
+.addisLanguageMenu{position:relative;z-index:7;display:grid;gap:1px;min-width:0;max-height:min(390px,55dvh);overflow-y:auto;overscroll-behavior:contain;margin-top:5px;padding:8px;border:1px solid #494f58;border-radius:17px;background:linear-gradient(150deg,#383c43,#30343a);color:#eff1f6;box-shadow:0 12px 26px #13161b35}
+.panel .addisLanguageOption{display:flex;align-items:center;justify-content:flex-start;gap:12px;min-height:46px;width:100%;margin:0;padding:9px 11px;border:0;border-radius:10px;background:transparent;color:#e4e7ef;font-size:15px;font-weight:500;line-height:1.4;text-align:left;cursor:pointer}
+.panel .addisLanguageOption:hover,.panel .addisLanguageOption:focus-visible{background:#4b525e;color:#fff}
+.panel .addisLanguageOption[aria-selected='true'],.panel .addisLanguageOptionSelected{background:#087df2;color:#fff;font-weight:650}
+.panel .addisLanguageOption[aria-selected='true']:focus-visible{background:#087df2;outline:2px solid #fff;outline-offset:-3px}
+.panel .addisLanguageOption:focus-visible{outline:2px solid #a9d2ff;outline-offset:-3px}
+.addisLanguageCheck{display:inline-flex;align-items:center;justify-content:center;flex:0 0 22px;width:22px;height:24px;font-size:21px;font-weight:700;line-height:1;color:#fff}
+@media(max-width:540px){.addisLanguageMenu{padding:6px;max-height:min(350px,50dvh)}.panel .addisLanguageOption{font-size:14px;min-height:48px}.addisLanguageTrigger{font-size:14px}}
+@media(prefers-reduced-motion:reduce){.addisLanguageChevron{transition:none!important}}
+
