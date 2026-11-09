@@ -1,4 +1,4 @@
-import {createHash,timingSafeEqual} from 'node:crypto';
+import {createHash,createHmac,randomUUID,timingSafeEqual} from 'node:crypto';
 
 export const ADDIS_LANGUAGES = [
   {code:'am',name:'Amharic'},
@@ -12,11 +12,42 @@ export const ADDIS_LANGUAGES = [
 export const ADDIS_MAX_TEXT = 1000;
 const allowed=new Set<string>(ADDIS_LANGUAGES.map(item=>item.code));
 const base='https://api.addisassistant.com/api/v1/voice';
-type Settings={key?:string;accessCode?:string;origin?:string};
+type Settings={key?:string;accessCode?:string;origin?:string;quoteSecret?:string;maxCostEtb?:number};
 type Voice={id:string;name:string;style:string};
-type Payload={action?:unknown;language?:unknown;voiceId?:unknown;text?:unknown;consent?:unknown;requestId?:unknown};
+type Payload={action?:unknown;language?:unknown;voiceId?:unknown;text?:unknown;consent?:unknown;quote?:unknown};
+type Quote={v:number;expires:number;amount:number;currency:string;digest:string;requestId:string};
 const reply=(status:number,value:object)=>Response.json(value,{status,headers:{'Cache-Control':'no-store'}});
 const object=(value:unknown):Record<string,unknown>|null=>value!==null&&typeof value==='object'&&!Array.isArray(value)?value as Record<string,unknown>:null;
+
+const textFingerprint=(language:string,voiceId:string,text:string)=>createHash('sha256')
+  .update(JSON.stringify({language,voiceId,text})).digest('hex');
+
+/** Bind a short-lived approval to exact text, selected voice, amount and one provider idempotency ID. */
+function issueQuote(secret:string,language:string,voiceId:string,text:string,amount:number){
+  const quote:Quote={v:1,expires:Date.now()+5*60_000,amount,currency:'ETB',
+    digest:textFingerprint(language,voiceId,text),requestId:randomUUID()};
+  const encoded=Buffer.from(JSON.stringify(quote),'utf8').toString('base64url');
+  const signature=createHmac('sha256',secret).update(encoded).digest('base64url');
+  return encoded+'.'+signature;
+}
+function approvedQuote(value:unknown,secret:string,language:string,voiceId:string,text:string):Quote|null{
+  if(typeof value!=='string'||value.length>2048)return null;
+  const parts=value.split('.');
+  if(parts.length!==2||!/^[A-Za-z0-9_-]+$/.test(parts[0])||!/^[A-Za-z0-9_-]{43}$/.test(parts[1]))return null;
+  const expected=createHmac('sha256',secret).update(parts[0]).digest();
+  const signature=Buffer.from(parts[1],'base64url');
+  if(signature.length!==expected.length||!timingSafeEqual(expected,signature))return null;
+  try{
+    const quote=JSON.parse(Buffer.from(parts[0],'base64url').toString('utf8')) as Quote;
+    if(quote.v!==1||!Number.isSafeInteger(quote.expires)||quote.expires<=Date.now()
+      ||quote.expires>Date.now()+5*60_000||quote.currency!=='ETB'
+      ||!Number.isFinite(quote.amount)||quote.amount<0
+      ||quote.digest!==textFingerprint(language,voiceId,text)
+      ||typeof quote.requestId!=='string'||!/^[a-f0-9-]{36}$/.test(quote.requestId))return null;
+    return quote;
+  }catch{return null;}
+}
+
 async function limited(stream:ReadableStream<Uint8Array>|null,max:number,signal:AbortSignal){
   if(!stream)throw new Error('empty');
   const reader=stream.getReader(),parts:Uint8Array[]=[];let length=0;
@@ -52,7 +83,9 @@ function availableVoices(payload:Record<string,unknown>|null,language:string):Vo
 export function createAddisVoiceHandler(fetcher:typeof fetch=fetch){
   let start=0,requests=0,active=0;
   return async function handle(request:Request,settings:Settings):Promise<Response>{
-    const configured=!!(settings.key&&settings.accessCode&&settings.accessCode.length>=24&&settings.origin);
+    const costCap=settings.maxCostEtb??2;
+    const configured=!!(settings.key&&settings.accessCode&&settings.accessCode.length>=24&&settings.origin
+      &&settings.quoteSecret&&settings.quoteSecret.length>=32&&Number.isFinite(costCap)&&costCap>0&&costCap<=20);
     if(request.method==='GET')return reply(200,{available:configured});
     if(request.method!=='POST')return reply(405,{error:'Use POST for the private Addis voice pilot.'});
     if(!configured)return reply(503,{error:'Addis narration is not configured on this server. Deepgram remains available.'});
@@ -74,8 +107,8 @@ export function createAddisVoiceHandler(fetcher:typeof fetch=fetch){
     const text=input.text,voiceId=input.voiceId;
     if(action!=='voices'&&(typeof text!=='string'||!text.trim()||text.length>ADDIS_MAX_TEXT||typeof voiceId!=='string'||!voiceId.startsWith(language+'-')))
       return reply(400,{error:'Choose an available voice and provide 1–1,000 characters in its language.'});
-    if(action==='generate'&&(typeof input.requestId!=='string'||!/^[a-zA-Z0-9-]{8,64}$/.test(input.requestId)))
-      return reply(400,{error:'A unique generation request ID is required.'});
+    const approved=action==='generate'?approvedQuote(input.quote,settings.quoteSecret!,language,voiceId as string,text as string):null;
+    if(action==='generate'&&!approved)return reply(409,{error:'The narration cost approval is missing, expired or does not match this text and voice. Get a fresh estimate.'});
     if(Date.now()-start>60_000){start=Date.now();requests=0;}
     if(requests>=6||active>=2)return reply(429,{error:'Private Addis pilot request limit reached. Try again later.'});
     requests++;active++;
@@ -92,11 +125,16 @@ export function createAddisVoiceHandler(fetcher:typeof fetch=fetch){
       const cost=e?.estimated_cost??e?.estimatedCost;
       const canGenerate=e?.can_generate??e?.canGenerate;
       const currency=e?.currency;
-      if(typeof cost!=='number'||!Number.isFinite(cost)||typeof currency!=='string'||typeof canGenerate!=='boolean')
-        return reply(502,{error:'Addis cost estimate was unavailable. No generation was requested.'});
-      if(action==='estimate')return reply(200,{estimatedCost:cost,currency:currency.slice(0,12),canGenerate});
+      if(typeof cost!=='number'||!Number.isFinite(cost)||cost<0||currency!=='ETB'||typeof canGenerate!=='boolean')
+        return reply(502,{error:'Addis cost estimate was unavailable or used an unexpected currency. No generation was requested.'});
+      if(cost>costCap)return reply(422,{error:'This narration exceeds the private pilot cost limit. Shorten the text before estimating again.'});
+      if(action==='estimate')return reply(200,{estimatedCost:cost,currency:'ETB',canGenerate,
+        quote:canGenerate?issueQuote(settings.quoteSecret!,language,voiceId as string,text as string,cost):null});
       if(!canGenerate)return reply(402,{error:'The Addis account has insufficient balance; audio was not requested.'});
-      const generated=await providerJson(await fetcher(base+'/generations',{...opts,method:'POST',body:JSON.stringify({...body,client_request_id:input.requestId})}),signal);
+      if(!approved||cost>approved.amount+0.000001)
+        return reply(409,{error:'The Addis estimate changed. Review and approve a fresh cost before generating.'});
+      // The quote's stable request ID makes a repeated approval idempotent at the provider.
+      const generated=await providerJson(await fetcher(base+'/generations',{...opts,method:'POST',body:JSON.stringify({...body,client_request_id:approved.requestId})}),signal);
       const g=object(generated?.data)||generated,link=g?.audio_url??g?.audioUrl;
       let audioUrl:string;
       try{const url=new URL(String(link));if(url.protocol!=='https:')throw Error('invalid');audioUrl=url.toString();}
