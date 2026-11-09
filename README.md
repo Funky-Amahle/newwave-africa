@@ -87,6 +87,8 @@ The app runs without an API key. An `.env.example` file may be present, but the 
 
 ## Technical architecture
 
+**Owner voice cloning setup:** the official ElevenLabs SDK is available through a lazy server-only client. See [the setup guide](docs/ELEVENLABS-VOICE-SETUP.md) for private onboarding and the recording needed to create the owner's voice clone. This is an operator setup; voice cloning is not exposed in Creator Studio or hosted on GitHub Pages.
+
 - **Next.js 15 App Router**, React 19, TypeScript and Tailwind CSS v4
 - **Motion for React** for interface transitions, respecting reduced-motion preferences
 - **HTML audio playback** for reviewed recordings; no Web Speech synthesis or browser-voice picker

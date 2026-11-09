@@ -55,6 +55,14 @@ todo = not started; in progress = assigned or implemented with acceptance eviden
 
 | NW-30 | P1 | frontend-builder / quality-guardian | Generate Creator Studio narration | NW-17; session key | Explicit text consent, selected voice, full-story WAV playback/download, cancellation and cleanup | in progress |
 
+## ElevenLabs owner voice setup (NW-32)
+
+| ID | Priority | Skill owner | Task | Dependencies | Acceptance criteria | Status |
+| --- | --- | --- | --- | --- | --- | --- |
+| NW-32 | P1 | backend-builder / quality-guardian | Add official ElevenLabs SDK and private owner voice-clone setup | CLI onboarding; owner-enrolled clone | Lazy server-only client; no bundled key or public endpoint; private-sample ignore; setup guide; typecheck, offline pilot tests and onboarding check; operator narration evidence with owner-supplied clone | in progress (SDK checks and requested audio generation pass; PR and full-export listening review pending) |
+
+See [ElevenLabs setup](ELEVENLABS-VOICE-SETUP.md). The existing fixed-text voice pilot remains separate. The owner enrolled their clone externally; requested audio was generated locally, but no narrated video, public cloning service or deployment is established by SDK installation.
+
 ## Definition of done
 Story submission, category review, diverse discovery, honest metrics, passing build and reproducible demonstration.
 
