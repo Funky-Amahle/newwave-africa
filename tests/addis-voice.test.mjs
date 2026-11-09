@@ -121,6 +121,36 @@ test('Addis matches the Deepgram narrator structure and interaction semantics',(
  assert.match(addis,/minlength|1,000 characters/i);
  assert.match(addis,/Addis API key/);
  assert.match(addis,/NEXT_PUBLIC_STATIC_SITE/);
- assert.match(style,/\.addisLanguageSelect/);
+ assert.match(style,/\.addisLanguageMenu/);
  assert.doesNotMatch(addis,/ADDIS_API_KEY|localStorage|sessionStorage/);
+});
+
+
+test('Addis screenshot language dropdown includes reference ordering, semantics and visible offline choice',()=>{
+ const picker=readFileSync(new URL('../components/addis-language-picker.tsx',import.meta.url),'utf8');
+ const langs=readFileSync(new URL('../lib/addis-languages.ts',import.meta.url),'utf8');
+ const addis=readFileSync(new URL('../components/addis-creator-audio.tsx',import.meta.url),'utf8');
+ const css=readFileSync(new URL('../components/creator-studio.module.css',import.meta.url),'utf8');
+ const expected=['Amharic','Afaan Oromo','Tigrinya','Sidama','Wolaytta','Swahili','Hausa'];
+ const positions=expected.map(name=>langs.indexOf("name:'"+name+"'"));
+ assert.ok(positions.every((value,i)=>value>=0&&(i===0||value>positions[i-1])));
+ assert.match(picker,/aria-haspopup="listbox"/);
+ assert.match(picker,/role="listbox"/);
+ assert.match(picker,/role="option"/);
+ assert.match(picker,/aria-selected=\{value===item.code\}/);
+ assert.match(picker,/event.key==='ArrowDown'/);
+ assert.match(picker,/event.key==='ArrowUp'/);
+ assert.match(picker,/event.key==='Home'/);
+ assert.match(picker,/event.key==='End'/);
+ assert.match(picker,/event.key==='Escape'/);
+ assert.match(picker,/event.key==='Tab'/);
+ assert.match(picker,/pointerdown/);
+ assert.match(picker,/setOpen\(false\)/);
+ assert.match(addis,/<AddisLanguagePicker/);
+ assert.match(addis,/disabled=\{busy\}/);
+ assert.doesNotMatch(addis,/addisLanguageSelect/);
+ assert.match(css,/#087df2/);
+ assert.match(css,/\.addisLanguageOptionSelected/);
+ assert.match(css,/prefers-reduced-motion:reduce/);
+ assert.doesNotMatch(picker,/fetch\(|localStorage|sessionStorage/);
 });
