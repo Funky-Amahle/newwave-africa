@@ -60,3 +60,19 @@ provider data handling still follows the project's Deepgram terms/settings.
 No external host, public URL or secret has been created by this implementation.
 Docker image construction and real provider transcription require separate
 runtime verification; offline contracts do not establish acoustic accuracy.
+
+## Optional Addis AI narration — private pilot
+
+The server edition also includes `/api/addis-voice`; this endpoint is **not** included in the GitHub Pages static export.
+
+Runtime configuration (private host secrets only):
+
+- `ADDIS_API_KEY`: restricted Addis provider key.
+- `ADDIS_PILOT_ACCESS_CODE`: private 24+ character pilot code, separate from the provider key.
+- `ADDIS_QUOTE_SECRET`: separate random 32+ character secret for signed cost approvals.
+- `APP_ORIGIN`: exact same-origin HTTPS app URL.
+- `ADDIS_MAX_COST_ETB`: optional per-clip cost-estimate ceiling, default `2`.
+
+When unconfigured, the client and endpoint fail closed, while Deepgram and local drafting continue. For the consent, cost, quote, limited-use replay protection, validation, operational limitations and sample QA procedure, see [the dual-provider pilot guide](../docs/ADDIS-DEEPGRAM-PILOT.md).
+
+**Security warning:** Process-local rate limits and quote replay barriers cannot enforce a financial budget across replicas, restarts or multiple users. Do not expose this private pilot as a public paid-generation API. A real hosting provider, account quota management, live Addis API verification and human approval are required before use.
