@@ -6,6 +6,12 @@ NewWave Africa is a human-centred African storytelling prototype built for the *
 
 **[Live demo](https://funky-amahle.github.io/newwave-africa/)** · **[Hackathon recording runbook](docs/HACKATHON-RECORDING.md)**
 
+## Education service and capstone
+
+Our proposed primary beneficiaries are student writers and emerging storytellers with limited access to creative mentorship or production tools, initially through schools, libraries or community organisations. The prototype helps them plan an invented story, download a brief, write and retrieve a browser-local draft, and optionally use consented voice tools. These are expected benefits to validate; no partnership or measured educational impact is claimed.
+
+Read the [service, impact and adoption roadmap](docs/CAPSTONE-IMPACT-AND-ROADMAP.md) and [four-minute capstone narration](docs/CAPSTONE-VIDEO-SCRIPT.md). The next month focuses on the existing reader/creator study and device/access checks. Low-data improvements, sponsored voice access, locally reviewed language support and controlled publishing are proposed later phases. Shared-browser drafts are not private accounts; current voice tools require provider access and quota.
+
 ## Combined design and source of truth
 
 The repository app combines Base44’s warm cream, forest-green and clay visual direction with GitHub’s discovery, reviewed narration, five craft canvases, visual previews and private drafts. `components/creator-studio.tsx` composes the creator tools into one responsive workspace. Both the Pages export and optional server edition use these same components.

@@ -55,6 +55,14 @@ todo = not started; in progress = assigned or implemented with acceptance eviden
 
 | NW-30 | P1 | frontend-builder / quality-guardian | Generate Creator Studio narration | NW-17; session key | Explicit text consent, selected voice, full-story WAV playback/download, cancellation and cleanup | in progress |
 
+## Capstone education framing and roadmap (NW-31)
+
+| ID | Priority | Skill owner | Task | Dependencies | Acceptance criteria | Status |
+| --- | --- | --- | --- | --- | --- | --- |
+| NW-31 | P1 | project-planner / quality-guardian | Document education beneficiary, service benefits, adoption roadmap and four-minute capstone narration | Current source; existing reader/creator study | README/runbook links; current vs proposed capabilities accurate; four judging criteria covered; existing study thresholds preserved; local links and diff checked; review evidence and limitations reported | in progress (documentation branch; PR review pending) |
+
+See [impact and roadmap](CAPSTONE-IMPACT-AND-ROADMAP.md) and [video narration](CAPSTONE-VIDEO-SCRIPT.md). No human study, partner recruitment, provider request, product release or measured impact is established by these documents.
+
 ## ElevenLabs owner voice setup (NW-32)
 
 | ID | Priority | Skill owner | Task | Dependencies | Acceptance criteria | Status |
