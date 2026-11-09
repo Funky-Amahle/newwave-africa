@@ -82,6 +82,7 @@ function availableVoices(payload:Record<string,unknown>|null,language:string):Vo
 }
 export function createAddisVoiceHandler(fetcher:typeof fetch=fetch){
   let start=0,requests=0,active=0;
+  const consumed=new Set<string>(); // Pilot-only, per-process replay barrier; not distributed quota enforcement.
   return async function handle(request:Request,settings:Settings):Promise<Response>{
     const costCap=settings.maxCostEtb??2;
     const configured=!!(settings.key&&settings.accessCode&&settings.accessCode.length>=24&&settings.origin
@@ -133,7 +134,11 @@ export function createAddisVoiceHandler(fetcher:typeof fetch=fetch){
       if(!canGenerate)return reply(402,{error:'The Addis account has insufficient balance; audio was not requested.'});
       if(!approved||cost>approved.amount+0.000001)
         return reply(409,{error:'The Addis estimate changed. Review and approve a fresh cost before generating.'});
-      // The quote's stable request ID makes a repeated approval idempotent at the provider.
+      // Mark before the paid call. Never retry automatically when its outcome is uncertain.
+      if(consumed.has(approved.requestId))return reply(409,{error:'This quote has already been used. Check Addis clips before requesting another.'});
+      if(consumed.size>=1000)return reply(503,{error:'Pilot generation memory limit reached. Restart after reconciling provider clips.'});
+      consumed.add(approved.requestId);
+      // The quote's stable request ID is sent to Addis for reconciliation; it does not prove provider-side deduplication.
       const generated=await providerJson(await fetcher(base+'/generations',{...opts,method:'POST',body:JSON.stringify({...body,client_request_id:approved.requestId})}),signal);
       const g=object(generated?.data)||generated,link=g?.audio_url??g?.audioUrl;
       let audioUrl:string;
