@@ -498,3 +498,14 @@
 @media(max-width:370px) {
   .siteLanguageCaption { display:none; }
 }
+
+
+/* Optional, clearly separated narration providers; Deepgram remains the default. */
+.voiceProviderChoice{min-width:0;padding:16px;border:1px solid var(--nw-line);background:var(--nw-surface);border-radius:12px;margin-bottom:18px}
+.voiceProviderChoice p{font-size:13px;font-weight:700;line-height:1.5;margin:0 0 10px}
+.voiceProviderChoice>div{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.voiceProviderChoice button{min-height:48px;min-width:0;border:1px solid var(--nw-line);border-radius:8px;background:transparent;color:var(--nw-ink);font-size:12px;line-height:1.4;padding:10px;cursor:pointer}
+.voiceProviderChoice button[aria-pressed='true']{background:var(--nw-forest);border-color:var(--nw-forest);color:var(--nw-paper);font-weight:700}
+.voiceProviderChoice button:focus-visible{outline:3px solid var(--nw-clay);outline-offset:2px}
+.voiceProviderChoice small{display:block;font-size:11px;line-height:1.65;color:var(--nw-muted);margin-top:10px}
+@media(max-width:420px){.voiceProviderChoice>div{grid-template-columns:minmax(0,1fr)}}
