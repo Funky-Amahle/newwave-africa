@@ -70,7 +70,7 @@ try{
     assert.equal(await discover.locator('#page-content').evaluate(el=>document.activeElement===el),true);
   },discover);
   await check('keyboard opens and closes the story reader and restores focus',async()=>{
-    const opener=discover.locator('button[aria-label^="Read "]').first();
+    const opener=discover.locator('button[aria-label^="Read story:"]').first();
     await opener.focus();await discover.keyboard.press('Enter');
     const dialog=discover.getByRole('dialog');
     await dialog.waitFor({state:'visible'});
@@ -89,7 +89,7 @@ try{
     await trigger.focus();await studio.keyboard.press('ArrowDown');
     await studio.getByRole('listbox').waitFor({state:'visible'});
     await studio.keyboard.press('End');
-    assert.equal(await studio.getByRole('option',{name:'Hausa'}).evaluate(el=>document.activeElement===el),true);
+    assert.equal(await studio.getByRole('listbox').getByRole('option',{name:'Hausa'}).evaluate(el=>document.activeElement===el),true);
     await studio.keyboard.press('Enter');
     await studio.getByRole('listbox').waitFor({state:'hidden'});
     assert.match(await trigger.innerText(),/Hausa/);
@@ -100,8 +100,8 @@ try{
     assert.equal(await trigger.evaluate(el=>document.activeElement===el),true);
   },studio);
   await check('creator draft only saves after rights confirmation',async()=>{
-    await studio.getByRole('textbox',{name:'Working title'}).fill('An invented quality assurance story');
-    await studio.getByRole('textbox',{name:'Your story'}).fill('A fictional account for independent browser checks with no personal information and no real creator data.');
+    await studio.getByRole('textbox',{name:'Working title',exact:true}).fill('An invented quality assurance story');
+    await studio.getByRole('textbox',{name:'Your story',exact:true}).fill('A fictional account for independent browser checks with no personal information and no real creator data.');
     await studio.getByRole('button',{name:'Save written draft locally'}).click();
     const countBefore=await studio.evaluate(()=>JSON.parse(localStorage.getItem('newwave-local-stories-v1')||'[]').length);
     assert.equal(countBefore,0);
