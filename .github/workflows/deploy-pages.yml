@@ -113,7 +113,8 @@ jobs:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
-    needs: [build, server-build]
+    # Never publish if the current commit's Chromium accessibility/device simulation checks fail.
+    needs: [build, server-build, browser-qa]
     steps:
       - id: deployment
         uses: actions/deploy-pages@v4

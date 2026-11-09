@@ -62,6 +62,27 @@ try{
     await page.close();
   }
 
+
+  // CSS zoom is a deterministic browser-simulated stress test, not native browser zoom.
+  // Check the accessible content width and visibility of the critical navigation.
+  for(const {path,label} of routes){
+    const scaled=await pageAt(desktop,path);
+    await check('simulated 200% CSS zoom has no horizontal overflow on '+label,async()=>{
+      await scaled.evaluate(()=>{document.documentElement.style.zoom='2';});
+      await scaled.waitForTimeout(250);
+      const dims=await scaled.evaluate(()=>({
+        viewport:document.documentElement.clientWidth,
+        document:document.documentElement.scrollWidth,
+        body:document.body.scrollWidth
+      }));
+      assert.ok(dims.document<=dims.viewport+2 && dims.body<=dims.viewport+2,
+        'At simulated 200% zoom '+label+' overflows: '+JSON.stringify(dims));
+      const nav=scaled.getByRole('navigation',{name:'Primary navigation'});
+      assert.equal(await nav.isVisible(),true);
+    },scaled);
+    await scaled.close();
+  }
+
   const discover=await pageAt(desktop,'discover/');
   await check('skip link focuses the main landmark',async()=>{
     const skip=discover.getByRole('link',{name:'Skip to page content'});
