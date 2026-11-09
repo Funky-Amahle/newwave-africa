@@ -103,7 +103,7 @@ export function AddisCreatorAudio({content}:{content:string}){
       </div>}
       {message&&<p role="status" className={styles.message}>{message}</p>}
       {audioUrl&&<div className={styles.review}>
-        <audio ref={player} controls src={audioUrl} aria-label="Addis generated narration" onPlay={e=>claimNarration(owner.current,()=>e.currentTarget.pause())} onPause={()=>releaseNarration(owner.current)} onEnded={()=>releaseNarration(owner.current)}/>
+        <audio ref={player} controls src={audioUrl} aria-label="Addis generated narration" onPlay={e=>{const currentPlayer=e.currentTarget;claimNarration(owner.current,()=>currentPlayer.pause());}} onPause={()=>releaseNarration(owner.current)} onEnded={()=>releaseNarration(owner.current)}/>
         <a href={audioUrl} className={styles.download} target="_blank" rel="noopener noreferrer" download>Open or save generated MP3</a>
         <p>Provider-generated signed links expire. Audio is not stored with your browser-local draft; review pronunciation before sharing.</p>
       </div>}
