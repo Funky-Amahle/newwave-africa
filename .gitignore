@@ -10,3 +10,6 @@ node_modules
 private-research/
 phase2-study-private*.csv
 phase2-consent-*.pdf
+
+# Owner voice enrollment samples and private provider metadata
+private-voice/
