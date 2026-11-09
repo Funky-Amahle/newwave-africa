@@ -124,9 +124,9 @@ export function HomeContent({mode='home'}:{mode?:'home'|'discover'}){
           <p className={styles.interestNote}>{interest==='All categories'?'An open mix of themes.':'Prioritising '+interest+', with room for other perspectives.'} Samples are fictional. Your saved drafts are private to this browser.</p>
           <div className={styles.storyGrid}>{feed.map((story,index)=><div key={story.id} className={styles.storyFrame}>
             <StoryCard story={story} index={index}/>
-            <div className={styles.cardActions}><button type="button" aria-label={'Read '+story.title} onClick={()=>setReader(story)}>Read story <Arrow/></button><button type="button" aria-pressed={saved.includes(story.id)} aria-label={'Save '+story.title+' to reading list'} onClick={()=>bookmark(story)}><SaveIcon saved={saved.includes(story.id)}/>{saved.includes(story.id)?'Saved':'Save'}</button></div>
+            <div className={styles.cardActions}><button type="button" aria-label={'Read story: '+story.title} onClick={()=>setReader(story)}>Read story <Arrow/></button><button type="button" aria-pressed={saved.includes(story.id)} aria-label={'Save '+story.title+' to reading list'} onClick={()=>bookmark(story)}><SaveIcon saved={saved.includes(story.id)}/>{saved.includes(story.id)?'Saved':'Save'}</button></div>
             <details className={styles.whyStory}>
-              <summary aria-label={'Why am I seeing '+story.title+'?'}>Why am I seeing this story?</summary>
+              <summary aria-label={'Why am I seeing this story? '+story.title}>Why am I seeing this story?</summary>
               <div className={styles.whyStoryBody}>
                 {explainStoryPlacement(story,{query,interest,diversity,savedOnly,saved},discovery.counts).map((reason,i)=><p key={i}>{reason}</p>)}
               </div>
