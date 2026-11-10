@@ -1,0 +1,97 @@
+{
+  "provider": "ElevenLabs",
+  "model": "eleven_v4",
+  "purpose": "Short synthetic narration previews for NewWave Africa. Five existing samples reused; six new samples generated. Exact sentences differ across languages.",
+  "nativeSpeakerReview": "pending",
+  "voices": "Premade provider voices, not the owner clone.",
+  "samples": [
+    {
+      "language": "am",
+      "name": "Amharic",
+      "voice": "Sarah",
+      "voiceId": "EXAVITQu4vr4xnSDxMaL",
+      "text": "ሰላም፣ ወደ ኒውዌቭ አፍሪካ እንኳን በደህና መጡ።",
+      "file": "am.mp3"
+    },
+    {
+      "language": "sw",
+      "name": "Swahili",
+      "voice": "George",
+      "voiceId": "JBFqnCBsd6RMkjVDRZzb",
+      "text": "Habari! Karibu NewWave Africa. Asanteni kwa kuwa nasi.",
+      "file": "sw.mp3"
+    },
+    {
+      "language": "ha",
+      "name": "Hausa",
+      "voice": "Laura",
+      "voiceId": "FGY2WhTYpPnrIDTdsKH5",
+      "text": "Sannu! Barka da zuwa NewWave Africa. Mun gode da kasancewa tare da mu.",
+      "file": "ha.mp3"
+    },
+    {
+      "language": "af",
+      "name": "Afrikaans",
+      "voice": "Charlie",
+      "voiceId": "IKne3meq5aSn9XLyUdCD",
+      "text": "Hallo! Welkom by NewWave Africa. Dankie dat julle hier is.",
+      "file": "af.mp3"
+    },
+    {
+      "language": "zu",
+      "name": "isiZulu",
+      "voice": "Alice",
+      "voiceId": "Xb7hH8MSUJpSbSDYk0k2",
+      "text": "Sanibonani! Siyakwamukela ku-NewWave Africa. Siyabonga ngokuba nathi.",
+      "file": "zu.mp3"
+    },
+    {
+      "language": "fr",
+      "name": "French",
+      "voice": "Sarah",
+      "voiceId": "EXAVITQu4vr4xnSDxMaL",
+      "text": "Bonjour et bienvenue sur NewWave Africa. Chaque histoire compte.",
+      "file": "fr.mp3"
+    },
+    {
+      "language": "ar",
+      "name": "Arabic",
+      "voice": "George",
+      "voiceId": "JBFqnCBsd6RMkjVDRZzb",
+      "text": "مرحباً بكم في نيو ويف أفريقيا. لكل قصة قيمة.",
+      "file": "ar.mp3"
+    },
+    {
+      "language": "pt",
+      "name": "Portuguese",
+      "voice": "Laura",
+      "voiceId": "FGY2WhTYpPnrIDTdsKH5",
+      "text": "Olá e bem-vindos à NewWave Africa. Cada história tem valor.",
+      "file": "pt.mp3"
+    },
+    {
+      "language": "so",
+      "name": "Somali",
+      "voice": "Charlie",
+      "voiceId": "IKne3meq5aSn9XLyUdCD",
+      "text": "Ku soo dhowaada NewWave Africa. Sheeko kasta waa muhiim.",
+      "file": "so.mp3"
+    },
+    {
+      "language": "ln",
+      "name": "Lingala",
+      "voice": "Alice",
+      "voiceId": "Xb7hH8MSUJpSbSDYk0k2",
+      "text": "Boyei bolamu na NewWave Africa. Lisolo nyonso ezali na ntina.",
+      "file": "ln.mp3"
+    },
+    {
+      "language": "sn",
+      "name": "Shona",
+      "voice": "Sarah",
+      "voiceId": "EXAVITQu4vr4xnSDxMaL",
+      "text": "Mauya kuNewWave Africa. Nyaya yega yega yakakosha.",
+      "file": "sn.mp3"
+    }
+  ]
+}

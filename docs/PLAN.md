@@ -11,6 +11,7 @@ todo = not started; in progress = assigned or implemented with acceptance eviden
 | ID | Priority | Skill owner | Task | Dependencies | Acceptance criteria | Status |
 |---|---|---|---|---|---|---|
 | NW-01 | P0 | quality-guardian | Validate existing MVP build | none | Install, typecheck/build, record failures | todo |
+| NW-33 | P1 | project-planner / frontend-builder / quality-guardian | Multilingual ElevenLabs narration on GitHub Pages | Creator-owned restricted key; explicit consent | Sixteen documented language choices, five preset voices, eleven static samples; one bounded direct request; memory-only key, cancellation and MP3 download; no automatic translation or owner clone; tests and static export; browser/device and pronunciation review reported | in progress (feature branch; review and deployment pending) |
 | NW-02 | P0 | frontend-builder | Add category review before publish | NW-01 | Creator can correct suggested category | todo |
 | NW-03 | P0 | ai-discovery-engine | Evaluate ranking against baseline | NW-01 | Fixed dataset, relevance and coverage metrics | todo |
 | NW-04 | P0 | backend-builder | Test categorization API | NW-01 | Invalid payload, fallback, model failure covered | todo |

@@ -102,7 +102,7 @@ test('Creator Studio preserves Deepgram as default and Addis uses server-only cr
  const source=readFileSync(new URL('../components/creator-studio.tsx',import.meta.url),'utf8');
  const addis=readFileSync(new URL('../components/addis-creator-audio.tsx',import.meta.url),'utf8');
  const adapter=readFileSync(new URL('../pages/api/addis-voice.ts',import.meta.url),'utf8');
- assert.match(source,/useState<'deepgram'\|'addis'>\('deepgram'\)/);
+ assert.match(source,/useState<[^>]+>\('deepgram'\)/);
  assert.match(source,/<CreatorVoicePicker/);
  assert.match(source,/<AddisCreatorAudio/);
  assert.match(addis,/NEXT_PUBLIC_STATIC_SITE/);
