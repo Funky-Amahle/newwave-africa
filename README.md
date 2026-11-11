@@ -132,6 +132,18 @@ For two separate ~5-minute videos (professional pitch and technical walkthrough)
 
 The repository's [AGENTS.md](AGENTS.md) sets the contribution and approval rules. Track tasks in [docs/PLAN.md](docs/PLAN.md). Use feature branches and pull requests, report tests actually run, and **require human approval before merging or deploying**.
 
+## Community and license
+
+Read the [contribution guide](CONTRIBUTING.md) and [Code of Conduct](CODE_OF_CONDUCT.md)
+before participating. Use the [issue forms](https://github.com/Funky-Amahle/newwave-africa/issues/new/choose)
+for bugs and feature requests, and the [security policy](SECURITY.md) for private
+vulnerability reports.
+
+Original project code and documentation use the [MIT License](LICENSE), except
+material with its own license notice. Third-party dependencies and assets retain
+their respective licenses. Software reuse does not grant permission to use a
+creator's personal story, likeness, recording, or voice clone.
+
 ## Next steps
 
 - Validate keyboard, mobile, microphone and recorded-narration behavior in real browsers.

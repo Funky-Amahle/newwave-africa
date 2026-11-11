@@ -11,6 +11,7 @@ todo = not started; in progress = assigned or implemented with acceptance eviden
 | ID | Priority | Skill owner | Task | Dependencies | Acceptance criteria | Status |
 |---|---|---|---|---|---|---|
 | NW-01 | P0 | quality-guardian | Validate existing MVP build | none | Install, typecheck/build, record failures | todo |
+| NW-34 | P1 | project-planner / quality-guardian | Add GitHub community standards | Owner-approved MIT license and published reporting contact | Code of Conduct, contributing guide, MIT LICENSE, security policy, bug/feature forms and README links; YAML and link review; draft PR; default-branch recognition after approved merge | in progress (feature branch; review and merge pending) |
 | NW-33 | P1 | project-planner / frontend-builder / quality-guardian | Multilingual ElevenLabs narration on GitHub Pages | Creator-owned restricted key; explicit consent | Sixteen documented language choices, five preset voices, eleven static samples; one bounded direct request; memory-only key, cancellation and MP3 download; no automatic translation or owner clone; tests and static export; browser/device and pronunciation review reported | in progress (feature branch; review and deployment pending) |
 | NW-02 | P0 | frontend-builder | Add category review before publish | NW-01 | Creator can correct suggested category | todo |
 | NW-03 | P0 | ai-discovery-engine | Evaluate ranking against baseline | NW-01 | Fixed dataset, relevance and coverage metrics | todo |
@@ -73,7 +74,17 @@ See [impact and roadmap](CAPSTONE-IMPACT-AND-ROADMAP.md) and [video narration](C
 See [ElevenLabs setup](ELEVENLABS-VOICE-SETUP.md). The existing fixed-text voice pilot remains separate. The owner enrolled their clone externally; requested audio was generated locally, but no narrated video, public cloning service or deployment is established by SDK installation.
 
 ## Definition of done
+
 Story submission, category review, diverse discovery, honest metrics, passing build and reproducible demonstration.
+
+### NW-34 community standards handoff — 11 November 2026
+
+Branch: `feature/community-standards-20261111`; the draft PR identifies the final commit. The owner selected MIT and approved `xolmzoli@gmail.com` for public listing as the private reporting contact. Scope is nine documentation/configuration files: Code of Conduct, contribution guide, license, security policy, three issue-template files, README links and this plan.
+
+Ruby YAML parsing passed for all three issue-template files. A local verification script checked issue-form structure, unique field IDs, reporting contacts, license heading, placeholders and 37 local Markdown links. Diff whitespace checks passed. An independent quality-guardian content/link review found no blockers. Application builds and browser/device tests were not run for these documentation-only changes. GitHub's rendered issue chooser, default-branch community recognition and email delivery remain unverified.
+
+Next owner: maintainer. Review the draft PR, approve merge, then check the repository's Community Standards page and rendered forms. No merge, deployment or private-reporting setting change is performed by this task.
+
 
 ## Non-goals
 Payments, production social network, unsupported language claims, unreviewed publishing.

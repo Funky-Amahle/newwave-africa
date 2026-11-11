@@ -1,0 +1,48 @@
+name: Feature request
+description: Propose a focused improvement for creators or readers.
+title: "[Feature]: "
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Explain the need with invented examples. This form is public; exclude private stories, recordings, and credentials.
+        Requests are proposals, not promises of delivery or measured impact.
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Before submitting
+      options:
+        - label: I checked existing issues and the documented roadmap.
+          required: true
+        - label: This request contains no credentials or private creator data.
+          required: true
+  - type: textarea
+    id: need
+    attributes:
+      label: Who benefits, and what problem do they face?
+      description: Be specific about creators or readers and their context.
+    validations:
+      required: true
+  - type: textarea
+    id: solution
+    attributes:
+      label: Proposed behavior
+      description: Describe a small, observable change and how someone would use it.
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+  - type: textarea
+    id: inclusion
+    attributes:
+      label: Accessibility, language, and creator rights
+      description: Consider device/data limits, local language review, authorship, consent, and privacy where relevant.
+  - type: textarea
+    id: verification
+    attributes:
+      label: How could we verify the improvement?
+      description: Suggest a reproducible check or an observable outcome. Do not claim unmeasured impact.
+    validations:
+      required: true
