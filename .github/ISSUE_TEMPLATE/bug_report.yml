@@ -1,0 +1,60 @@
+name: Bug report
+description: Report a reproducible problem with NewWave Africa.
+title: "[Bug]: "
+body:
+  - type: markdown
+    attributes:
+      value: |
+        This is a public form. Do not include API keys, private stories, personal recordings, or participant data.
+        For security vulnerabilities, email xolmzoli@gmail.com using the repository security policy instead.
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Before submitting
+      options:
+        - label: I checked existing issues for this problem.
+          required: true
+        - label: This report contains no credentials or private creator data and is not a confidential security report.
+          required: true
+  - type: textarea
+    id: problem
+    attributes:
+      label: What happened?
+      description: Describe the affected feature and what you observed.
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      description: Use an invented story or other synthetic data. Include the page or route.
+      placeholder: |
+        1. Open ...
+        2. Choose ...
+        3. Observe ...
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+    validations:
+      required: true
+  - type: input
+    id: environment
+    attributes:
+      label: Browser and device
+      description: Include browser/version, operating system, and whether this was the live demo or a local build.
+      placeholder: Chrome on Android; live GitHub Pages demo
+    validations:
+      required: true
+  - type: input
+    id: commit
+    attributes:
+      label: Commit or version
+      description: If known, provide the tested commit SHA or branch.
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Additional evidence
+      description: Optional redacted logs, screenshots, or accessibility details. Do not attach personal content or keys.
