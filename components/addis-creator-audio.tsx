@@ -165,7 +165,7 @@ export function AddisCreatorAudio({content}:{content:string}){
     <div className={styles.review}>
       <h4>Hear your story</h4>
       <p>Generate up to {ADDIS_MAX_TEXT.toLocaleString()} characters of original text in the language selected above. Review the provider cost before generating an MP3. No charge is requested merely by choosing a voice.</p>
-      <label htmlFor={pickerId+'-code'}>Your Addis pilot access code (this session)</label>
+      <label htmlFor={pickerId+'-code'}>Your access code (this session)</label>
       <input id={pickerId+'-code'} type="password" autoComplete="off" spellCheck={false}
         value={code} disabled={busy||available!==true}
         onChange={event=>{resetOutput();setCode(event.target.value);setVoices([]);setVoice('');setOpen(false);setMessage('');}}/>
