@@ -30,6 +30,8 @@
 
 ## Evidence and audit references
 
+| DESIGN-23 | P1 | Laya-inspired NewWave experience | NW-35: enhanced design across all four pages in the approved NewWave theme, functional sample preview, original artwork, preserved studio/discovery flows, responsive and reduced-motion evidence, draft PR | in progress (all-pages build and offline checks passed; final CI/browser QA pending) |
+
 Use [DESIGN-QUALITY-GATE.md](DESIGN-QUALITY-GATE.md) for responsive, focus, state and motion QA. Start tasks with [TASK-BRIEF.md](../templates/TASK-BRIEF.md) and transfer evidence using [AGENT-HANDOFF.md](../AGENT-HANDOFF.md).
 
 DESIGN-01 remains an audit task needing current-state evidence. DESIGN-13 has merged implementation evidence but remains in progress until remaining checks are reconciled. See [CREATOR-EXPERIENCE-FUSION.md](CREATOR-EXPERIENCE-FUSION.md) for DESIGN-16. Design is not implemented by documentation alone; coordinate with frontend-builder and quality-guardian.

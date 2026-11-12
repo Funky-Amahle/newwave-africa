@@ -1,4 +1,3 @@
-import {HomeContent} from '../components/home-content';
+import {StudioLanding} from '../components/studio-landing';
 
-/** Landing route keeps its original hero and in-page discovery deep links. */
-export default function Home(){return <HomeContent mode="home"/>;}
+export default function Home(){return <StudioLanding/>;}

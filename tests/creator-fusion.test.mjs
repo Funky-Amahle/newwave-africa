@@ -71,7 +71,10 @@ test('four ordered primary navigation routes keep direct entries and legacy disc
     previous=p;
   }
   assert.match(discover,/HomeContent mode="discover"/);
-  assert.match(landing,/HomeContent mode="home"/);
+  assert.match(landing,/<StudioLanding\/>/);
+  const studioLanding=readFileSync(new URL('../components/studio-landing.tsx',import.meta.url),'utf8');
+  assert.match(studioLanding,/workspaceFromHash\(fragment\)/);
+  assert.match(studioLanding,/router\.replace\(\(workspace==='create'\?'\/creator-studio\/':'\/discover\/'\)\+fragment\)/);
   assert.match(shared,/id="discover"/);
   assert.match(shared,/addEventListener\('hashchange'/);
   assert.match(shared,/addEventListener\('popstate'/);
