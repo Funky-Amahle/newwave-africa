@@ -142,3 +142,11 @@ future work.
 ## Creator narration generation (NW-30)
 
 Creator Studio optionally sends written story text directly to Deepgram Flux batch TTS after separate explicit consent, using a creator-entered memory-only key. This is distinct from audio transcription and changes the previous audio-only data boundary. Bounded sequential PCM responses become a local WAV, with playback and download. No provider key is hosted by GitHub Pages. Changing story/voice or leaving clears the generation panel. A shared owner-funded service still requires a separate secure backend. See CREATOR-AUDIO-QA.md for limits, verification and untested live-provider behavior.
+
+
+## Creator Verification Passport — NW-36 (review PR)
+
+This is a static Pages-compatible, browser-only integrity workflow. After the user has confirmed rights and successfully saved a written draft, the UI reads that exact saved story back from the existing `STORY_KEY` localStorage collection. The browser computes SHA-256 using Web Crypto over a deterministic versioned UTF-8 JSON representation defined by `lib/creator-passport.ts`. Export downloads an unsigned JSON manifest; verification selects a local file and compares its claimed metadata and hash to the current saved written draft. No server request, wallet, blockchain transaction, trusted timestamp, certificate, key or new storage key is introduced. The manifest omits manuscript text, audio and images; it includes creator-entered attribution metadata and a user-device timestamp, both unverified. Existing draft save semantics, the 100-draft guard and rights confirmation are unchanged.
+
+Any person holding the draft can produce the same hash. A digest proves only data equivalence; it cannot establish authorship, chain of custody, legal ownership or when the source actually existed. For richer provenance, future stages require informed creator-managed signing keys, independent verification, media fingerprinting/C2PA and optional privacy-reviewed timestamp anchoring. These are **not implemented**. See `docs/CREATOR-VERIFICATION-PASSPORT.md`.
+
