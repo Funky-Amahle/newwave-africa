@@ -10,6 +10,9 @@ todo = not started; in progress = assigned or implemented with acceptance eviden
 
 | ID | Priority | Skill owner | Task | Dependencies | Acceptance criteria | Status |
 |---|---|---|---|---|---|---|
+
+
+| NW-36 | P2 | system-architect / frontend-builder / quality-guardian | Unsigned creator integrity passport | Existing local creator draft save and rights confirmation | SHA-256 over versioned canonical saved written draft; local unsigned JSON download and comparison; no text/media in manifest or network/chain requests; disclosure of non-ownership; tests and Pages/server build; manual file download/verification on devices | in progress (review PR; CI/browser QA pending, no merge/deploy approval) |
 | NW-01 | P0 | quality-guardian | Validate existing MVP build | none | Install, typecheck/build, record failures | todo |
 | NW-34 | P1 | project-planner / quality-guardian | Add GitHub community standards | Owner-approved MIT license and published reporting contact | Code of Conduct, contributing guide, MIT LICENSE, security policy, bug/feature forms and README links; YAML and link review; draft PR; default-branch recognition after approved merge | in progress (feature branch; review and merge pending) |
 | NW-33 | P1 | project-planner / frontend-builder / quality-guardian | Multilingual ElevenLabs narration on GitHub Pages | Creator-owned restricted key; explicit consent | Sixteen documented language choices, five preset voices, eleven static samples; one bounded direct request; memory-only key, cancellation and MP3 download; no automatic translation or owner clone; tests and static export; browser/device and pronunciation review reported | in progress (feature branch; review and deployment pending) |

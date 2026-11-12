@@ -64,3 +64,15 @@ The owner reaffirmed GitHub Pages and asked for a plan rather than a backend dep
 **Status:** Owner accepted the session-key alternative after requesting a public demo with a restricted key. Implemented on NW-14 branch; not deployed.
 
 Keep the provider key out of source and artifacts. The Pages demo instead lets the operator enter their own restricted key in the transcription panel, held only in that component’s memory. It is cleared on explicit clear/unmount, never stored or supplied to visitors. Selected audio and protocol authentication go directly to the fixed Deepgram Nova WebSocket endpoint after consent; use the existing review/edit/append flow. Deepgram’s REST API requires a browser proxy, whereas its streaming endpoint supports direct browser connections. The optional server edition retains its access-code-protected REST flow. A shared key service still requires the planned backend. Client limits are usability safeguards, not enforceable account spend controls. Real provider/browser validation is separate from offline transport tests.
+
+
+## ADR-036 — Local unsigned proof before blockchain (12 November 2026)
+
+**Status:** proposed in review PR; not a production ownership credential.
+
+**Decision:** Add versioned deterministic SHA-256 on an already saved, creator-confirmed written draft, and provide a downloadable **unsigned** local JSON manifest with an in-browser recheck. The manifest excludes the story text and all audio/visual assets, contains no signed private key, and has no blockchain anchor. Preserve static GitHub Pages compatibility and existing browser-local story storage.
+
+**Alternatives deferred:** auto-minting NFTs or on-chain personal/creative material (privacy, transaction cost, irreversibility); automatic browser-generated signatures (no sound identity or recovery model); C2PA media signatures (need a verified signer, media formats and separate consent). The existing Addis HMAC quote signature is unrelated to content ownership.
+
+**Consequences:** A copied manifest and a matching hash can establish that two data representations match under the v1 schema, not author identity or an authoritative time of creation. No account recovery, revocation, identity attestation or media provenance is introduced. Clearing localStorage prevents in-app re-verification; export the draft separately. Roll back the isolated Creator Studio controls and `lib/creator-passport.ts` without a data migration.
+

@@ -567,3 +567,14 @@
 .voiceProviderChoice button:focus-visible{outline:3px solid var(--nw-clay);outline-offset:2px}
 .voiceProviderChoice small{display:block;font-size:11px;line-height:1.65;color:var(--nw-muted);margin-top:10px}
 @media(max-width:420px){.voiceProviderChoice>div{grid-template-columns:minmax(0,1fr)}}
+
+
+/* NW-36: browser-local unsigned creator proof (no account or chain integration). */
+.creatorPassport { border:1px solid var(--nw-line); background:var(--nw-surface); border-radius:10px; padding:clamp(16px,2vw,24px); display:grid; gap:12px; overflow-wrap:anywhere; }
+.creatorPassport h3 { margin:0; font:400 clamp(22px,2.5vw,28px)/1.25 var(--nw-serif); color:var(--nw-forest); }
+.creatorPassport p { margin:0; font-size:13px; line-height:1.7; color:var(--nw-ink); }
+.creatorPassportActions { display:flex; flex-wrap:wrap; align-items:flex-start; gap:12px; }
+.creatorPassportActions button { min-height:44px; border:1px solid var(--nw-forest); border-radius:5px; background:var(--nw-forest); color:var(--nw-surface); padding:10px 14px; font-size:13px; font-weight:700; }
+.creatorPassportActions label { flex:1 1 220px; min-width:0; font-size:12px; font-weight:700; }
+.creatorPassportActions input { width:100%; max-width:100%; padding:10px; border:1px solid var(--nw-line); background:var(--nw-surface); color:var(--nw-ink); }
+@media(max-width:540px) { .creatorPassportActions { flex-direction:column; align-items:stretch; }.creatorPassportActions label { flex:0 1 auto; } }
