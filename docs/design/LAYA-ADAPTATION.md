@@ -1,4 +1,4 @@
-# NW-35 / DESIGN-23 — Enhanced NewWave landing
+# NW-35 / DESIGN-23 — Enhanced NewWave experience
 
 Status: implementation in progress; draft PR #67, not released.
 
@@ -17,9 +17,9 @@ its bundled OFL. No Laya source, copy, logo or product artwork is redistributed.
 
 Alternatives considered: a complete reference palette, or a composition-only
 adaptation using NewWave's existing theme. The owner selected the latter. The
-final page combines NewWave's warm editorial surfaces with stronger hierarchy,
+final experience combines NewWave's warm editorial surfaces with stronger hierarchy,
 a clearer creator-tool index, more generous spacing and original illustrated
-story covers. Application screens keep their existing theme and behaviour.
+story covers. Discover, Creator Studio and Our Approach now share the same typography, warm surfaces, rounded panels and responsive spacing. Existing application behaviour is preserved.
 
 Design skill direction: sentence-as-layout, seed 1242004815. The owner's existing
 palette, serif emphasis and reference composition take precedence over randomized
@@ -57,7 +57,8 @@ No new third-party runtime assets or speech requests are introduced.
 - The owner's screenshot exposed language-trigger text inheriting a background
   token. Trigger colour is explicit; the light panel remains isolated. CI requires
   rendered trigger contrast of at least 4.5:1 at each checked width.
-- The added Playwright suite checks 1440/768/390/320px, keyboard theme selection,
+- The previous theme revision passed GitHub CI run 43181617637, including browser, Pages and server builds. The all-pages revision requires a fresh CI run.
+- The added Playwright suite checks all four routes at 1440/768/390/320px for theme consistency, a single main heading and horizontal overflow, plus homepage keyboard theme selection,
   sample reading, bookmark handoff, Escape/focus restore, legacy insight/studio
   hashes, reduced effects and page errors. CI uploads screenshots for review.
 - Independent quality-guardian delegation failed with model service rate limits,

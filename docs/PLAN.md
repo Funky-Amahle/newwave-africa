@@ -77,10 +77,10 @@ See [ElevenLabs setup](ELEVENLABS-VOICE-SETUP.md). The existing fixed-text voice
 
 Story submission, category review, diverse discovery, honest metrics, passing build and reproducible demonstration.
 
-### NW-35 — Laya-inspired homepage, 12 November 2026
+### NW-35 — Laya-inspired all-page design, 12 November 2026
 
 Status: in progress on `feature/laya-inspired-home-20261112`. Adapt the owner-selected
-Laya Labs reference into an original NewWave landing page. Acceptance: enhanced editorial
+Laya Labs reference into an original NewWave experience across Home, Discover, Creator Studio and Our Approach. Acceptance: enhanced editorial
 design in the approved NewWave theme, existing NW mark, licensed local fonts, original illustrated story covers,
 working theme preview and sample reader, clear fictional/sample and local-draft
 disclosures, preserved creator/discovery routes and legacy hashes, keyboard/mobile

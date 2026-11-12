@@ -52,6 +52,14 @@ try{
     await page.getByRole('heading',{name:'Make discovery visible',exact:true}).waitFor();
     await page.goto(base+'#studio-plan',{waitUntil:'networkidle'});
     await page.waitForURL('**/creator-studio/#studio-plan');
+    for(const route of ['discover/','creator-studio/','our-approach/']){
+      await page.goto(base+route,{waitUntil:'networkidle'});
+      assert.equal(await page.locator('[data-theme="studio"]').count(),1);
+      assert.equal(await page.locator('h1').count(),1);
+      const size=await page.evaluate(()=>({viewport:document.documentElement.clientWidth,content:document.documentElement.scrollWidth}));
+      assert.ok(size.content<=size.viewport+2,`Overflow on ${route} at ${width}: ${JSON.stringify(size)}`);
+      await page.screenshot({path:`${output}/${width}-${route.replaceAll('/','')}.png`,fullPage:true});
+    }
     assert.deepEqual(failures,[]);
     results.push({width,status:'passed',checks:'overflow, theme keyboard activation, sample reader, bookmark handoff, Escape/focus restore, legacy insight/studio links, page errors'});
     await context.close();

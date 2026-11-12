@@ -15,7 +15,7 @@ export function SiteShell({children}:{children:ReactNode}){
   const approach=normalized.endsWith('/our-approach');
   const discover=normalized.endsWith('/discover');
   const home=!creator&&!approach&&!discover;
-  return <Experience theme={home?'studio':undefined}><SiteStateProvider>
+  return <Experience theme="studio"><SiteStateProvider>
     <a className="skip-link" href="#page-content">Skip to page content</a>
     <header id="top" className={styles.header}>
       <Brand/>
