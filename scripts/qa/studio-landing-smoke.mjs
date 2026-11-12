@@ -8,9 +8,28 @@ const output='browser-qa-artifacts/studio-landing';
 mkdirSync(output,{recursive:true});
 const browser=await chromium.launch({headless:true});
 const results=[];
+const devices=[
+  {device:'desktop-wide',width:1920,height:1080},
+  {device:'desktop',width:1440,height:900},
+  {device:'laptop',width:1366,height:768},
+  {device:'ipad-landscape',width:1024,height:768},
+  {device:'ipad-air-landscape',width:1180,height:820},
+  {device:'ipad-portrait',width:768,height:1024},
+  {device:'mobile',width:390,height:844},
+  {device:'mobile-small',width:320,height:568}
+];
+async function captureLoadedPage(page,path){
+  // Full-page captures must load artwork below the initial viewport.
+  for(const img of await page.locator('img[loading="lazy"]').all()){
+    await img.scrollIntoViewIfNeeded();
+    await page.waitForFunction(element=>element.complete&&element.naturalWidth>0,await img.elementHandle());
+  }
+  await page.evaluate(()=>window.scrollTo(0,0));
+  await page.screenshot({path,fullPage:true});
+}
 try{
-  for(const width of [1440,768,390,320]){
-    const context=await browser.newContext({viewport:{width,height:900},reducedMotion:'reduce'});
+  for(const {device,width,height} of devices){
+    const context=await browser.newContext({viewport:{width,height},reducedMotion:'reduce'});
     const page=await context.newPage();
     const failures=[];page.on('pageerror',error=>failures.push(error.message));
     await page.goto(base,{waitUntil:'networkidle'});
@@ -29,7 +48,7 @@ try{
     assert.ok(contrast>=4.5,`Language trigger contrast ${contrast.toFixed(2)} at ${width}`);
     const dimensions=await page.evaluate(()=>({viewport:document.documentElement.clientWidth,content:document.documentElement.scrollWidth}));
     assert.ok(dimensions.content<=dimensions.viewport+2,`Overflow at ${width}: ${JSON.stringify(dimensions)}`);
-    await page.screenshot({path:`${output}/${width}-home.png`,fullPage:true});
+    await captureLoadedPage(page,`${output}/${width}-home.png`);
 
     const theme=page.getByRole('button',{name:'Innovation',exact:true});
     await theme.focus();await page.keyboard.press('Enter');
@@ -58,10 +77,10 @@ try{
       assert.equal(await page.locator('h1').count(),1);
       const size=await page.evaluate(()=>({viewport:document.documentElement.clientWidth,content:document.documentElement.scrollWidth}));
       assert.ok(size.content<=size.viewport+2,`Overflow on ${route} at ${width}: ${JSON.stringify(size)}`);
-      await page.screenshot({path:`${output}/${width}-${route.replaceAll('/','')}.png`,fullPage:true});
+      await captureLoadedPage(page,`${output}/${width}-${route.replaceAll('/','')}.png`);
     }
     assert.deepEqual(failures,[]);
-    results.push({width,status:'passed',checks:'overflow, theme keyboard activation, sample reader, bookmark handoff, Escape/focus restore, legacy insight/studio links, page errors'});
+    results.push({device,width,height,status:'passed',checks:'overflow, theme keyboard activation, sample reader, bookmark handoff, Escape/focus restore, legacy insight/studio links, page errors'});
     await context.close();
   }
   // Explicit reduced-effects safety on the moving theme ribbon.
@@ -70,5 +89,5 @@ try{
   assert.equal(await page.locator('[data-quiet]').first().getAttribute('data-quiet'),'true');
   await context.close();
   writeFileSync(`${output}/results.json`,JSON.stringify(results,null,2));
-  console.log('NewWave landing interaction and responsive smoke checks passed at four widths.');
+  console.log('NewWave landing interaction and responsive smoke checks passed at eight device resolutions.');
 }finally{await browser.close();}
