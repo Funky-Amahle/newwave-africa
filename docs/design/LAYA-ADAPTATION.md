@@ -83,3 +83,25 @@ Acceptance: original mission and seven creative audiences visible, existing samp
 controls preserved, responsive grids, native keyboard-operable details and local
 Pages build. Local hydrated browser checks remain unavailable; prior CI applies
 to the preceding revision only. The credential-free Pages production build (including TypeScript validation), exported route checks and diff whitespace checks passed for this blend. Fresh hydrated browser verification remains pending.
+
+## Hero whitespace — 12 November 2026
+
+Owner requested artwork beside the headline. Add a static editorial collage of
+the existing original makers/memory covers and a decorative voice waveform,
+captioned Words · Voice · Visuals. Retain the headline, mission and actions;
+stack below the headline in narrow containers. Prefer this storytelling visual
+to more mission copy, which already appears below. Decorative layers are hidden
+from assistive technology; the figure caption describes the illustration.
+The owner also requested smaller type: cap the hero headline at 128px on desktop and 96px on small screens, with responsive scaling.
+No new external assets or provider requests. Pages build and route verification
+are required; local hydrated browser review remains unavailable.
+
+The owner requested less whitespace across the homepage. Reduce section padding
+from 80–150px to 44–80px (44px on small screens), remove viewport/minimum hero
+height, reduce heading-to-content gaps and staggered cover offsets, and bound the
+collage width. Preserve readable text, controls and responsive stacking.
+
+Second owner-requested spacing pass: cap desktop section padding at 56px, use
+32px on small screens, reduce headline/content gaps to 24px, limit collage
+width to 380px (320px when stacked), and reduce section heading scale. Verify
+Pages build and route checks before updating the preview.
