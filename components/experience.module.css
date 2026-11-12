@@ -10,21 +10,18 @@
 }
 .experience *, .experience *::before, .experience *::after { box-sizing: border-box; }
 .experience[data-theme='studio'] {
-  --nw-paper:#0b0b0c;--nw-surface:#151517;--nw-ink:#f1ede4;--nw-forest:#d4ff3a;
-  --nw-clay:#d4ff3a;--nw-muted:#b0aca4;--nw-line:#42423c;
-  --nw-serif:var(--font-studio-serif),Georgia,serif;
   font-family:var(--font-studio-sans),Arial,sans-serif;
 }
 .experience[data-theme='studio'] .header{width:calc(100% - 2 * clamp(20px,4vw,64px));max-width:none;border:0;padding-block:24px;}
-.experience[data-theme='studio'] .utility{background:#151517;color:#f1ede4;padding-inline:clamp(20px,4vw,64px);font-size:13px;}
+.experience[data-theme='studio'] .utility{background:var(--nw-forest);color:var(--nw-paper);padding-inline:clamp(20px,4vw,64px);font-size:13px;}
 .experience[data-theme='studio'] .siteLanguage{color:#f1ede4;}
 .experience[data-theme='studio'] .nav a{font-size:15px;border:0;}
-.experience[data-theme='studio'] .nav a:hover,.experience[data-theme='studio'] .nav a[aria-current='page']{color:#d4ff3a;}
-.experience[data-theme='studio'] .navCta{border:0;border-radius:999px;background:#d4ff3a;color:#0b0b0c;padding:12px 20px;font-size:14px;min-height:48px;}
-.experience[data-theme='studio'] .footer{background:#151517;color:#f1ede4;width:100%;margin:0;padding:48px clamp(20px,4vw,64px);border:0;}
-.experience[data-theme='studio'] .footer p{color:#b0aca4;}
+.experience[data-theme='studio'] .nav a:hover,.experience[data-theme='studio'] .nav a[aria-current='page']{color:var(--nw-clay);}
+.experience[data-theme='studio'] .navCta{border:0;border-radius:999px;background:var(--nw-forest);color:var(--nw-paper);padding:12px 20px;font-size:14px;min-height:48px;}
+.experience[data-theme='studio'] .footer{background:var(--nw-forest);color:var(--nw-paper);width:100%;margin:0;padding:48px clamp(20px,4vw,64px);border:0;}
+.experience[data-theme='studio'] .footer p{color:#e1e9dc;}
 .experience[data-theme='studio'] .footer a{color:#f1ede4;}
-.experience[data-theme='studio'] .utility button:focus-visible,.experience[data-theme='studio'] .footer a:focus-visible{outline-color:#d4ff3a;}
+.experience[data-theme='studio'] .utility button:focus-visible,.experience[data-theme='studio'] .footer a:focus-visible,.experience[data-theme='studio'] .siteLanguage summary:focus-visible{outline-color:var(--nw-paper);}
 .experience[data-theme='studio'] .siteLanguagePanel{--nw-paper:#f5f3ed;--nw-surface:#fffdf8;--nw-ink:#242b25;--nw-forest:#193b2c;--nw-clay:#995137;--nw-muted:#585a51;--nw-line:#d8d2c6;}
 .experience button { font: inherit; cursor: pointer; }
 .experience button:disabled { cursor: not-allowed; }

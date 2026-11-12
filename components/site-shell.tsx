@@ -18,7 +18,7 @@ export function SiteShell({children}:{children:ReactNode}){
   return <Experience theme={home?'studio':undefined}><SiteStateProvider>
     <a className="skip-link" href="#page-content">Skip to page content</a>
     <header id="top" className={styles.header}>
-      <Brand inverse={home}/>
+      <Brand/>
       <nav className={styles.nav} aria-label="Primary navigation">
         <Link href="/" aria-current={home?'page':undefined}>Home</Link>
         <Link href="/discover/" aria-current={discover?'page':undefined}>Discover</Link>

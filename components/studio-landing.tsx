@@ -60,7 +60,7 @@ export function StudioLanding(){
     <div className={styles.ribbon} aria-hidden="true"><div><span>Many voices</span><i>—</i><span>New perspectives</span><i>—</i><span>Your story, your way</span><i>—</i><span>Many voices</span><i>—</i><span>New perspectives</span><i>—</i><span>Your story, your way</span><i>—</i></div></div>
 
     <section className={styles.perspectives} id="perspectives" aria-labelledby="perspective-heading">
-      <Reveal className={styles.sectionTop}><h2 id="perspective-heading">A different<br/>point of view.</h2><p>One continent is never one story. Start with an interest, and leave room for something unexpected.</p></Reveal>
+      <Reveal className={styles.sectionTop}><h2 id="perspective-heading">A different<br/>view.</h2><p>One continent is never one story. Start with an interest, and leave room for something unexpected.</p></Reveal>
       <div className={styles.previewLayout}>
         <div className={styles.previewChoices}>
           <div role="group" aria-label="Choose a story perspective">{selections.map((item,index)=><button type="button" key={item.id} aria-pressed={selected===index} onClick={()=>setSelected(index)}><span>{item.label}</span><Arrow/></button>)}</div>
@@ -88,10 +88,10 @@ export function StudioLanding(){
     </section>
 
     <section className={styles.collection} aria-labelledby="collection-heading">
-      <Reveal className={styles.sectionTop}><h2 id="collection-heading">Room for<br/>everyday stories.</h2><p>A glimpse of the fictional collection. The places are real; these sample stories are illustrations.</p></Reveal>
+      <Reveal className={styles.sectionTop}><h2 id="collection-heading">Room for<br/>more stories.</h2><p>A glimpse of the fictional collection. The places are real; these sample stories are illustrations.</p></Reveal>
       <div className={styles.coverGrid}>{selections.map(item=>{
         const sample=stories.find(s=>s.id===item.id)!;
-        return <Reveal key={item.id} className={styles.coverItem}><button type="button" onClick={()=>setReader(sample)} aria-label={`Read fictional sample: ${sample.title}`}><div className={styles.cover}><img src={`${base}/studio-covers/${item.cover}.png`} alt="" width="1152" height="800" loading="lazy"/></div><div className={styles.coverCaption}><div><p>{sample.country} · {item.label}</p><h3>{item.title}</h3></div><Arrow/></div></button></Reveal>;
+        return <Reveal key={item.id} className={styles.coverItem}><button type="button" onClick={()=>setReader(sample)}><span className={styles.srOnly}>Read fictional sample. </span><div className={styles.cover}><img src={`${base}/studio-covers/${item.cover}.png`} alt="" width="1152" height="800" loading="lazy"/></div><div className={styles.coverCaption}><div><p>{sample.country} · {item.label}</p><h3>{item.title}</h3></div><Arrow/></div></button></Reveal>;
       })}</div>
     </section>
 

@@ -30,7 +30,7 @@
 
 ## Evidence and audit references
 
-| DESIGN-23 | P1 | Laya-inspired NewWave landing | NW-35: dark editorial homepage, functional sample preview, original artwork, preserved studio/discovery flows, responsive and reduced-motion evidence, draft PR | in progress (build and offline checks passed; browser QA pending) |
+| DESIGN-23 | P1 | Laya-inspired NewWave landing | NW-35: enhanced homepage in the approved NewWave theme, functional sample preview, original artwork, preserved studio/discovery flows, responsive and reduced-motion evidence, draft PR | in progress (build and offline checks passed; browser QA pending) |
 
 Use [DESIGN-QUALITY-GATE.md](DESIGN-QUALITY-GATE.md) for responsive, focus, state and motion QA. Start tasks with [TASK-BRIEF.md](../templates/TASK-BRIEF.md) and transfer evidence using [AGENT-HANDOFF.md](../AGENT-HANDOFF.md).
 
