@@ -60,7 +60,7 @@ export function ElevenLabsCreatorAudio({title,content,storyLanguage}:{title:stri
     <div className={styles.review}>
       <h4>Hear your story</h4>
       <p>Generate up to 5,000 characters with your own ElevenLabs account. Each generation uses your quota; replay and download do not generate again.</p>
-      <label htmlFor={id+'-key'}>Your ElevenLabs key (this session)</label>
+      <label htmlFor={id+'-key'}>Your access code (this session)</label>
       <input id={id+'-key'} type="password" autoComplete="off" spellCheck={false} disabled={busy} value={key} onChange={event=>setKey(event.target.value)}/>
       <p>The key goes only to ElevenLabs and stays in this panel’s memory. Changing the story, language or voice, leaving the panel, or refreshing clears the key and recording. Use a restricted Text to Speech key with a spending limit.</p>
       <button type="button" disabled={!key&&!url} onClick={()=>{if(busy)cancel();setKey('');setConsent(false);setUrl('');setMessage('Your narration key and recording have been cleared.');}}>Clear key and recording</button>

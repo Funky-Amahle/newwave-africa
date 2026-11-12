@@ -105,7 +105,7 @@ try{
 
   const studio=await pageAt(desktop,'creator-studio/');
   await check('Addis language menu supports keyboard selection and Escape focus return',async()=>{
-    await studio.getByRole('button',{name:/Addis AI.*African languages/}).click();
+    await studio.getByRole('button',{name:'African languages',exact:true}).click();
     const trigger=studio.locator('button[aria-haspopup="listbox"]');
     await trigger.focus();await studio.keyboard.press('ArrowDown');
     await studio.getByRole('listbox').waitFor({state:'visible'});

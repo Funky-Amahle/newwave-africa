@@ -82,11 +82,11 @@ export function CreatorStudio({draft}:{draft:ReturnType<typeof useCreatorDraft>}
             <div className={styles.voiceProviderChoice} role="group" aria-label="Narration provider">
               <p>Choose a narration provider</p>
               <div>
-                <button type="button" aria-pressed={narrationProvider==='deepgram'} onClick={()=>setNarrationProvider('deepgram')}>Deepgram · English</button>
-                <button type="button" aria-pressed={narrationProvider==='addis'} onClick={()=>setNarrationProvider('addis')}>Addis AI · African languages</button>
-                <button type="button" aria-pressed={narrationProvider==='elevenlabs'} onClick={()=>setNarrationProvider('elevenlabs')}>ElevenLabs · Multilingual</button>
+                <button type="button" aria-pressed={narrationProvider==='deepgram'} onClick={()=>setNarrationProvider('deepgram')}>English</button>
+                <button type="button" aria-pressed={narrationProvider==='addis'} onClick={()=>setNarrationProvider('addis')}>African languages</button>
+                <button type="button" aria-pressed={narrationProvider==='elevenlabs'} onClick={()=>setNarrationProvider('elevenlabs')}>Multilingual</button>
               </div>
-              <small>Deepgram is the default. Provider selection does not submit your writing.</small>
+              <small>English is the default. Provider selection does not submit your writing.</small>
             </div>
             {narrationProvider==='deepgram'
               ? <CreatorVoicePicker voice={narrationVoice} onChange={setNarrationVoice} title={title} content={content}/>

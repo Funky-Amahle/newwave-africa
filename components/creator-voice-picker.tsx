@@ -91,7 +91,6 @@ export function CreatorVoicePicker({voice,onChange,title,content}:{voice:string;
     </div>
     <p id="narration-help">Your selection stays while you explore this app, until you refresh. The brief downloads your current written story and voice choice. Use “Hear your story” below to generate audio. Existing sample recordings stay unchanged.</p>
     <div className={styles.actions}>
-      <a className={styles.download} href="https://talk.deepgram.com/" target="_blank" rel="noopener noreferrer">Audition voices on Deepgram (new tab)</a>
       <button type="button" onClick={download} disabled={!content.trim()}>Download narration brief</button>
     </div>
     {!content.trim()&&<p>Write in “Your story” to enable the brief download.</p>}

@@ -23,7 +23,7 @@ export function CreatorAudio({voice,content}:{voice:string;content:string}){
   return <div className={styles.review}>
     <h4>Hear your story</h4>
     <p>Generate the English text in “Your story” using the voice above. Longer stories use several requests and become one WAV download. Your Deepgram account is charged for generation; replay and download do not generate again.</p>
-    <label htmlFor="narration-session-key">Your Deepgram narration key (this session)</label>
+    <label htmlFor="narration-session-key">Your access code (this session)</label>
     <input id="narration-session-key" type="password" autoComplete="off" spellCheck={false} value={key} disabled={busy} onChange={event=>setKey(event.target.value)}/>
     <p>Your key stays in this panel’s memory and goes only to Deepgram. It is not saved. Changing the story or voice, leaving Creator Studio, or refreshing clears it and the generated recording.</p>
     <button type="button" disabled={!key} onClick={()=>{if(busy)cancel();setKey('');setConsent(false);}}>Clear narration key</button>
