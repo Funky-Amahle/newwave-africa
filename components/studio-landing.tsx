@@ -49,9 +49,9 @@ export function StudioLanding(){
 
   return <><div className={styles.landing} data-quiet={quiet}>
     <section className={styles.hero} aria-labelledby="studio-hero-title">
-      <Reveal><h1 id="studio-hero-title">Stories<br/><em>move us.</em></h1></Reveal>
+      <Reveal><p className={styles.eyebrow}>Many voices. New perspectives.</p><h1 id="studio-hero-title">Stories<br/><em>move us.</em></h1></Reveal>
       <div className={styles.heroBottom}>
-        <Reveal><p>A home for African perspectives. Discover stories beyond your usual feed, then shape your own with words, voice and visuals.</p></Reveal>
+        <Reveal><p>African stories move us. Discover perspectives beyond your usual feed, then shape a story of your own through words, voice and visuals. Your experience leads. The tools help you bring it to life.</p></Reveal>
         <Reveal className={styles.heroActions}><Link className={styles.primary} href="/creator-studio/">Start your story <Arrow/></Link><a className={styles.secondary} href="#perspectives">Find a perspective <span aria-hidden="true">↓</span></a></Reveal>
       </div>
       <p className={styles.prototype}>A human-first prototype. Fictional samples. Your authorship.</p>
@@ -72,6 +72,18 @@ export function StudioLanding(){
           <div className={styles.previewCopy} aria-live="polite"><p>{story.country} · Fictional sample</p><h3>{selection.title}</h3><p>{story.excerpt}</p></div>
           <button className={styles.secondary} type="button" onClick={()=>setReader(story)}>Read this story <Arrow/></button>
         </Reveal>
+      </div>
+    </section>
+
+    <section className={styles.craft} aria-labelledby="craft-heading">
+      <Reveal className={styles.sectionTop}><h2 id="craft-heading">Creation<br/>&amp; <em>Craft.</em></h2><p>For African storytellers, writers, filmmakers, journalists, animators, musicians and game makers. Turn your ideas into work you can produce and share, with the human author at the centre.</p></Reveal>
+      <div className={styles.craftLayout}>
+        <div><p>Our priority is to extend your craft, lower the cost and complexity of production, and help you take the next step. Start with a free planning canvas and an editable brief that stays yours.</p><Link className={styles.secondary} href="/creator-studio/#studio-plan">Choose a planning canvas <Arrow/></Link></div>
+        <ol className={styles.craftSteps}>
+          <li><span aria-hidden="true">01</span><div><h3>Extend your craft</h3><p>Develop your own stories, scenes, reporting, music or interactive worlds.</p></div></li>
+          <li><span aria-hidden="true">02</span><div><h3>Keep production practical</h3><p>Plan around available equipment, collaborators, permissions and your next steps.</p></div></li>
+          <li><span aria-hidden="true">03</span><div><h3>Make it shareable</h3><p>Download an editable production brief. Keep your words, decisions and creator credits.</p></div></li>
+        </ol>
       </div>
     </section>
 
@@ -98,6 +110,15 @@ export function StudioLanding(){
     <section className={styles.ownership} aria-labelledby="ownership-heading">
       <Reveal><h2 id="ownership-heading">Your work.<br/><em>Your say.</em></h2></Reveal>
       <div className={styles.principles}><Reveal><h3>Authorship first</h3><p>Your perspective leads. Review what you create and choose what to keep.</p></Reveal><Reveal><h3>Private by default</h3><p>Written drafts stay in this browser. Saving a draft does not publish it.</p></Reveal><Reveal><h3>Permission matters</h3><p>Voice services are optional. Choose what to send, using your own key and consent.</p></Reveal><Link className={styles.secondary} href="/our-approach/">Read our approach <Arrow/></Link></div>
+    </section>
+
+    <section className={styles.clarity} aria-labelledby="clarity-heading">
+      <Reveal className={styles.sectionTop}><h2 id="clarity-heading">A little clarity<br/>goes a long way.</h2><p>Discover, create and keep your work. Understand what the prototype does before you begin.</p></Reveal>
+      <div className={styles.questions}>
+        <details><summary>How does discovery work?</summary><p>Your selected interest changes the ranking, rather than excluding every other category. Search narrows the results. The diversity slider gives more weight to less-represented categories. This is a local demonstration, not a trained AI recommender.</p><Link className={styles.secondary} href="/discover/#discovery-insights">Explore discovery insights <Arrow/></Link></details>
+        <details><summary>Where are my saved stories?</summary><p>Reading-list bookmarks and saved text drafts stay in this browser, with no account or public publishing. Clearing browser data removes them. Download your brief to keep a separate copy; recordings and visuals are not attached to saved text drafts.</p></details>
+        <details><summary>Can I use my own voice?</summary><p>Write or record in Creator Studio, then review your words. Optional transcription and narration use your own provider key and quota. Only send selected content with permission; voice cloning requires your own verified voice.</p><Link className={styles.secondary} href="/creator-studio/#studio-voice-answer">Bring your voice <Arrow/></Link></details>
+      </div>
     </section>
 
     <section className={styles.invitation} aria-labelledby="invitation-heading"><Reveal><h2 id="invitation-heading">What’s<br/><em>your story?</em></h2></Reveal><div><p>Start with a moment, a memory or a question. Make space for your perspective.</p><Link className={styles.primary} href="/creator-studio/">Open Creator Studio <Arrow/></Link></div></section>
