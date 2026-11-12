@@ -85,6 +85,7 @@ design in the approved NewWave theme, existing NW mark, licensed local fonts, or
 working theme preview and sample reader, clear fictional/sample and local-draft
 disclosures, preserved creator/discovery routes and legacy hashes, keyboard/mobile
 and reduced-motion checks, static Pages export, quality-guardian review and draft PR.
+The owner also requested a blend of original mission, Creation & Craft and clarity content with the current layout; implemented locally; Pages build and exported route checks passed, fresh browser verification pending.
 No merge or deployment is authorized. See `design/LAYA-ADAPTATION.md` for design
 alternatives and implementation evidence.
 

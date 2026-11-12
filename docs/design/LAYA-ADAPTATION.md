@@ -69,3 +69,17 @@ Next owner: maintainer. Review final CI results/screenshots, complete visual/dev
 checks and approve merge/release separately. Revert the NW-35 change to restore
 its predecessor. Saving a draft is local-only; no new accounts, public publishing
 or automatic translation is introduced.
+
+## Original-content blend — 12 November 2026
+
+The owner requested a mix of the original content and current design. Retain the
+current editorial hero, theme picker, covers and tool index; restore the original
+“Many voices. New perspectives.” introduction, fuller African storytelling mission,
+Creation & Craft audience and three practical production principles. Add expandable
+clarity notes for discovery, browser-local saving and optional voice services.
+This is preferred to restoring the entire old homepage, which would duplicate
+Discover's filters and insights. No new public publishing or provider requests.
+Acceptance: original mission and seven creative audiences visible, existing sample
+controls preserved, responsive grids, native keyboard-operable details and local
+Pages build. Local hydrated browser checks remain unavailable; prior CI applies
+to the preceding revision only. The credential-free Pages production build (including TypeScript validation), exported route checks and diff whitespace checks passed for this blend. Fresh hydrated browser verification remains pending.
