@@ -10,8 +10,9 @@ import {StoryVisuals} from './story-visuals';
 import {VoiceToText} from './voice-to-text';
 import {SectionHeading,Arrow} from './experience';
 import {CREATOR_COUNTRIES,CREATOR_LANGUAGES,resolveCreatorMetadata} from '../lib/creator-input';
-import {CATEGORIES,STORY_KEY,prependDraft} from '../lib/discovery';
+import {CATEGORIES,STORY_KEY,prependDraft,parseStories} from '../lib/discovery';
 import type {Story} from '../lib/discovery';
+import {createUnsignedCreatorPassport,verifyUnsignedCreatorPassport} from '../lib/creator-passport';
 import styles from './experience.module.css';
 
 /** Shared creator composition: the Base44 visual layout with the local-first tools. */
@@ -27,6 +28,43 @@ export function useCreatorDraft(onSaved:(stories:Story[])=>void){
   const [rightsConfirmed,setRightsConfirmed]=useState(false);
   const [busy,setBusy]=useState(false);
   const [message,setMessage]=useState('');
+  const [lastSavedStory,setLastSavedStory]=useState<Story|null>(null);
+  const [passportBusy,setPassportBusy]=useState(false);
+  const [passportMessage,setPassportMessage]=useState('');
+  async function downloadPassport(){
+    if(!lastSavedStory || passportBusy)return;
+    setPassportBusy(true);setPassportMessage('');
+    try{
+      const saved=parseSavedCreatorStory(lastSavedStory.id);
+      if(!saved)throw new Error('Saved draft is unavailable or has changed. No passport was generated.');
+      const proof=await createUnsignedCreatorPassport(saved);
+      const file=new Blob([JSON.stringify(proof,null,2)+'\\n'],{type:'application/json'});
+      const url=URL.createObjectURL(file);
+      const link=document.createElement('a');
+      link.href=url;link.download='newwave-creator-passport-'+saved.id.replace(/[^a-zA-Z0-9_-]/g,'').slice(0,64)+'.json';
+      document.body.append(link);link.click();link.remove();
+      URL.revokeObjectURL(url);
+      setPassportMessage('Unsigned integrity passport downloaded. It is not a digital signature or legal proof of ownership.');
+    }catch(error){setPassportMessage(error instanceof Error?error.message:'Unable to download passport.');}
+    finally{setPassportBusy(false)}
+  }
+  async function verifyPassport(file:File){
+    if(!lastSavedStory || passportBusy)return;
+    setPassportBusy(true);setPassportMessage('');
+    try{
+      if(file.size>32768)throw new Error('Passport must be 32 KB or smaller.');
+      const saved=parseSavedCreatorStory(lastSavedStory.id);
+      if(!saved)throw new Error('The saved draft is not available for verification.');
+      const proof:unknown=JSON.parse(await file.text());
+      const matches=await verifyUnsignedCreatorPassport(saved,proof);
+      setPassportMessage(matches?'MATCH: This unsigned fingerprint matches the saved written draft in this browser. Identity and ownership remain unverified.':'NO MATCH: The passport does not match this saved draft or uses an unsupported format.');
+    }catch(error){setPassportMessage(error instanceof Error?error.message:'Passport verification failed.');}
+    finally{setPassportBusy(false)}
+  }
+  function parseSavedCreatorStory(id:string):Story|undefined{
+    const value=parseStories(localStorage.getItem(STORY_KEY));
+    return value.find(item=>item.id===id);
+  }
   function publish(event:FormEvent){
     event.preventDefault();
     if(!rightsConfirmed){setMessage('Confirm authorship or permission before saving.');return}
@@ -36,18 +74,18 @@ export function useCreatorDraft(onSaved:(stories:Story[])=>void){
       const metadata=resolveCreatorMetadata({title,content,country,language,category});
       const story:Story={id:globalThis.crypto?.randomUUID?.()||String(Date.now()),title:title.trim(),excerpt:content.trim(),author:author.trim()||'Anonymous creator',...metadata,tags:[],date:new Date().toISOString().slice(0,10)};
       const next=prependDraft(localStorage.getItem(STORY_KEY),story);
-      localStorage.setItem(STORY_KEY,JSON.stringify(next));onSaved(next);
+      localStorage.setItem(STORY_KEY,JSON.stringify(next));onSaved(next);setLastSavedStory(story);setPassportMessage('');
       setTitle('');setContent('');setRightsConfirmed(false);
       setMessage('Saved in this browser only. '+(category?'Your chosen category: ':'Suggested category: ')+story.category+'. '+(category?'You can find your draft in discovery.':'Local keyword rules, not AI.'));
     }catch(error){setMessage(error instanceof SyntaxError?'Saved draft data could not be read safely. It has not been overwritten. Copy your new text somewhere safe.':error instanceof Error?error.message:'Unable to save in browser storage. Copy your text somewhere safe before leaving this page.')}
     finally{setBusy(false)}
   }
-  return {narrationVoice,setNarrationVoice,title,setTitle,content,setContent,storyAudio,setStoryAudio,author,setAuthor,country,setCountry,category,setCategory,language,setLanguage,rightsConfirmed,setRightsConfirmed,busy,message,publish};
+  return {narrationVoice,setNarrationVoice,title,setTitle,content,setContent,storyAudio,setStoryAudio,author,setAuthor,country,setCountry,category,setCategory,language,setLanguage,rightsConfirmed,setRightsConfirmed,busy,message,publish,lastSavedStory,passportBusy,passportMessage,downloadPassport,verifyPassport};
 }
 
 export function CreatorStudio({draft}:{draft:ReturnType<typeof useCreatorDraft>}){
   const [narrationProvider,setNarrationProvider]=useState<'deepgram'|'addis'|'elevenlabs'>('deepgram');
-  const {narrationVoice,setNarrationVoice,title,setTitle,content,setContent,storyAudio,setStoryAudio,author,setAuthor,country,setCountry,category,setCategory,language,setLanguage,rightsConfirmed,setRightsConfirmed,busy,message,publish}=draft;
+  const {narrationVoice,setNarrationVoice,title,setTitle,content,setContent,storyAudio,setStoryAudio,author,setAuthor,country,setCountry,category,setCategory,language,setLanguage,rightsConfirmed,setRightsConfirmed,busy,message,publish,lastSavedStory,passportBusy,passportMessage,downloadPassport,verifyPassport}=draft;
   return <section className={styles.studio} aria-label="Creator studio">
           <SectionHeading title="Your words. Your next chapter" description="Build a story from what you know. Use a planning canvas, speak an answer, or bring a visual into the process. You make the creative decisions; nothing is automatically published."/>
           <section className={styles.creatorJourney} aria-labelledby="creator-journey-heading">
@@ -76,6 +114,18 @@ export function CreatorStudio({draft}:{draft:ReturnType<typeof useCreatorDraft>}
             <label id="studio-rights" tabIndex={-1} className="rights-check"><input type="checkbox" checked={rightsConfirmed} onChange={e=>setRightsConfirmed(e.target.checked)} required/><span>This is my original story or I have permission to use it. I understand this saves a draft only in this browser.</span></label>
             <p className="note">There are no accounts or public publishing. Category suggestions use local keyword rules, not AI. Written drafts are saved locally; visuals are not sent. Audio is sent to the transcription service only with your consent. Written text is sent to the selected narration provider only after separate consent; African-language narration requires a private server pilot. Download recordings and visuals separately; they are not included in the saved text draft.</p>
             <button className="primary" type="submit" disabled={busy}>{busy?'Saving...':'Save written draft locally'}</button>{message&&<p className="notice" role="status">{message}</p>}
+            {lastSavedStory&&<section aria-label="Creator Verification Passport" className={styles.creatorPassport}>
+              <h3>Creator Verification Passport</h3>
+              <p>For your most recently saved written draft: <strong>{lastSavedStory.title}</strong>. Generate a local SHA-256 fingerprint or check a downloaded passport against the saved version in this browser. The file excludes story text, audio and images.</p>
+              <p><strong>Unsigned:</strong> not a digital signature, verified identity, reliable timestamp, copyright registration or blockchain record. Anyone with the draft can generate an identical fingerprint.</p>
+              <div className={styles.creatorPassportActions}>
+                <button type="button" onClick={downloadPassport} disabled={passportBusy}>Download unsigned passport (.json)</button>
+                <label>Verify passport against saved draft
+                  <input type="file" accept=".json,application/json" disabled={passportBusy} onChange={e=>{const file=e.currentTarget.files?.[0];if(file)void verifyPassport(file);e.currentTarget.value='';}}/>
+                </label>
+              </div>
+              {passportMessage&&<p role="status" className="notice">{passportMessage}</p>}
+            </section>}
           </form></div></div>
           </div>
           <aside className={styles.studioMedia} aria-label="Voice and visual companion">
