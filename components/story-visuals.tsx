@@ -9,6 +9,14 @@ export function StoryVisuals({audio}:{audio:Blob|null}){
   const current=useRef('');const version=useRef(0);
   const stageRef=useRef<HTMLDivElement|null>(null);
   const quiet=useQuietMotion();const [motionPaused,setMotionPaused]=useState(false);
+  const [systemReduced,setSystemReduced]=useState(true);
+  useEffect(()=>{
+    const preference=window.matchMedia('(prefers-reduced-motion: reduce)');
+    const update=()=>setSystemReduced(preference.matches);update();
+    preference.addEventListener('change',update);
+    return()=>preference.removeEventListener('change',update);
+  },[]);
+  const reduced=quiet||systemReduced;
   const [visible,setVisible]=useState(false);const [pageVisible,setPageVisible]=useState(false);
   useEffect(()=>{
     const update=()=>setPageVisible(!document.hidden);update();
@@ -18,7 +26,7 @@ export function StoryVisuals({audio}:{audio:Blob|null}){
     if(observer&&element)observer.observe(element);else setVisible(true);
     return()=>{observer?.disconnect();document.removeEventListener('visibilitychange',update)};
   },[]);
-  const motionState=quiet||upload?'still':motionPaused||!visible||!pageVisible?'paused':'playing';
+  const motionState=reduced||upload?'still':motionPaused||!visible||!pageVisible?'paused':'playing';
   const base=process.env.NEXT_PUBLIC_SITE_BASE_PATH||'';
   useEffect(()=>{if(!audio){setAudioUrl('');return}const url=URL.createObjectURL(audio);setAudioUrl(url);return()=>URL.revokeObjectURL(url)},[audio]);
   useEffect(()=>()=>{version.current++;if(current.current)URL.revokeObjectURL(current.current)},[]);
@@ -41,8 +49,8 @@ export function StoryVisuals({audio}:{audio:Blob|null}){
     <div className={styles.swatches} role="group" aria-label="Original background visuals">{visuals.map(item=><button key={item.id} type="button" className={styles.swatch} aria-pressed={!upload&&visual===item.id} onClick={()=>{version.current++;setLoading(false);if(current.current)URL.revokeObjectURL(current.current);current.current='';setUpload('');setUploadExtension('');setVisual(item.id);setDescription('');setError('')}}><img src={base+'/story-visuals/'+item.id+'.svg'} alt=""/><span>{item.name}</span></button>)}</div>
     <label>Upload a visual you own or have permission to use<input type="file" accept="image/jpeg,image/png,image/webp" onChange={e=>{const file=e.target.files?.[0];e.target.value='';if(file)void choose(file)}}/></label>
     <div ref={stageRef} className={styles.stage} data-artwork-motion={motionState} aria-busy={loading}><img className={styles.animatedArtwork} src={src} alt={description}/><div className={styles.stageAudio}>{audioUrl?<><p>Your recording with the selected visual</p><audio controls src={audioUrl} aria-label="Audio and background visual preview"/></>:<p>Record or upload an answer to preview audio with this visual.</p>}</div></div>
-    <div className={styles.actions}><button type="button" aria-pressed={!motionPaused&&!quiet&&!upload} disabled={quiet||Boolean(upload)} onClick={()=>setMotionPaused(value=>!value)}>{motionPaused?'Play artwork motion':'Pause artwork motion'}</button></div>
-    <p>{upload?'Your uploaded image stays still.':quiet?'Artwork motion is off while reduced effects are enabled.':'Gentle motion is for this preview. It pauses when the visual leaves the screen.'} Visual downloads are still images; animation is not included.</p>
+    <div className={styles.actions}><button type="button" aria-pressed={!motionPaused&&!reduced&&!upload} disabled={reduced||Boolean(upload)} onClick={()=>setMotionPaused(value=>!value)}>{motionPaused?'Play artwork motion':'Pause artwork motion'}</button></div>
+    <p>{upload?'Your uploaded image stays still.':reduced?'Artwork motion is off while reduced effects are enabled.':'Gentle motion is for this preview. It pauses when the visual leaves the screen.'} Visual downloads are still images; animation is not included.</p>
     <label>Visual description (optional)<input maxLength={500} value={description} onChange={e=>setDescription(e.target.value)} placeholder="Describe what the visual adds to your story"/></label>
     <div className={styles.actions}><a className={styles.download} href={src} download={upload?'newwave-visual.'+uploadExtension:'newwave-'+visual+'.svg'}>Download visual</a>{audioUrl&&<a className={styles.download} href={audioUrl} download={'newwave-audio.'+(audio?.type.includes('mp4')?'m4a':audio?.type.includes('mpeg')?'mp3':audio?.type.includes('wav')?'wav':audio?.type.includes('ogg')?'ogg':'webm')}>Download audio</a>}{upload&&<button type="button" onClick={()=>{version.current++;setLoading(false);if(current.current)URL.revokeObjectURL(current.current);current.current='';setUpload('');setUploadExtension('');setDescription('')}}>Remove uploaded visual</button>}</div>
     <p>Original backgrounds are abstract artwork, not photographs of a place or community. Uploaded images and recordings stay in this tab. Downloads are separate files, not a rendered video, and are not included in saved text drafts.</p>
