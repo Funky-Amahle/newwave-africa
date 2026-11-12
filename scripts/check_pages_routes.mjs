@@ -7,7 +7,7 @@ const root=resolve(process.argv[2]||'out');
 const base='/newwave-africa';
 const destinations=['/','/discover/','/creator-studio/','/our-approach/'];
 const titles=new Map([
-  ['/','Many voices.'],
+  ['/','id="studio-hero-title"'],
   ['/discover/','Discover stories'],
   ['/creator-studio/','Creator studio'],
   ['/our-approach/','Every story changes the']

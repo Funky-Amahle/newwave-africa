@@ -77,6 +77,17 @@ See [ElevenLabs setup](ELEVENLABS-VOICE-SETUP.md). The existing fixed-text voice
 
 Story submission, category review, diverse discovery, honest metrics, passing build and reproducible demonstration.
 
+### NW-35 — Laya-inspired homepage, 12 November 2026
+
+Status: in progress on `feature/laya-inspired-home-20261112`. Adapt the owner-selected
+Laya Labs reference into an original NewWave landing page. Acceptance: dark editorial
+design, existing NW mark, licensed local fonts, original illustrated story covers,
+working theme preview and sample reader, clear fictional/sample and local-draft
+disclosures, preserved creator/discovery routes and legacy hashes, keyboard/mobile
+and reduced-motion checks, static Pages export, quality-guardian review and draft PR.
+No merge or deployment is authorized. See `design/LAYA-ADAPTATION.md` for design
+alternatives and implementation evidence.
+
 ### NW-34 community standards handoff — 11 November 2026
 
 Branch: `feature/community-standards-20261111`; the draft PR identifies the final commit. The owner selected MIT and approved `xolmzoli@gmail.com` for public listing as the private reporting contact. Scope is nine documentation/configuration files: Code of Conduct, contribution guide, license, security policy, three issue-template files, README links and this plan.

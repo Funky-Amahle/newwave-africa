@@ -104,6 +104,14 @@ jobs:
           trap 'kill "$server_pid" 2>/dev/null || true' EXIT
           node scripts/qa/creator-visuals-smoke.mjs
           node scripts/qa/accessibility-smoke.mjs
+          node scripts/qa/studio-landing-smoke.mjs
+      - name: Upload landing design previews
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: newwave-landing-design-previews
+          path: browser-qa-artifacts/studio-landing/
+          if-no-files-found: ignore
       - name: Upload browser screenshots on failure
         if: failure()
         uses: actions/upload-artifact@v4

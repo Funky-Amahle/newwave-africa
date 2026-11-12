@@ -11,7 +11,7 @@ import {getFlagshipStory,estimatedReadingMinutes} from '../lib/flagship-story';
 
 const MotionContext = createContext(true);
 export const useQuietMotion = () => useContext(MotionContext);
-export function Experience({children}:{children:ReactNode}) {
+export function Experience({children,theme}:{children:ReactNode;theme?:'studio'}) {
   const preference = useReducedMotion();
   const [ready,setReady] = useState(false);
   const [paused,setPaused] = useState(false);
@@ -21,7 +21,7 @@ export function Experience({children}:{children:ReactNode}) {
   const systemReduced = ready && preference === true;
   const quiet = !ready || paused || preference !== false;
   return <MotionContext.Provider value={quiet}><MotionConfig reducedMotion={quiet?'always':'user'}>
-    <div className={styles.experience} data-quiet={quiet}>
+    <div className={styles.experience} data-quiet={quiet} data-theme={theme}>
       <div className={styles.utility}><span>Independent voices. Shared perspectives.</span>
         <div className={styles.utilityActions}><SiteLanguageSelector/>
         <button type="button" aria-pressed={quiet} disabled={!ready||systemReduced} onClick={()=>setPaused(v=>!v)}>
