@@ -91,13 +91,13 @@ export function AddisCreatorAudio({content}:{content:string}){
         signal:controller.signal,cache:'no-store',credentials:'same-origin',redirect:'error'
       });
       const data=await response.json() as Result;
-      if(!response.ok)throw new Error(data.error||'The Addis request failed.');
+      if(!response.ok)throw new Error(data.error||'The narration request failed.');
       if(controller!==abort.current)return;
       if(action==='voices'){
         const next=data.voices||[];
         setVoices(next);setVoice(current=>next.some(v=>v.id===current)?current:next[0]?.id||'');
         setOpen(false);setSearch('');setEstimate(null);
-        setMessage(next.length?next.length+' available voices loaded. Choose one below.':'No Addis voices are available for this language.');
+        setMessage(next.length?next.length+' available voices loaded. Choose one below.':'No voices are available for this language.');
       }else if(action==='estimate'){
         if(typeof data.estimatedCost!=='number'||typeof data.currency!=='string'||typeof data.canGenerate!=='boolean'||(data.canGenerate&&typeof data.quote!=='string'))
           throw new Error('The provider estimate was incomplete.');
@@ -110,17 +110,17 @@ export function AddisCreatorAudio({content}:{content:string}){
     }catch(error){
       if(controller===abort.current)setMessage(controller.signal.aborted
         ?'Request cancelled. A generation already started may still be billed.'
-        :error instanceof Error?error.message:'Addis request failed.');
+        :error instanceof Error?error.message:'Narration request failed.');
     }finally{if(abort.current===controller){abort.current=null;setBusy(false);}}
   }
 
   return <section id="studio-narration" tabIndex={-1} className={styles.panel} aria-labelledby={pickerId+'-heading'}>
     <h3 id={pickerId+'-heading'}>Choose your narration voice</h3>
-    <p>Addis AI · African-language narration. Choose the language of your written story, then select a voice. Addis does not translate your text, and Deepgram remains the default provider.</p>
+    <p>African-language narration. Choose the language of your written story, then select a voice. Narration does not translate your text. English is the default option.</p>
     {staticSite||available===false
-      ? <p role="status" id={pickerId+'-availability'} className={styles.message}>Addis narration needs a privately hosted NewWave server. GitHub Pages cannot safely hold an Addis API key. You can browse the seven languages below, but narration generation is unavailable here. Deepgram is still available.</p>
-      : available===null?<p role="status" id={pickerId+'-availability'}>Checking Addis pilot availability…</p>
-      : <p id={pickerId+'-availability'}>Private pilot available. Use the separate pilot access code below, not your Addis API key.</p>}
+      ? <p role="status" id={pickerId+'-availability'} className={styles.message}>African-language narration needs a private server connection. You can browse the seven languages below, but generation is unavailable here. English narration is still available.</p>
+      : available===null?<p role="status" id={pickerId+'-availability'}>Checking pilot availability…</p>
+      : <p id={pickerId+'-availability'}>Private pilot available. Use the separate pilot access code below.</p>}
 
     <AddisLanguagePicker value={language} disabled={busy} onChange={next=>{
       resetOutput();setLanguage(next);setVoices([]);setVoice('');setOpen(false);setSearch('');
@@ -135,7 +135,7 @@ export function AddisCreatorAudio({content}:{content:string}){
         onClick={()=>{setOpen(value=>!value);setSearch('');}}>
         <span id={pickerId+'-value'} className={styles.voicePickerValue}>
           <strong>{selected?.name||'Load available voices'}</strong>
-          <small>{selected?.style||'Choose a voice from the live Addis catalog'}</small>
+          <small>{selected?.style||'Choose a voice from the live catalog'}</small>
         </span>
         <span className={styles.voicePickerChevron} aria-hidden="true">⌄</span>
       </button>
@@ -145,7 +145,7 @@ export function AddisCreatorAudio({content}:{content:string}){
           value={search} onChange={event=>setSearch(event.target.value)}
           placeholder="Search name or style"/>
         <p className={styles.voicePickerCount} role="status">{matches.length} of {voices.length} voices</p>
-        <div className={styles.voiceOptionList} role="radiogroup" aria-label="Available Addis narration voices">
+        <div className={styles.voiceOptionList} role="radiogroup" aria-label="Available narration voices">
           {matches.map(item=><label key={item.id}
             className={styles.voiceOption+' '+(voice===item.id?styles.voiceOptionSelected:'')}>
             <input type="radio" name={pickerId+'-voice'} value={item.id}
@@ -169,18 +169,18 @@ export function AddisCreatorAudio({content}:{content:string}){
       <input id={pickerId+'-code'} type="password" autoComplete="off" spellCheck={false}
         value={code} disabled={busy||available!==true}
         onChange={event=>{resetOutput();setCode(event.target.value);setVoices([]);setVoice('');setOpen(false);setMessage('');}}/>
-      <p>This is a separate pilot access code, not the Addis API key. The code stays in this panel’s memory. The provider key remains on the private server; neither is saved with your draft.</p>
+      <p>This is a separate pilot access code, not the service API key. It stays in this panel’s memory. The service credential remains on the private server; neither is saved with your draft.</p>
       <button type="button" disabled={!code&&!audioUrl}
         onClick={()=>{resetOutput();setCode('');setConsent(false);setVoices([]);setVoice('');setOpen(false);setMessage('Pilot access code cleared.');}}>Clear pilot access code</button>
       <p>{withinLimit?text.length+' of '+ADDIS_MAX_TEXT+' characters ready.':text?'Shorten your story to 1,000 characters for this pilot.':'Write a story in the editor to enable narration.'} Your text is not translated automatically.</p>
       <label className={styles.check}>
         <input type="checkbox" checked={consent} disabled={busy||available!==true}
           onChange={event=>{resetOutput();setConsent(event.target.checked);}}/>
-        <span>I have permission to use this story and agree to send its text to Addis AI for a cost estimate and optional paid narration.</span>
+        <span>I have permission to use this story and agree to send its text to the selected narration service for a cost estimate and optional paid narration.</span>
       </label>
       <div className={styles.actions}>
         <button type="button" disabled={!canSubmit||!consent||!selected||!withinLimit}
-          onClick={()=>void request('estimate')}>{busy?'Contacting Addis…':'Estimate narration cost'}</button>
+          onClick={()=>void request('estimate')}>{busy?'Contacting the narration service…':'Estimate narration cost'}</button>
         {busy&&<button type="button" onClick={()=>{
           abort.current?.abort();abort.current=null;setBusy(false);setMessage('Request cancelled. A generation already started may still be billed.');
         }}>Cancel request</button>}
@@ -190,9 +190,9 @@ export function AddisCreatorAudio({content}:{content:string}){
         <button type="button" className={styles.primary} disabled={!canSubmit||!estimate.canGenerate||!consent||!selected||!withinLimit}
           onClick={()=>void request('generate')}>Approve cost and generate narration</button>
       </div>}
-      {message&&<p role="status" className={styles.message}>{message}</p>}
+      {message&&<p role="status" className={styles.message}>{message.replace(/\b(?:Deepgram|ElevenLabs|Addis(?: AI)?)\b/gi,'the voice service')}</p>}
       {audioUrl&&<div className={styles.review}>
-        <audio ref={player} controls src={audioUrl} aria-label="Generated Addis story narration"
+        <audio ref={player} controls src={audioUrl} aria-label="Generated story narration"
           onPlay={event=>{const currentPlayer=event.currentTarget;claimNarration(owner.current,()=>currentPlayer.pause());}}
           onPause={()=>releaseNarration(owner.current)} onEnded={()=>releaseNarration(owner.current)}
           onError={()=>setMessage('Unable to play this provider clip. Check the link expiration or open it in another audio player.')}/>

@@ -43,8 +43,8 @@ export function VoiceToText({fields,onInsert,onAudio}:{fields:Field[];onInsert:(
     }catch(error){if(!controller.signal.aborted)setMessage(error instanceof Error?error.message:'Connection failed. Your writing is unchanged.')}
     finally{if(abort.current===controller){setPending(false);abort.current=null}}
   }
-  return <section className={styles.panel} aria-labelledby={titleId}>
-    <div className={styles.headingRow}><h3 id={titleId}>Speak your answer</h3><span>{direct?'Deepgram demo · English':'Deepgram transcription · English'}</span></div>
+  return <section className={styles.panel+' '+styles.transcriptionPanel} aria-labelledby={titleId}>
+    <div className={styles.headingRow}><h3 id={titleId}>Speak your answer</h3><span>English transcription</span></div>
     <p>Choose a question, record or upload a short answer, then turn your voice into editable text. You review every word and decide what to add.</p>
     <label>Which question are you answering?<select value={target} disabled={pending} onChange={e=>{abort.current?.abort();setPending(false);setTarget(e.target.value);setTranscript('');setConsent(false);setMessage('')}}>{fields.map(field=><option key={field.id} value={field.id}>{field.label}</option>)}</select></label>
     <div className={styles.modeCards} role="group" aria-label="Choose how to add audio">
@@ -107,12 +107,12 @@ export function VoiceToText({fields,onInsert,onAudio}:{fields:Field[];onInsert:(
       <p className={styles.selectedNote}>Preview playback stays on this device. The animated bars are decorative and move only while the audio plays.</p>
     </section>}
     {!available?<p className={styles.message} role="status">{available===null?'Checking transcription availability…':'Transcription is unavailable here. You can still record, upload audio or type your answers.'}</p>:<>
-      <div className={styles.row}><label>Your access code (this session)<input type="password" autoComplete="off" spellCheck={false} maxLength={2048} value={code} onChange={e=>{setCode(e.target.value);setConsent(false)}} disabled={pending}/></label><p>{direct?'Use your own restricted key. This demo uses your Deepgram quota. The key stays in this panel’s memory and is sent only to Deepgram when you transcribe. It is not saved in browser storage or included in the site files.':'Ask the project owner for a pilot access code. It stays in this tab.'}</p></div>
+      <div className={styles.row}><label>Your access code (this session)<input type="password" autoComplete="off" spellCheck={false} maxLength={2048} value={code} onChange={e=>{setCode(e.target.value);setConsent(false)}} disabled={pending}/></label><p>{direct?'Use your own restricted key. This demo uses your account quota. The key stays in this panel’s memory and is sent only to the transcription service when you transcribe. It is not saved in browser storage or included in the site files.':'Ask the project owner for a pilot access code. It stays in this tab.'}</p></div>
       {direct&&<div className={styles.actions}><button type="button" disabled={!code&&!pending} onClick={()=>{abort.current?.abort();setPending(false);setCode('');setConsent(false);setMessage('Session key cleared. Your writing is unchanged.')}}>Clear session key</button></div>}
-      <label className={styles.check}><input type="checkbox" checked={consent} disabled={pending} onChange={e=>setConsent(e.target.checked)}/><span>I have permission to use this recording and agree to send this audio to Deepgram for transcription. My written draft and visual are not sent.</span></label>
+      <label className={styles.check}><input type="checkbox" checked={consent} disabled={pending} onChange={e=>setConsent(e.target.checked)}/><span>I have permission to use this recording and agree to send this audio to the transcription service for transcription. My written draft and visual are not sent.</span></label>
       <div className={styles.actions}><button type="button" className={styles.primary} disabled={!audio||!consent||!code||pending} onClick={transcribe}>{pending?'Transcribing…':'Transcribe selected audio'}</button>{pending&&<button type="button" onClick={()=>{abort.current?.abort();setPending(false);setMessage('Transcription canceled. Your writing is unchanged.')}}>Cancel transcription</button>}</div>
     </>}
     {transcript&&<div className={styles.review}><p>Your draft stays unchanged until you add these words. Copy any transcript you want to keep before closing this panel.</p><label>Review your transcript<textarea value={transcript} maxLength={5000} rows={5} onChange={e=>setTranscript(e.target.value)}/></label><div className={styles.actions}><button type="button" disabled={!transcript.trim()} onClick={()=>{const error=onInsert(target,transcript.trim());if(error){setMessage(error);return}setTranscript('');setMessage('Added to your answer. You can keep editing it.')}}>Add to selected answer</button><button type="button" onClick={()=>{setTranscript('');setMessage('Transcript discarded. Your writing is unchanged.')}}>Discard transcript</button></div></div>}
-    {message&&<p className={styles.message} role="status">{message}</p>}
+    {message&&<p className={styles.message} role="status">{message.replace(/\b(?:Deepgram|ElevenLabs|Addis(?: AI)?)\b/gi,'the voice service')}</p>}
   </section>;
 }

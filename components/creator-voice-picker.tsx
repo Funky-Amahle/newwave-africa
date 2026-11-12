@@ -56,7 +56,7 @@ export function CreatorVoicePicker({voice,onChange,title,content}:{voice:string;
 
   return <section id="studio-narration" tabIndex={-1} className={styles.panel} aria-labelledby="narration-heading">
     <h3 id="narration-heading">Choose your narration voice</h3>
-    <p>Find a voice to carry your words. Choose from 36 Deepgram English voices, then generate a recording or keep your choice in a narration brief.</p>
+    <p>Find a voice to carry your words. Choose from 36 English voices, then generate a recording or keep your choice in a narration brief.</p>
     <div className={styles.voicePicker} ref={pickerRef}>
       <span id={pickerId+'-label'} className={styles.voicePickerLabel}>Narration voice</span>
       <button ref={triggerRef} type="button" className={styles.voicePickerTrigger}
@@ -94,7 +94,6 @@ export function CreatorVoicePicker({voice,onChange,title,content}:{voice:string;
       <button type="button" onClick={download} disabled={!content.trim()}>Download narration brief</button>
     </div>
     {!content.trim()&&<p>Write in “Your story” to enable the brief download.</p>}
-    <p>The audition opens Deepgram’s separate demo. Your draft and voice selection are not sent there.</p>
     <CreatorAudio key={voice+content} voice={voice} content={content}/>
     {message&&<p className={styles.message} role="status">{message}</p>}
   </section>;

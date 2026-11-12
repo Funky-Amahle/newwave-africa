@@ -51,6 +51,22 @@ try{
     await page.setViewportSize({width:1440,height:900});
   });
 
+  await run('Recording status and timer never overlap the recording action',async()=>{
+    const recorder=page.locator('section[class*="recorder"]');
+    for(const width of [1440,768,320]){
+      await page.setViewportSize({width,height:900});
+      const button=await recorder.getByRole('button',{name:'Start recording',exact:true}).boundingBox();
+      const timer=await recorder.locator('[aria-label^="Recording duration"]').boundingBox();
+      const status=await recorder.locator('span[role="status"]').boundingBox();
+      assert.ok(button&&timer&&status,'Missing recording controls at '+width);
+      for(const box of [timer,status]){
+        const overlap=box.x<button.x+button.width&&box.x+box.width>button.x&&box.y<button.y+button.height&&box.y+box.height>button.y;
+        assert.equal(overlap,false,'Recording button overlaps status/timer at '+width);
+      }
+    }
+    await page.setViewportSize({width:1440,height:900});
+  });
+
   await run('Desktop Visuals shortcut scrolls to the actual visual editor',async()=>{
     const nav=page.getByRole('navigation',{name:'Jump between Creator Studio sections'});
     await nav.getByRole('link',{name:'Visuals',exact:true}).click();
@@ -69,6 +85,25 @@ try{
   });
 
   const visual=page.locator('#studio-visual');
+  await run('Artwork motion pauses on request and respects reduced motion',async()=>{
+    const stage=visual.locator('[data-artwork-motion]');
+    await page.emulateMedia({reducedMotion:'no-preference'});
+    await stage.scrollIntoViewIfNeeded();
+    await page.waitForFunction(()=>document.querySelector('[data-artwork-motion]')?.getAttribute('data-artwork-motion')==='playing');
+    await visual.getByRole('button',{name:'Pause artwork motion',exact:true}).click();
+    assert.equal(await stage.getAttribute('data-artwork-motion'),'paused');
+    assert.equal(await stage.locator('img').evaluate(e=>getComputedStyle(e).animationPlayState),'paused');
+    await visual.getByRole('button',{name:'Play artwork motion',exact:true}).click();
+    await page.emulateMedia({reducedMotion:'reduce'});
+    await page.waitForFunction(()=>document.querySelector('[data-artwork-motion]')?.getAttribute('data-artwork-motion')==='still');
+    assert.equal(await stage.locator('img').evaluate(e=>getComputedStyle(e).animationName),'none');
+    await page.emulateMedia({reducedMotion:'no-preference'});
+    await stage.scrollIntoViewIfNeeded();
+    await page.waitForFunction(()=>document.querySelector('[data-artwork-motion]')?.getAttribute('data-artwork-motion')==='playing');
+    await page.evaluate(()=>window.scrollTo(0,0));
+    await page.waitForFunction(()=>document.querySelector('[data-artwork-motion]')?.getAttribute('data-artwork-motion')==='paused');
+  });
+
   await run('Original Forest current SVG downloads with SVG extension',async()=>{
     await visual.getByRole('button',{name:'Forest current'}).click();
     const link=visual.getByRole('link',{name:'Download visual'});

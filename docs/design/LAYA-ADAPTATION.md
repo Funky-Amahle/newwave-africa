@@ -105,3 +105,21 @@ Second owner-requested spacing pass: cap desktop section padding at 56px, use
 32px on small screens, reduce headline/content gaps to 24px, limit collage
 width to 380px (320px when stacked), and reduce section heading scale. Verify
 Pages build and route checks before updating the preview.
+
+## Creator Studio release — 12 November 2026
+
+Owner approved production deployment. Add six original abstract SVG backgrounds
+(First light, Ink orbit, Green layers, Dusk contours, Paper & clay, Voice rhythm)
+to the existing three. Original artwork previews use gentle CSS drift/zoom with
+pause/play, reduced-effects support and offscreen/hidden-tab suspension. Uploaded
+images remain still; downloads remain separate static artwork/audio files.
+Creator Studio copy omits service brand names while keeping consent, external
+processing, usage charges and session-only credentials clear. Remove the leftover
+audition note. Recording controls occupy a separate row beneath status/timer;
+source cards reflow against the available editor width.
+
+143 offline tests, the credential-free Pages production build with TypeScript,
+route/asset checks and QA script syntax checks passed locally. Fresh CI checks
+recording alignment and artwork pause/reduced-motion behavior before merging.
+Local hydrated browser checks remain unavailable due to macOS bootstrap limits.
+Rollback: revert this release's merge commit on main and redeploy through Pages.
