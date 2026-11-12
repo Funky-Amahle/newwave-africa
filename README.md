@@ -171,3 +171,11 @@ node --experimental-strip-types newwave_discovery_benchmark.mjs --out /tmp/newwa
 ```
 
 The benchmark pins the discovery source and fixture hashes from production commit `0c88a1f35a0eab19c26a52411331d64eb6d21555`. A source change intentionally requires reviewing and updating this baseline; never use its results as real-reader relevance or fairness evidence. Its stored [CSV](docs/validation/2026-11-09/synthetic_weight_sweep.csv) contains invented test cases only. No new product features or public Addis service are enabled by this validation work.
+
+
+## Creator Verification Passport (NW-36 — review PR)
+
+Creator Studio can now download a **local, unsigned SHA-256 integrity passport** for the most recently saved written draft, then select that JSON file to verify it against that same draft in browser storage. The record includes the draft ID and descriptive attribution fields, SHA-256 of a versioned canonical UTF-8 representation, a device-reported generation time and explicit `signature: null` and `blockchainAnchor: null`. It does **not** embed the written story text, microphone audio, uploaded images or any external account credentials. The hash includes the written story text, author, title, category, country, language, date and draft ID; editing any of those changes the digest.
+
+This is an **integrity check, not cryptographic creator identity, trusted timestamp, copyright registration, a signed C2PA credential or blockchain proof**. Anyone with identical draft data can compute the same fingerprint. Nothing is uploaded or posted to a blockchain. The creator must retain both the downloaded passport and original draft separately, because clearing browser storage removes the locally saved draft needed for the in-app comparison. The scope is the saved written draft only; media files require separate provenance work. See [passport decision and tests](docs/CREATOR-VERIFICATION-PASSPORT.md).
+
