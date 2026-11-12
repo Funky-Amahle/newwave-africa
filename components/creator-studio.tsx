@@ -43,7 +43,7 @@ export function useCreatorDraft(onSaved:(stories:Story[])=>void){
       const link=document.createElement('a');
       link.href=url;link.download='newwave-creator-passport-'+saved.id.replace(/[^a-zA-Z0-9_-]/g,'').slice(0,64)+'.json';
       document.body.append(link);link.click();link.remove();
-      URL.revokeObjectURL(url);
+      window.setTimeout(()=>URL.revokeObjectURL(url),30_000);
       setPassportMessage('Unsigned integrity passport downloaded. It is not a digital signature or legal proof of ownership.');
     }catch(error){setPassportMessage(error instanceof Error?error.message:'Unable to download passport.');}
     finally{setPassportBusy(false)}
