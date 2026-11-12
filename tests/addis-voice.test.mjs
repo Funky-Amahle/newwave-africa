@@ -127,7 +127,7 @@ test('Addis matches the Deepgram narrator structure and interaction semantics',(
  assert.match(addis,/Escape/);
  assert.match(addis,/role="radiogroup"/);
  assert.match(addis,/minlength|1,000 characters/i);
- assert.match(addis,/Addis API key/);
+ assert.match(addis,/separate pilot access code, not the service API key/);
  assert.match(addis,/NEXT_PUBLIC_STATIC_SITE/);
  assert.match(style,/\.addisLanguageMenu/);
  assert.doesNotMatch(addis,/ADDIS_API_KEY|localStorage|sessionStorage/);

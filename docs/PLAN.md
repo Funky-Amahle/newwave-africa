@@ -86,7 +86,7 @@ working theme preview and sample reader, clear fictional/sample and local-draft
 disclosures, preserved creator/discovery routes and legacy hashes, keyboard/mobile
 and reduced-motion checks, static Pages export, quality-guardian review and draft PR.
 The owner also requested a blend of original mission, Creation & Craft and clarity content with the current layout; implemented locally; Pages build and exported route checks passed, fresh browser verification pending.
-No merge or deployment is authorized. See `design/LAYA-ADAPTATION.md` for design
+The owner authorized merge and production deployment on 12 November 2026 after approving the local design. Latest Creator Studio artwork, motion, neutral wording and alignment updates are awaiting final CI/release verification. See `design/LAYA-ADAPTATION.md` for design
 alternatives and implementation evidence.
 
 ### NW-34 community standards handoff — 11 November 2026

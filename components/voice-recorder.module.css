@@ -4,7 +4,7 @@
 .heading h4{font:700 17px/1.3 Arial,Helvetica,sans-serif;letter-spacing:-.02em;margin:0}
 .heading p{margin:6px 0 0;font-size:12px;line-height:1.6;color:var(--nw-muted,#585a51)}
 .limit{font-size:11px;color:var(--nw-muted,#585a51);line-height:1.5;white-space:nowrap}
-.capture{border:1px solid #bed0bf;border-radius:16px;padding:24px;min-width:0;background:linear-gradient(125deg,#e8eee5 0%,#f8f8ef 90%);display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:18px;transition:border-color .2s,background .2s}
+.capture{border:1px solid #bed0bf;border-radius:16px;padding:24px;min-width:0;background:linear-gradient(125deg,#e8eee5 0%,#f8f8ef 90%);display:grid;grid-template-columns:auto minmax(0,1fr);align-items:center;gap:18px;transition:border-color .2s,background .2s}
 .capture[data-phase='recording']{background:linear-gradient(125deg,#f7e8df,#fffcf4);border-color:#b77a62}
 .captureVisual{display:flex;align-items:center;gap:14px}
 .pulse{position:relative;display:grid;place-items:center;width:56px;height:56px;border-radius:50%;background:#d1e1d2;flex-shrink:0}
@@ -16,11 +16,11 @@
 .wave i{display:block;flex:0 0 3px;border-radius:3px;background:currentColor;transform-origin:center;opacity:.7}
 .capture[data-phase='recording'] .wave{color:#a64d38}
 .capture[data-phase='recording'] .wave i{animation:record-bar .85s ease-in-out infinite alternate}
-.captureInfo{min-width:0;display:grid;gap:6px}
+.captureInfo{min-width:0;display:grid;gap:6px;justify-self:end;text-align:right;overflow-wrap:anywhere}
 .stateLabel{font-size:12px;font-weight:700;line-height:1.5}
 .time{font:400 28px/1.1 var(--nw-serif,Georgia,serif);font-variant-numeric:tabular-nums;letter-spacing:-.025em}
-.buttons{display:flex;flex-wrap:wrap;align-items:center;gap:10px}
-.buttons button{min-height:48px;border:1px solid #244b39!important;border-radius:999px!important;background:#244b39!important;color:#fffdf8!important;padding:12px 20px!important;font-size:12px!important;font-weight:700!important;display:inline-flex;justify-content:center;align-items:center;gap:10px;white-space:nowrap}
+.buttons{display:flex;flex-wrap:wrap;align-items:center;gap:10px;grid-column:1/-1;min-width:0}
+.buttons button{min-height:48px;border:1px solid #244b39!important;border-radius:999px!important;background:#244b39!important;color:#fffdf8!important;padding:12px 20px!important;font-size:12px!important;font-weight:700!important;display:inline-flex;justify-content:center;align-items:center;gap:10px;white-space:normal;max-width:100%;width:100%}
 .buttons button:hover:not(:disabled){background:#315f49!important}
 .buttons .stopButton{background:#8e3e31!important;border-color:#8e3e31!important}
 .buttons .stopButton:hover{background:#712e26!important}

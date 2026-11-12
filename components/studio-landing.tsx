@@ -49,7 +49,19 @@ export function StudioLanding(){
 
   return <><div className={styles.landing} data-quiet={quiet}>
     <section className={styles.hero} aria-labelledby="studio-hero-title">
-      <Reveal><p className={styles.eyebrow}>Many voices. New perspectives.</p><h1 id="studio-hero-title">Stories<br/><em>move us.</em></h1></Reveal>
+      <div className={styles.heroTop}>
+        <Reveal><p className={styles.eyebrow}>Many voices. New perspectives.</p><h1 id="studio-hero-title">Stories<br/><em>move us.</em></h1></Reveal>
+        <Reveal className={styles.heroVisual}>
+          <figure className={styles.storyCollage}>
+            <div className={styles.collageStage} aria-hidden="true">
+              <div className={styles.collagePrint}><img src={`${base}/studio-covers/makers.png`} alt="" width="1152" height="800"/><span>A new perspective.</span></div>
+              <div className={styles.collageMemory}><img src={`${base}/studio-covers/memory.png`} alt="" width="1152" height="800"/><span>A memory worth keeping.</span></div>
+              <div className={styles.collageVoice}><svg viewBox="0 0 180 48" fill="none"><path d="M4 24h12m8-7v14m10-22v30m10-15v0m10-18v36m10-30v24m10-36v48m10-33v18m10-25v32m10-20v8m10-18v28m10-37v46m10-34v22m10-16v10m10-5h12" stroke="currentColor" strokeWidth="4" strokeLinecap="round"/></svg><span>Your voice.</span></div>
+            </div>
+            <figcaption><strong>Words · Voice · Visuals</strong><span>Original NewWave illustrations. Your story starts here.</span></figcaption>
+          </figure>
+        </Reveal>
+      </div>
       <div className={styles.heroBottom}>
         <Reveal><p>African stories move us. Discover perspectives beyond your usual feed, then shape a story of your own through words, voice and visuals. Your experience leads. The tools help you bring it to life.</p></Reveal>
         <Reveal className={styles.heroActions}><Link className={styles.primary} href="/creator-studio/">Start your story <Arrow/></Link><a className={styles.secondary} href="#perspectives">Find a perspective <span aria-hidden="true">↓</span></a></Reveal>
